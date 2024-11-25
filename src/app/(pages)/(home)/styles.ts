@@ -1,13 +1,16 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  background-color: orange;
+  background-image: url('/assets/imagesHome/mediacaapp2.png');
+  background-color: yellow;
+  background-size: cover;
+  background-position: center;
   height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  position: relative; /* Adicionado para suportar o uso do layout "fill" */
+  position: relative;
   
   button {
     text-transform: uppercase;
