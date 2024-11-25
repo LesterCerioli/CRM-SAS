@@ -7,23 +7,22 @@ import { AdminHeader } from "@/components/admin/adminHeader/adminHeader";
 const Admin: React.FC = () => {
     const router = useRouter();
 
+    
+    const routes: { [key: string]: string } = {
+        "Usuários": "/admin/user",
+        "Permissões": "/admin/permissions",
+        "Comercial": "/admin/commercial",
+        "Administrativo": "/admin/administrative",
+        "RH": "/admin/hr",
+        "DP": "/admin/pd-department",
+        "Financeiro": "/admin/finance",
+        "Contabilidade": "/admin/accounting",
+        "Fiscal": "/admin/fiscal",
+        "TI": "/admin/it",
+    };
+
     const handleRedirect = (title: string) => {
         const baseUrl = "/";
-        const routes = {
-            Blog: "/admin/blog",
-            Usuários: "/admin/user",
-            Permissions: "/admin/permissions",
-            Commercial: "/admin/commercial",
-            Administrative: "/admin/administrative",
-            HR: "/admin/hr",
-            "DP": "/admin/pd-department",
-            Finance: "/admin/finance",
-            Accounting: "/admin/accounting",
-            Fiscal: "/admin/fiscal",
-            IT: "/admin/it",
-        };
-
-        
         router.push(routes[title] || baseUrl);
     };
 
@@ -36,7 +35,6 @@ const Admin: React.FC = () => {
             {[
                 "Usuários",
                 "Permissões",
-                "Blog",
                 "Comercial",
                 "Administrativo",
                 "RH",
