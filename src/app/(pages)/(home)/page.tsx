@@ -2,14 +2,13 @@
 import React from "react";
 import * as S from "./styles";
 import Cookies from "@/components/home/cookies/cookies/cookies";
-import { Banner } from "@/components/home/cookies/homeBanner/homeBanner";
+import ImageHome from "@/components/home/cookies/imageHome/imageHome";
 
 
 const Home: React.FC = () => {
   return (
     <S.Container>
-      
-      <Banner />
+      <ImageHome/>
       
       <S.Cokkies>
         <Cookies />
