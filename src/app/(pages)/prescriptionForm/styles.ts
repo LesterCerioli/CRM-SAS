@@ -2,29 +2,20 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   width: 100%;
-  height: 100vh;
+  height: auto;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #f0f8ff;
-  padding-top: 45rem;
-  padding-bottom: 42rem;
+  padding-top: 2rem;
   background-color: #ffa573;
 
   @media (max-width: 768px) {
-
-    padding-top: 43rem;
+    padding-top: 2rem;
   }
 
 
-  form {
-    width: 100%;
-    max-width: 600px;
-    background: white;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
+ 
 
   button {
     text-transform: uppercase;

@@ -164,8 +164,7 @@ const PrescriptionForm: React.FC = () => {
         <S.CrossIcon>+</S.CrossIcon>
         <h1>Prescrição Médica</h1>
       </S.Header>
-
-      <form onSubmit={handleSubmit}>
+      <div  onSubmit={handleSubmit}>
         <S.Section>
           <label>
             Nome do Paciente:
@@ -199,7 +198,10 @@ const PrescriptionForm: React.FC = () => {
             />
             {cpfError }
           </label>
-          <label>
+        </S.Section>
+
+        <S.Section>
+        <label>
             Endereço da Clínica/Hospital:
             <input
               type="text"
@@ -209,9 +211,6 @@ const PrescriptionForm: React.FC = () => {
               required
             />
           </label>
-        </S.Section>
-
-        <S.Section>
           <label>
             Nome do Médico:
             <input type="text" name="doctorName" required />
@@ -227,11 +226,10 @@ const PrescriptionForm: React.FC = () => {
             />
             {crmError && <span>{crmError}</span>}
           </label>
-          <label>
-            Prescrição do Medicamento:
-            <textarea name="prescription" required />
-          </label>
-          <label>
+          </S.Section>
+          
+          <S.Section>
+          <div className="date-div">
             Data de Prescrição:
             <DatePicker
               selected={formData.prescriptionDate}
@@ -244,11 +242,12 @@ const PrescriptionForm: React.FC = () => {
               open={isCalendarOpen}
               className="date"
             />
-          </label>
-        </S.Section>
+          </div>
+          
+          </S.Section>
 
-        <S.Section>
-          <S.SignatureSection>
+          <S.Section >
+            <S.SignatureSection className="signature-section">
             <label>Assinatura do Médico:</label>
             <SignatureCanvas
               ref={signatureRef}
@@ -267,10 +266,16 @@ const PrescriptionForm: React.FC = () => {
               </button>
             </S.SignatureButtons>
           </S.SignatureSection>
-        </S.Section>
+          <S.PrescriptionSection>
+         <label>
+            Prescrição do Medicamento:
+            <textarea name="prescription" required />
+          </label>
+          </S.PrescriptionSection>
+          </S.Section>
 
         <S.SubmitButton type="submit">Enviar</S.SubmitButton>
-      </form>
+      </div>
     </S.Container>
   );
 };
