@@ -37,6 +37,7 @@
     "react-modal": "^3.16.1",
     "react-quill": "^2.0.0",
     "react-responsive-carousel": "^3.2.23",
+    "react-signature-canvas": "^1.0.6",
     "react-step-progress-bar": "^1.0.3",
     "styled-components": "^6.1.13",
     "zod": "^3.22.3"
@@ -49,6 +50,7 @@
     "@types/pdf-parse": "^1.1.4",
     "@types/react": "18.3.12",
     "@types/react-modal": "^3.16.0",
+    "@types/react-signature-canvas": "^1.0.6",
     "jest": "^29.7.0",
     "typescript": "5.6.3"
   }
