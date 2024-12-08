@@ -2,10 +2,12 @@
 import React from "react";
 import * as S from "./styles";
 import ImageHome from "@/components/home/cookies/imageHome/imageHome";
+import { AppointmentHeader } from "@/components/appointments/appointmentHeader/appointmentHeader";
 
 const Appointment: React.FC = () => {
     return (
         <S.Container>
+            <AppointmentHeader />
             <ImageHome/>
             <h1>marcação de Consultas</h1>
         </S.Container>
