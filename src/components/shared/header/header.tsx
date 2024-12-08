@@ -26,7 +26,10 @@ import { CgClose } from 'react-icons/cg';
           <S.MajorLinksContainer>
             <S.LinksContainer className={isMenuOpen ? 'show-links' : ''}>
               <S.Link href="/">Home</S.Link>
-              
+              <S.Link href="/appointment">Consultas</S.Link>
+              <S.Link href="/doctor">Médicos</S.Link>
+              <S.Link href="/labor">Laboratório</S.Link>
+              <S.Link href="/ward">Enfermaria</S.Link>
               <S.Link href="login">Login</S.Link>
               {isMenuOpen && (
                 <S.CloseButton onClick={toggleMenu}>
