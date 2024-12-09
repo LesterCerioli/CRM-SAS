@@ -1,7 +1,29 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
+display: flex;
+justify-content: center;
+align-items: center;
+flex-direction: column;
   background-color: #4f98a0;
+  width: 100%;
+  height: auto;
+  padding: 7rem;
+  
+  h1{
+    color: #fff;
+    font-size: 42px;
+  }
+
+  @media (max-width: 768px) {
+    h1{
+      font-size: 25px;
+      padding: 1rem;
+      white-space: nowrap;
+
+    }
+  }
+
   
   
   button {

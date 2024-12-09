@@ -1,15 +1,15 @@
 "use client";
 import React from "react";
 import * as S from "./styles";
-import ImageHome from "@/components/home/cookies/imageHome/imageHome";
 import { AppointmentHeader } from "@/components/appointments/appointmentHeader/appointmentHeader";
+import CreateAppointmentsForm from "@/components/appointments/createAppointmentsForm/createAppointmentForm";
 
 const Appointment: React.FC = () => {
     return (
         <S.Container>
             <AppointmentHeader />
-            <ImageHome/>
-            <h1>marcação de Consultas</h1>
+            <h1>Marcação de Consultas</h1>
+            <CreateAppointmentsForm/>
         </S.Container>
     )
 
