@@ -6,7 +6,6 @@ import axios from "axios";
 
 const diasDaSemana = ["S", "T", "Q", "Q", "S", "S", "D"];
 
-
 const CreateAppointmentsForm: React.FC = () => {
   const [dataAtual, setDataAtual] = useState(new Date());
   const [dataSelecionada, setDataSelecionada] = useState<Date | null>(null);
@@ -22,15 +21,15 @@ const CreateAppointmentsForm: React.FC = () => {
     medicoSelecionado: "",
   });
 
-  // Consultas fictícias
+ 
   const consultasAgendadas: Record<string, string[]> = {
     "2024-12-01": [
-      "Filipe: 2024-12-01 10:30 consulta com Dr. João - Cardiologista",
-      "Ana: 2024-12-01 10:30 consulta com Dr. João - Cardiologista",
-      "Flavio: 2024-12-01 10:30 consulta com Dr. João - Cardiologista",
+      "Filipe Camarão de Lima: 2024-12-01 10:30 consulta com Dr. João - Cardiologista",
+      "Ana Lucia da Silva: 2024-12-01 10:30 consulta com Dr. João - Cardiologista",
+      "Flavio de Oliveira Lima: 2024-12-01 10:30 consulta com Dr. João - Cardiologista",
     ],
     "2024-12-02": [
-      "Carlos: 2024-12-02 09:00 consulta com Dr. Carlos - Ortopedista",
+      "Carlos Rodrigues Pereira: 2024-12-02 09:00 consulta com Dr. Carlos - Ortopedista",
     ],
   };
 
@@ -39,14 +38,27 @@ const CreateAppointmentsForm: React.FC = () => {
     "Dra. Maria - Dermatologista",
     "Dr. Carlos - Ortopedista",
     "Dra. Ana - Pediatra",
+    "Dr. Pedro - Neurologista",
+    "Dra. Luísa - Ginecologista",
+    "Dr. Ricardo - Oftalmologista",
+    "Dra. Beatriz - Endocrinologista",
+    "Dr. Rafael - Urologista",
+    "Dra. Sofia - Reumatologista",
+    "Dr. Henrique - Psiquiatra",
+    "Dra. Clara - Infectologista",
+    "Dr. Gustavo - Oncologista",
+    "Dra. Juliana - Nefrologista",
+    "Dr. Leonardo - Anestesiologista",
+    "Dra. Carolina - Hematologista",
   ];
 
-  // Atualizar a data automaticamente
+  
+ 
   useEffect(() => {
     const intervalId = setInterval(() => {
       setDataAtual(new Date());
-    }, 1000 * 60 * 60 * 24); // Atualiza a cada 24 horas
-    return () => clearInterval(intervalId); // Limpa o intervalo ao desmontar o componente
+    }, 1000 * 60 * 60 * 24); 
+    return () => clearInterval(intervalId); 
   }, []);
 
   const getDiasNoMes = (data: Date) => {
@@ -114,7 +126,6 @@ const CreateAppointmentsForm: React.FC = () => {
         setMostrarFormulario(false);
         limparFormulario();
       } catch (erro) {
-        // Handle error silently
       }
     }
   };
@@ -208,6 +219,7 @@ const CreateAppointmentsForm: React.FC = () => {
         </S.Container>
         {hoveredDate && (
           <S.Tooltip>
+            <S.Consultas>
             {obterResumoConsultas(hoveredDate).length > 0 ? (
               obterResumoConsultas(hoveredDate).map((consulta, index) => (
                 <div key={index}>{consulta}</div>
@@ -215,6 +227,7 @@ const CreateAppointmentsForm: React.FC = () => {
             ) : (
               <div>Nenhuma consulta agendada</div>
             )}
+          </S.Consultas>
           </S.Tooltip>
         )}
         {mostrarFormulario && (
@@ -251,25 +264,46 @@ const CreateAppointmentsForm: React.FC = () => {
               {erros.horario && <S.ErrorText>{erros.horario}</S.ErrorText>}
             </S.InputContainer>
             <S.InputContainer>
-              <S.Select
-                value={medicoSelecionado}
-                onChange={(e) => {
-                  setMedicoSelecionado(e.target.value);
-                  setErros({ ...erros, medicoSelecionado: "" });
-                }}
-                style={{ borderColor: erros.medicoSelecionado ? "red" : "#ccc" }}
-              >
-                <option value="">Selecione um médico</option>
-                {medicosFiltrados.map((medico, index) => (
-                  <option key={index} value={medico}>
-                    {medico}
-                  </option>
-                ))}
-              </S.Select>
-              {erros.medicoSelecionado && (
-                <S.ErrorText>{erros.medicoSelecionado}</S.ErrorText>
-              )}
-            </S.InputContainer>
+  <div style={{ position: "relative" }}>
+    <S.Input
+      type="text"
+      value={buscaMedico}
+      onChange={(e) => {
+        setBuscaMedico(e.target.value);
+        setMedicoSelecionado("");
+        setErros({ ...erros, medicoSelecionado: "" });
+      }}
+      onFocus={() => setMostrarFormulario(true)}
+      placeholder="Selecione ou digite o nome do médico"
+      style={{ borderColor: erros.medicoSelecionado ? "red" : "#ccc" }}
+    />
+    {erros.medicoSelecionado && (
+      <S.ErrorText>{erros.medicoSelecionado}</S.ErrorText>
+    )}
+    {buscaMedico && medicosFiltrados.length > 0 && (
+      <S.Dropdown>
+        {medicosFiltrados.map((medico, index) => (
+          <S.DropdownItem
+            key={index}
+            onClick={() => {
+              setMedicoSelecionado(medico);
+              setBuscaMedico(medico);
+              setErros({ ...erros, medicoSelecionado: "" });
+            }}
+          >
+            {medico}
+          </S.DropdownItem>
+        ))}
+      </S.Dropdown>
+    )}
+  </div>
+  {medicoSelecionado && (
+    <S.SelectedMedico>
+      Médico selecionado: {medicoSelecionado}
+    </S.SelectedMedico>
+  )}
+</S.InputContainer>
+
             <S.ButtonContainer>
               <S.ConfirmButton onClick={handleEnviar}>Confirmar</S.ConfirmButton>
               <S.CancelButton onClick={handleCancelar}>Cancelar</S.CancelButton>

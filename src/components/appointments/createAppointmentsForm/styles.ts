@@ -207,7 +207,7 @@ export const Day = styled.button<{ isToday?: boolean; isSelected?: boolean }>`
 
   &:hover {
     background-color: ${props => props.isSelected ? '#86b7a0' : '#f0f0f0'};
-    padding: 8px;
+    padding: 5px;
   }
 
   @media (max-width: 768px) {
@@ -373,7 +373,40 @@ export const ErrorText = styled.span`
 `;
 
 
+export const Consultas = styled.div`
+  background-color: #382EC4;
+  color: white;
+  padding: 15px;
+  border-radius: 5px;
+`;
 
 
+export const Dropdown = styled.ul`
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  max-height: 150px;
+  overflow-y: auto;
+  z-index: 10;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+`;
 
+export const DropdownItem = styled.li`
+  padding: 8px 12px;
+  cursor: pointer;
+  &:hover {
+    background-color: #f5f5f5;
+  }
+`;
+
+export const SelectedMedico = styled.p`
+  margin-top: 8px;
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+`;
 
