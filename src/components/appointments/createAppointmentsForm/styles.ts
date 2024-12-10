@@ -2,12 +2,12 @@ import styled from 'styled-components'
 
 export const OuterContainer = styled.div`
   position: relative;
-  width:33%;
+  width:37%;
   height: auto;
   margin-top: 3rem;
 
   @media (max-width: 768px) {
-    width: 22rem;
+    width: 26rem;
     margin-top: 2rem;
   }
 `
@@ -59,9 +59,9 @@ export const TopTabs = styled.div`
 `
 
 export const SideTab = styled.div`
-  width: 90px;
-  height: 30px;
-  margin-bottom: 1rem;
+  width: 18%;
+  height: 4vh;
+  margin-bottom: 1.5rem;
   background-color: #fff;
   border-radius: 20px;
   box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
@@ -107,20 +107,19 @@ export const CenterTab = styled.div`
 
 export const Container = styled.div`
   width: 100%;
-  height: 55vh;
+  height: 60vh;
   background-color: white;
   border-radius: 50%;
-  padding: 24px;
-  margin: 20px auto 0;
   box-shadow: 0 8px 16px rgba(0,0,0,0.1);
   font-family: Arial, sans-serif;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   overflow: hidden;
+  margin-top: 25px;
 
   @media (max-width: 768px) {
-    width: 500px;
+    width: 25rem;
     height: 55vh;
     margin-top: 60px;
     border-radius: 100%;
@@ -132,42 +131,26 @@ export const CalendarHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 12px;
 
   @media (max-width: 768px) {
     padding: 0 8px;
   }
 `
 
-export const MonthYear = styled.div`
-  font-size: 27px;
-  font-weight: 600;
-  color: #333;
-  text-transform: capitalize;
-  margin-top: 3rem;
-  white-space: nowrap;
-
-  @media (max-width: 768px) {
-    font-size: 18px;
-    margin-top: 3rem;
-  }
-`
-
 export const NavButton = styled.button`
   background: none;
   border: none;
-  font-size: 18px;
   color: #666;
   cursor: pointer;
-  width: 12px;
-  height: 12px;
+  width: 22px;
+  height: 22px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  margin-left: 30px;
-  margin-right: 30px;
-  margin-top: 3rem;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-top: 17%;
 
   &:hover {
     background-color: #f0f0f0;
@@ -175,9 +158,9 @@ export const NavButton = styled.button`
 
   @media (max-width: 768px) {
     font-size: 14px;
-    margin-left: 5px;
-    margin-right: 5px;
-    margin-top: 3rem;
+    margin-left: 1%;
+    margin-right: 1%;
+    margin-top: 10%;
   }
 `
 
@@ -187,31 +170,29 @@ export const WeekDays = styled.div`
   text-align: center;
   font-weight: 500;
   color: #666;
-  padding: 0 8px;
-  font-size: 20px;
+  font-size: 1.3rem;
+  gap: .3rem;
 
   @media (max-width: 768px) {
-    font-size: 14px;
+    font-size: 1.2rem;
   }
 `
 
 export const Days = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 4px;
-  padding: 0 16px;
-  margin-bottom: 12%;
+  gap: .3rem;
+  margin-bottom: 30%;
 
   @media (max-width: 768px) {
-    gap: 1px;
-    padding: 1px;
-    margin-bottom: 14%;
+    gap: .1rem;
+    margin-bottom: 18%;
   }
 `
 
 export const Day = styled.button<{ isToday?: boolean; isSelected?: boolean }>`
-  width: 42px;
-  height: 42px;
+  width: 12px;
+  height: 10px;
   border-radius: 50%;
   border: none;
   background-color: ${props => props.isSelected ? '#86b7a0' : 'transparent'};
@@ -221,11 +202,12 @@ export const Day = styled.button<{ isToday?: boolean; isSelected?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto;
-  font-size: 22px;
+  margin: -2px auto;
+  font-size: 12px;
 
   &:hover {
     background-color: ${props => props.isSelected ? '#86b7a0' : '#f0f0f0'};
+    padding: 8px;
   }
 
   @media (max-width: 768px) {
@@ -316,3 +298,82 @@ export const CancelButton = styled.button`
     background-color: #c9302c;
   }
 `;
+
+
+export const MonthYearContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  margin-top: 17%;
+
+  @media (max-width: 768px) {
+    margin-top: 3rem;
+    margin-top: 11%;
+  }
+`;
+
+export const MonthDisplay = styled.div`
+  font-size: 1.6rem;
+  font-weight: bold;
+  text-transform: capitalize;
+  color: #333;
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
+`;
+
+export const YearSelect = styled.select`
+  margin-top: 4px;
+  padding: 4px;
+  border-radius: 4px;
+  border: 1px solid  #75a5a7;
+  font-size: 1.4rem;
+  cursor: pointer;
+  font-weight: 600;
+
+  &:hover {
+    border-color: #A8D5D7;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 17px;
+  }
+`;
+
+export const Tooltip = styled.div`
+  position: absolute;
+  background: #ffffff;
+  color: #333;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  font-size: 14px;
+  z-index: 10;
+`;
+
+export const InputContainer = styled.div`
+  position: relative;
+  width: 100%;
+  margin-bottom: 15px;
+`;
+
+export const ErrorText = styled.span`
+  color: red;
+  font-size: 12px;
+  font-weight: 500;
+  position: absolute;
+  top: 80%;
+  left: 5px;
+`;
+
+
+
+
+
+

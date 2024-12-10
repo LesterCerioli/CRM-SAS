@@ -10,8 +10,9 @@ const Appointment: React.FC = () => {
         <S.Container>
             <AppointmentHeader />
             <h1>Marcação de Consultas</h1>
-            <CreateAppointmentsForm/>
+            <CreateAppointmentsForm />
         </S.Container>
-    )
+    );
+};
 
 export default Appointment;

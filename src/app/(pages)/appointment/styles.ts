@@ -1,17 +1,15 @@
 import styled from "styled-components";
 
-// Container principal da página
 export const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #eaf4f4; /* Tom claro como fundo */
+  background-color: #eaf4f4; 
   min-height: 100vh;
   padding: 2rem;
 `;
 
-// Header ou área superior da página
 export const Header = styled.div`
   display: flex;
   flex-direction: column;
@@ -26,7 +24,7 @@ export const Header = styled.div`
   h1 {
     font-size: 2rem;
     font-weight: bold;
-    color: #2c6e49; /* Verde escuro */
+    color: #2c6e49; 
     margin-bottom: 1rem;
   }
 
@@ -36,9 +34,9 @@ export const Header = styled.div`
   }
 `;
 
-// Botões estilizados
+
 export const Button = styled.button`
-  background-color: #2c6e49; /* Verde escuro */
+  background-color: #2c6e49; 
   color: #ffffff;
   font-size: 1rem;
   padding: 0.75rem 1.5rem;
@@ -49,16 +47,16 @@ export const Button = styled.button`
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: #22613a; /* Tom mais escuro ao passar o mouse */
+    background-color: #22613a; 
   }
 `;
 
-// Container de seções com as opções (como botões ou áreas interativas)
+
 export const SectionContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.5rem; /* Espaço entre as opções */
+  gap: 1.5rem; 
   margin-top: 2rem;
 
   button {
@@ -69,7 +67,7 @@ export const SectionContainer = styled.div`
   }
 `;
 
-// Estilização de cada card ou botão de funcionalidade
+
 export const Card = styled.div`
   display: flex;
   align-items: center;
@@ -133,16 +131,17 @@ flex-direction: column;
   background-color: #4f98a0;
   width: 100%;
   height: auto;
-  padding: 7rem;
+  padding: 4rem;
   
   h1{
     color: #fff;
-    font-size: 42px;
+    font-size: 2rem;
+    margin-bottom: -1rem;
   }
 
   @media (max-width: 768px) {
     h1{
-      font-size: 25px;
+      font-size: 2rem;
       padding: 1rem;
       white-space: nowrap;
 
