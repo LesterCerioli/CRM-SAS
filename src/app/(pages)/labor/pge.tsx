@@ -8,9 +8,9 @@ const Labor: React.FC = () => {
         <S.Container>
             <h1>Laboratório</h1>
             <ImageHome/>
-            <h1>marcação de Consultas</h1>
+            
         </S.Container>
-    )
+    );
 
-}
+};
 export default Labor;
