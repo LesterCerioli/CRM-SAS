@@ -4,25 +4,24 @@ import React, { useState, useEffect } from "react";
 import * as S from "./styles";
 import axios from "axios";
 
-const diasDaSemana = ["S", "T", "Q", "Q", "S", "S", "D"];
+const weekdays = ["S", "T", "Q", "Q", "S", "S", "D"];
 
 const CreateAppointmentsForm: React.FC = () => {
-  const [dataAtual, setDataAtual] = useState(new Date());
-  const [dataSelecionada, setDataSelecionada] = useState<Date | null>(null);
-  const [mostrarFormulario, setMostrarFormulario] = useState(false);
-  const [nomePaciente, setNomePaciente] = useState("");
-  const [horario, setHorario] = useState("");
-  const [medicoSelecionado, setMedicoSelecionado] = useState("");
-  const [buscaMedico, setBuscaMedico] = useState("");
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [showForm, setShowForm] = useState(false);
+  const [patientName, setPatientName] = useState("");
+  const [time, setTime] = useState("");
+  const [selectedDoctor, setSelectedDoctor] = useState("");
+  const [searchDoctor, setSearchDoctor] = useState("");
   const [hoveredDate, setHoveredDate] = useState<Date | null>(null);
-  const [erros, setErros] = useState({
-    nomePaciente: "",
-    horario: "",
-    medicoSelecionado: "",
+  const [errors, setErrors] = useState({
+    patientName: "",
+    time: "",
+    selectedDoctor: "",
   });
 
- 
-  const consultasAgendadas: Record<string, string[]> = {
+  const scheduledAppointments: Record<string, string[]> = {
     "2024-12-01": [
       "Filipe Camarão de Lima: 2024-12-01 10:30 consulta com Dr. João - Cardiologista",
       "Ana Lucia da Silva: 2024-12-01 10:30 consulta com Dr. João - Cardiologista",
@@ -33,7 +32,7 @@ const CreateAppointmentsForm: React.FC = () => {
     ],
   };
 
-  const medicos = [
+  const doctors = [
     "Dr. João - Cardiologista",
     "Dra. Maria - Dermatologista",
     "Dr. Carlos - Ortopedista",
@@ -52,108 +51,107 @@ const CreateAppointmentsForm: React.FC = () => {
     "Dra. Carolina - Hematologista",
   ];
 
-  
- 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setDataAtual(new Date());
+      setCurrentDate(new Date());
     }, 1000 * 60 * 60 * 24); 
-    return () => clearInterval(intervalId); 
+    return () => clearInterval(intervalId);
   }, []);
 
-  const getDiasNoMes = (data: Date) => {
-    const ano = data.getFullYear();
-    const mes = data.getMonth();
-    const dias = [];
-    const primeiroDia = new Date(ano, mes, 1).getDay();
-    const ultimoDia = new Date(ano, mes + 1, 0).getDate();
+  const getDaysInMonth = (date: Date) => {
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const days = [];
+    const firstDay = new Date(year, month, 1).getDay();
+    const lastDay = new Date(year, month + 1, 0).getDate();
 
-    for (let i = 0; i < primeiroDia; i++) {
-      dias.push(null);
+    for (let i = 0; i < firstDay; i++) {
+      days.push(null);
     }
-    for (let i = 1; i <= ultimoDia; i++) {
-      dias.push(new Date(ano, mes, i));
+    for (let i = 1; i <= lastDay; i++) {
+      days.push(new Date(year, month, i));
     }
-    return dias;
+    return days;
   };
 
-  const mudarMes = (incremento: number) => {
-    setDataAtual((dataAnterior) => {
-      const novaData = new Date(dataAnterior);
-      novaData.setMonth(novaData.getMonth() + incremento);
-      return novaData;
+  const changeMonth = (increment: number) => {
+    setCurrentDate((prevDate) => {
+      const newDate = new Date(prevDate);
+      newDate.setMonth(newDate.getMonth() + increment);
+      return newDate;
     });
   };
 
-  const eHoje = (data: Date) => {
-    const hoje = new Date();
+  const isToday = (date: Date) => {
+    const today = new Date();
     return (
-      data.getDate() === hoje.getDate() &&
-      data.getMonth() === hoje.getMonth() &&
-      data.getFullYear() === hoje.getFullYear()
+      date.getDate() === today.getDate() &&
+      date.getMonth() === today.getMonth() &&
+      date.getFullYear() === today.getFullYear()
     );
   };
 
-  const handleClickData = (data: Date) => {
-    setDataSelecionada(data);
-    setMostrarFormulario(true);
+  const handleDateClick = (date: Date) => {
+    setSelectedDate(date);
+    setShowForm(true);
   };
 
-  const validarFormulario = () => {
-    const novosErros = {
-      nomePaciente: nomePaciente.trim() ? "" : "Preencha este campo",
-      horario: horario ? "" : "Preencha este campo",
-      medicoSelecionado: medicoSelecionado ? "" : "Preencha este campo",
+  const validateForm = () => {
+    const newErrors = {
+      patientName: patientName.trim() ? "" : "Preencha este campo",
+      time: time ? "" : "Preencha este campo",
+      selectedDoctor: selectedDoctor ? "" : "Preencha este campo",
     };
-    setErros(novosErros);
-    return !Object.values(novosErros).some((erro) => erro !== "");
+    setErrors(newErrors);
+    return !Object.values(newErrors).some((error) => error !== "");
   };
 
-  const handleEnviar = async () => {
-    if (validarFormulario()) {
-      const dados = {
-        nomePaciente,
-        data: dataSelecionada?.toLocaleDateString("pt-BR"),
-        horario,
-        medico: medicoSelecionado,
+  const handleSubmit = async () => {
+    if (validateForm()) {
+      const data = {
+        patientName,
+        date: selectedDate?.toLocaleDateString("pt-BR"),
+        time,
+        doctor: selectedDoctor,
       };
       try {
-        const response = await axios.post("https://sua-api.com/endpoint", dados, {
+        const response = await axios.post("https://sua-api.com/endpoint", data, {
           headers: {
             "Content-Type": "application/json",
           },
         });
-        setMostrarFormulario(false);
-        limparFormulario();
-      } catch (erro) {
+        setShowForm(false);
+        resetForm();
+      } catch (error) {
+       
       }
     }
   };
 
-  const handleCancelar = () => {
-    setMostrarFormulario(false);
-    limparFormulario();
+  const handleCancel = () => {
+    setShowForm(false);
+    resetForm();
   };
 
-  const limparFormulario = () => {
-    setNomePaciente("");
-    setHorario("");
-    setMedicoSelecionado("");
-    setBuscaMedico("");
-    setErros({
-      nomePaciente: "",
-      horario: "",
-      medicoSelecionado: "",
+  const resetForm = () => {
+    setPatientName("");
+    setTime("");
+    setSelectedDoctor("");
+    setSearchDoctor("");
+    setErrors({
+      patientName: "",
+      time: "",
+      selectedDoctor: "",
     });
   };
 
-  const medicosFiltrados = medicos.filter((medico) =>
-    medico.toLowerCase().includes(buscaMedico.toLowerCase())
+  const filteredDoctors = doctors.filter((doctor) =>
+    doctor.toLowerCase().includes(searchDoctor.toLowerCase())
   );
 
-  const obterResumoConsultas = (data: Date): string[] => {
-    const dataKey = data.toISOString().split("T")[0];
-    return consultasAgendadas[dataKey] || [];
+  const getAppointmentsSummary = (date: Date): string[] => {
+    const dateKey = date.toISOString().split("T")[0];
+    return scheduledAppointments[dateKey] || [];
   };
 
   return (
@@ -166,17 +164,17 @@ const CreateAppointmentsForm: React.FC = () => {
         </S.TopTabs>
         <S.Container>
           <S.CalendarHeader>
-            <S.NavButton onClick={() => mudarMes(-1)}>&lt;</S.NavButton>
+            <S.NavButton onClick={() => changeMonth(-1)}>&lt;</S.NavButton>
             <S.MonthYearContainer>
               <S.MonthDisplay>
-                {dataAtual.toLocaleString("pt-BR", { month: "long" })}
+                {currentDate.toLocaleString("pt-BR", { month: "long" })}
               </S.MonthDisplay>
               <S.YearSelect
-                value={dataAtual.getFullYear()}
+                value={currentDate.getFullYear()}
                 onChange={(e) => {
                   const novoAno = parseInt(e.target.value, 10);
-                  setDataAtual((dataAnterior) => {
-                    const novaData = new Date(dataAnterior);
+                  setCurrentDate((previousDate) => {
+                    const novaData = new Date(previousDate);
                     novaData.setFullYear(novoAno);
                     return novaData;
                   });
@@ -189,26 +187,26 @@ const CreateAppointmentsForm: React.FC = () => {
                 ))}
               </S.YearSelect>
             </S.MonthYearContainer>
-            <S.NavButton onClick={() => mudarMes(1)}>&gt;</S.NavButton>
+            <S.NavButton onClick={() => changeMonth(1)}>&gt;</S.NavButton>
           </S.CalendarHeader>
           <div>
             <S.WeekDays>
-              {diasDaSemana.map((dia) => (
-                <div key={dia}>{dia}</div>
+              {weekdays.map((day) => (
+                <div key={day}>{day}</div>
               ))}
             </S.WeekDays>
             <S.Days>
-              {getDiasNoMes(dataAtual).map((data, index) =>
-                data ? (
+              {getDaysInMonth(currentDate).map((date, index) =>
+                date ? (
                   <S.Day
                     key={index}
-                    isToday={eHoje(data)}
-                    isSelected={dataSelecionada?.getTime() === data.getTime()}
-                    onClick={() => handleClickData(data)}
-                    onMouseEnter={() => setHoveredDate(data)}
+                    isToday={isToday(date)}
+                    isSelected={selectedDate?.getTime() === date.getTime()}
+                    onClick={() => handleDateClick(date)}
+                    onMouseEnter={() => setHoveredDate(date)}
                     onMouseLeave={() => setHoveredDate(null)}
                   >
-                    {data.getDate()}
+                    {date.getDate()}
                   </S.Day>
                 ) : (
                   <div key={index} />
@@ -220,93 +218,93 @@ const CreateAppointmentsForm: React.FC = () => {
         {hoveredDate && (
           <S.Tooltip>
             <S.Consultas>
-            {obterResumoConsultas(hoveredDate).length > 0 ? (
-              obterResumoConsultas(hoveredDate).map((consulta, index) => (
-                <div key={index}>{consulta}</div>
-              ))
-            ) : (
-              <div>Nenhuma consulta agendada</div>
-            )}
-          </S.Consultas>
+              {getAppointmentsSummary(hoveredDate).length > 0 ? (
+                getAppointmentsSummary(hoveredDate).map((appointment, index) => (
+                  <div key={index}>{appointment}</div>
+                ))
+              ) : (
+                <div>Sem compromissos agendados</div>
+              )}
+            </S.Consultas>
           </S.Tooltip>
         )}
-        {mostrarFormulario && (
+        {showForm && (
           <S.FormContainer>
             <S.FormHeader>Agendamento</S.FormHeader>
             <S.InputContainer>
               <S.Input
                 placeholder="Nome do Paciente"
-                value={nomePaciente}
+                value={patientName}
                 onChange={(e) => {
-                  setNomePaciente(e.target.value);
-                  setErros({ ...erros, nomePaciente: "" });
+                  setPatientName(e.target.value);
+                  setErrors({ ...errors, patientName: "" });
                 }}
-                style={{ borderColor: erros.nomePaciente ? "red" : "#ccc" }}
+                style={{ borderColor: errors.patientName ? "red" : "#ccc" }}
               />
-              {erros.nomePaciente && (
-                <S.ErrorText>{erros.nomePaciente}</S.ErrorText>
+              {errors.patientName && (
+                <S.ErrorText>{errors.patientName}</S.ErrorText>
               )}
             </S.InputContainer>
             <S.DisabledInput
-              value={dataSelecionada?.toLocaleDateString("pt-BR") || ""}
+              value={selectedDate?.toLocaleDateString("pt-BR") || ""}
               disabled
             />
             <S.InputContainer>
               <S.Input
                 type="time"
-                value={horario}
+                value={time}
                 onChange={(e) => {
-                  setHorario(e.target.value);
-                  setErros({ ...erros, horario: "" });
+                  setTime(e.target.value);
+                  setErrors({ ...errors, time: "" });
                 }}
-                style={{ borderColor: erros.horario ? "red" : "#ccc" }}
+                style={{ borderColor: errors.time ? "red" : "#ccc" }}
               />
-              {erros.horario && <S.ErrorText>{erros.horario}</S.ErrorText>}
+              {errors.time && <S.ErrorText>{errors.time}</S.ErrorText>}
             </S.InputContainer>
             <S.InputContainer>
-  <div style={{ position: "relative" }}>
-    <S.Input
-      type="text"
-      value={buscaMedico}
-      onChange={(e) => {
-        setBuscaMedico(e.target.value);
-        setMedicoSelecionado("");
-        setErros({ ...erros, medicoSelecionado: "" });
-      }}
-      onFocus={() => setMostrarFormulario(true)}
-      placeholder="Selecione ou digite o nome do médico"
-      style={{ borderColor: erros.medicoSelecionado ? "red" : "#ccc" }}
-    />
-    {erros.medicoSelecionado && (
-      <S.ErrorText>{erros.medicoSelecionado}</S.ErrorText>
-    )}
-    {buscaMedico && medicosFiltrados.length > 0 && (
-      <S.Dropdown>
-        {medicosFiltrados.map((medico, index) => (
-          <S.DropdownItem
-            key={index}
-            onClick={() => {
-              setMedicoSelecionado(medico);
-              setBuscaMedico(medico);
-              setErros({ ...erros, medicoSelecionado: "" });
-            }}
-          >
-            {medico}
-          </S.DropdownItem>
-        ))}
-      </S.Dropdown>
-    )}
-  </div>
-  {medicoSelecionado && (
-    <S.SelectedMedico>
-      Médico selecionado: {medicoSelecionado}
-    </S.SelectedMedico>
-  )}
-</S.InputContainer>
+              <div style={{ position: "relative" }}>
+                <S.Input
+                  type="text"
+                  value={searchDoctor}
+                  onChange={(e) => {
+                    setSearchDoctor(e.target.value);
+                    setSelectedDoctor("");
+                    setErrors({ ...errors, selectedDoctor: "" });
+                  }}
+                  onFocus={() => setShowForm(true)}
+                  placeholder="Selecione ou digite o nome do médico"
+                  style={{ borderColor: errors.selectedDoctor ? "red" : "#ccc" }}
+                />
+                {errors.selectedDoctor && (
+                  <S.ErrorText>{errors.selectedDoctor}</S.ErrorText>
+                )}
+                {searchDoctor && filteredDoctors.length > 0 && (
+                  <S.Dropdown>
+                    {filteredDoctors.map((doctor, index) => (
+                      <S.DropdownItem
+                        key={index}
+                        onClick={() => {
+                          setSelectedDoctor(doctor);
+                          setSearchDoctor(doctor);
+                          setErrors({ ...errors, selectedDoctor: "" });
+                        }}
+                      >
+                        {doctor}
+                      </S.DropdownItem>
+                    ))}
+                  </S.Dropdown>
+                )}
+              </div>
+              {selectedDoctor && (
+                <S.SelectedMedico>
+                  Médico selecionado: {selectedDoctor}
+                </S.SelectedMedico>
+              )}
+            </S.InputContainer>
 
             <S.ButtonContainer>
-              <S.ConfirmButton onClick={handleEnviar}>Confirmar</S.ConfirmButton>
-              <S.CancelButton onClick={handleCancelar}>Cancelar</S.CancelButton>
+              <S.ConfirmButton onClick={handleSubmit}>Confirmar</S.ConfirmButton>
+              <S.CancelButton onClick={handleCancel}>Cancelar</S.CancelButton>
             </S.ButtonContainer>
           </S.FormContainer>
         )}

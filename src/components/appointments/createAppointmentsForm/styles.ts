@@ -207,7 +207,7 @@ export const Day = styled.button<{ isToday?: boolean; isSelected?: boolean }>`
 
   &:hover {
     background-color: ${props => props.isSelected ? '#86b7a0' : '#f0f0f0'};
-    padding: 5px;
+    padding: 10px;
   }
 
   @media (max-width: 768px) {
