@@ -3,7 +3,6 @@ import styled from "styled-components";
 export const Container = styled.div`
   width: 100%;
   min-height: 100vh;
-
   @media (max-width: 768px) {
     display: flex;
     align-items: center;
@@ -16,7 +15,6 @@ export const Content = styled.div`
   margin: 0 auto;
   height: calc(100vh - 4rem);
   margin-top: 5rem;
-
   @media (max-width: 768px) {
     width: 28rem;
     height: auto;
@@ -24,7 +22,7 @@ export const Content = styled.div`
 `;
 
 export const Card = styled.div`
-  background: white;
+  background: #ffa573;
   border-radius: 0.5rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 2rem;
@@ -36,7 +34,7 @@ export const Header = styled.div`
   justify-content: space-between;
   margin-bottom: 2rem;
   padding-bottom: 1rem;
-  border-bottom: 2px solid #e2e8f0;
+  border-bottom: 2px solid #4f98a0;
   @media (max-width: 768px) {
     width: 22rem;
     height: auto;
@@ -44,9 +42,12 @@ export const Header = styled.div`
 `;
 
 export const Title = styled.h1`
-  font-size: 1.5rem;
-  font-weight: 600;
+  font-size: 1.8rem;
+  font-weight: 900;
   color: #4f98a0;
+  @media (max-width: 768px) {
+   font-size: 2.2;
+  }
 `;
 
 export const IconWrapper = styled.div`
@@ -72,9 +73,33 @@ export const CalendarIcon = styled.div`
   }
 `;
 
+export const FilterForm = styled.form`
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+`;
+
+export const FilterInput = styled.input`
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.25rem;
+`;
+
+export const FilterButton = styled.button`
+  background-color: #4f98a0;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  &:hover {
+    background-color: #3e7a80;
+  }
+`;
+
 export const DesktopTable = styled.div`
   display: block;
-
   @media (max-width: 768px) {
     display: none;
   }
@@ -101,19 +126,22 @@ export const TableRow = styled.tr`
 export const TableHead = styled.th`
   text-align: left;
   padding: 1rem;
-  font-weight: 600;
-  color: #66aeb8;
+  font-weight: 800;
+  background-color: #ff7f50;
+  color: #fff;
   border-bottom: 2px solid #e2e8f0;
 `;
 
 export const TableCell = styled.td`
   padding: 1rem;
+  color: #fff;
+  background-color: #ff7f50;
   border-bottom: 1px solid #e2e8f0;
 `;
 
 export const MobileCards = styled.div`
   display: none;
-
+  
   @media (max-width: 768px) {
     display: flex;
     flex-direction: column;
@@ -122,7 +150,9 @@ export const MobileCards = styled.div`
 `;
 
 export const MobileCard = styled.div`
-  background: white;
+  color: #fff;
+  background-color: #ff7f50;
+  border-bottom: 1px solid #e2e8f0;
   padding: 1rem;
   border-radius: 0.5rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -134,14 +164,13 @@ export const MobileCardItem = styled.div`
   justify-content: space-between;
   padding: 0.5rem 0;
   border-bottom: 1px solid #f0f4ff;
-
   &:last-child {
     border-bottom: none;
   }
 `;
 
 export const MobileLabel = styled.span`
-  font-weight: 600;
-  color: #1e40af;
+  font-weight: 700;
+  color: #fff;
 `;
 

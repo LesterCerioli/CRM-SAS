@@ -1,5 +1,6 @@
 "use client";
-import React from "react";
+
+import React, { useState } from "react";
 import * as S from "./styles";
 
 interface Appointment {
@@ -11,6 +12,9 @@ interface Appointment {
 }
 
 const CreateCancelAppointment: React.FC = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredAppointments, setFilteredAppointments] = useState<Appointment[]>([]);
+
   const appointments: Appointment[] = [
     {
       id: 1,
@@ -49,6 +53,16 @@ const CreateCancelAppointment: React.FC = () => {
     },
   ];
 
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    const filtered = appointments.filter(
+      (appointment) =>
+        appointment.patientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        appointment.doctorName.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredAppointments(filtered);
+  };
+
   return (
     <S.Container>
       <S.Content>
@@ -60,53 +74,65 @@ const CreateCancelAppointment: React.FC = () => {
             </S.IconWrapper>
           </S.Header>
 
-          {/* Desktop Table */}
-          <S.DesktopTable>
-            <S.Table>
-              <S.TableHeader>
-                <S.TableRow>
-                  <S.TableHead>Data de Agendamento</S.TableHead>
-                  <S.TableHead>Nome do Paciente</S.TableHead>
-                  <S.TableHead>Horário</S.TableHead>
-                  <S.TableHead>Nome do Médico</S.TableHead>
-                </S.TableRow>
-              </S.TableHeader>
-              <S.TableBody>
-                {appointments.map((appointment) => (
-                  <S.TableRow key={appointment.id}>
-                    <S.TableCell>{appointment.appointmentDate}</S.TableCell>
-                    <S.TableCell>{appointment.patientName}</S.TableCell>
-                    <S.TableCell>{appointment.time}</S.TableCell>
-                    <S.TableCell>{appointment.doctorName}</S.TableCell>
-                  </S.TableRow>
-                ))}
-              </S.TableBody>
-            </S.Table>
-          </S.DesktopTable>
+          <S.FilterForm onSubmit={handleSearch}>
+            <S.FilterInput
+              type="text"
+              placeholder="Buscar por nome do paciente ou médico"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <S.FilterButton type="submit">Buscar</S.FilterButton>
+          </S.FilterForm>
 
-          {/* Mobile Cards */}
-          <S.MobileCards>
-            {appointments.map((appointment) => (
-              <S.MobileCard key={appointment.id}>
-                <S.MobileCardItem>
-                  <S.MobileLabel>Data:</S.MobileLabel>
-                  <span>{appointment.appointmentDate}</span>
-                </S.MobileCardItem>
-                <S.MobileCardItem>
-                  <S.MobileLabel>Paciente:</S.MobileLabel>
-                  <span>{appointment.patientName}</span>
-                </S.MobileCardItem>
-                <S.MobileCardItem>
-                  <S.MobileLabel>Horário:</S.MobileLabel>
-                  <span>{appointment.time}</span>
-                </S.MobileCardItem>
-                <S.MobileCardItem>
-                  <S.MobileLabel>Médico:</S.MobileLabel>
-                  <span>{appointment.doctorName}</span>
-                </S.MobileCardItem>
-              </S.MobileCard>
-            ))}
-          </S.MobileCards>
+          {filteredAppointments.length > 0 && (
+            <>
+              {/* Desktop Table */}
+              <S.DesktopTable>
+                <S.Table>
+                  <S.TableHeader>
+                    <S.TableRow>
+                      <S.TableHead>Data de Agendamento</S.TableHead>
+                      <S.TableHead>Nome do Paciente</S.TableHead>
+                      <S.TableHead>Horário</S.TableHead>
+                      <S.TableHead>Nome do Médico</S.TableHead>
+                    </S.TableRow>
+                  </S.TableHeader>
+                  <S.TableBody>
+                    {filteredAppointments.map((appointment) => (
+                      <S.TableRow key={appointment.id}>
+                        <S.TableCell>{appointment.appointmentDate}</S.TableCell>
+                        <S.TableCell>{appointment.patientName}</S.TableCell>
+                        <S.TableCell>{appointment.time}</S.TableCell>
+                        <S.TableCell>{appointment.doctorName}</S.TableCell>
+                      </S.TableRow>
+                    ))}
+                  </S.TableBody>
+                </S.Table>
+              </S.DesktopTable>
+              <S.MobileCards>
+                {filteredAppointments.map((appointment) => (
+                  <S.MobileCard key={appointment.id}>
+                    <S.MobileCardItem>
+                      <S.MobileLabel>Data:</S.MobileLabel>
+                      <span>{appointment.appointmentDate}</span>
+                    </S.MobileCardItem>
+                    <S.MobileCardItem>
+                      <S.MobileLabel>Paciente:</S.MobileLabel>
+                      <span>{appointment.patientName}</span>
+                    </S.MobileCardItem>
+                    <S.MobileCardItem>
+                      <S.MobileLabel>Horário:</S.MobileLabel>
+                      <span>{appointment.time}</span>
+                    </S.MobileCardItem>
+                    <S.MobileCardItem>
+                      <S.MobileLabel>Médico:</S.MobileLabel>
+                      <span>{appointment.doctorName}</span>
+                    </S.MobileCardItem>
+                  </S.MobileCard>
+                ))}
+              </S.MobileCards>
+            </>
+          )}
         </S.Card>
       </S.Content>
     </S.Container>
