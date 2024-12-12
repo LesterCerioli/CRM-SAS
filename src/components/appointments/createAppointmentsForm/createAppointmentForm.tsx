@@ -21,18 +21,18 @@ const CreateAppointmentsForm: React.FC = () => {
     selectedDoctor: "",
   });
 
-  const scheduledAppointments: Record<string, string[]> = {
-    "2024-12-01": [
+  const scheduledAppointment: Record<string, string[]> = {
+    "01/12/2024": [
       "Filipe Camarão de Lima: 2024-12-01 10:30 consulta com Dr. João - Cardiologista",
       "Ana Lucia da Silva: 2024-12-01 10:30 consulta com Dr. João - Cardiologista",
       "Flavio de Oliveira Lima: 2024-12-01 10:30 consulta com Dr. João - Cardiologista",
     ],
-    "2024-12-02": [
+    "02/12/2024": [
       "Carlos Rodrigues Pereira: 2024-12-02 09:00 consulta com Dr. Carlos - Ortopedista",
     ],
   };
 
-  const doctors = [
+  const  doctors = [
     "Dr. João - Cardiologista",
     "Dra. Maria - Dermatologista",
     "Dr. Carlos - Ortopedista",
@@ -58,7 +58,7 @@ const CreateAppointmentsForm: React.FC = () => {
     return () => clearInterval(intervalId);
   }, []);
 
-  const getDaysInMonth = (date: Date) => {
+  const getDaysMonths = (date: Date) => {
     const year = date.getFullYear();
     const month = date.getMonth();
     const days = [];
@@ -151,7 +151,7 @@ const CreateAppointmentsForm: React.FC = () => {
 
   const getAppointmentsSummary = (date: Date): string[] => {
     const dateKey = date.toISOString().split("T")[0];
-    return scheduledAppointments[dateKey] || [];
+    return scheduledAppointment[dateKey] || [];
   };
 
   return (
@@ -196,7 +196,7 @@ const CreateAppointmentsForm: React.FC = () => {
               ))}
             </S.WeekDays>
             <S.Days>
-              {getDaysInMonth(currentDate).map((date, index) =>
+              {getDaysMonths(currentDate).map((date, index) =>
                 date ? (
                   <S.Day
                     key={index}
