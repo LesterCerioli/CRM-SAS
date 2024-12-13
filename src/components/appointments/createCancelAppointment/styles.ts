@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   width: 100%;
-  min-height: 100vh;
+ height: auto;
   @media (max-width: 768px) {
     display: flex;
     align-items: center;
@@ -73,10 +73,17 @@ export const CalendarIcon = styled.div`
   }
 `;
 
-export const FilterForm = styled.form`
+export const FilterForm = styled.div`
+  margin-bottom: 2rem;
+`;
+
+export const FilterInputGroup = styled.div`
   display: flex;
   gap: 1rem;
-  margin-bottom: 2rem;
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 export const FilterInput = styled.input`
@@ -84,18 +91,7 @@ export const FilterInput = styled.input`
   padding: 0.5rem;
   border: 1px solid #e2e8f0;
   border-radius: 0.25rem;
-`;
-
-export const FilterButton = styled.button`
-  background-color: #4f98a0;
-  color: white;
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 0.25rem;
-  cursor: pointer;
-  &:hover {
-    background-color: #3e7a80;
-  }
+  min-width: 0;
 `;
 
 export const DesktopTable = styled.div`
@@ -172,5 +168,70 @@ export const MobileCardItem = styled.div`
 export const MobileLabel = styled.span`
   font-weight: 700;
   color: #fff;
+`;
+
+export const HiddenContent = styled.div<{ isVisible: boolean }>`
+  display: ${({ isVisible }) => (isVisible ? 'block' : 'none')};
+`;
+
+export const PaginationContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+  
+  @media (max-width: 768px) {
+    width: 100%;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+  }
+`;
+
+export const PaginationNumbers = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  @media (max-width: 768px) {
+    flex: 1;
+    justify-content: center;
+  }
+`;
+
+export const PaginationButton = styled.button`
+  background-color: #4f98a0;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  margin: 0.25rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  min-width: 2.5rem;
+
+  &:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+
+  @media (max-width: 768px) {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.7rem;
+    min-width: 1.5rem;
+    margin: 0.125rem;
+  }
+`;
+
+export const PaginationText = styled.span`
+  margin: 0 1rem;
+`;
+
+export const PaginationEllipsis = styled.span`
+  margin: 0 0.25rem;
+  color: #4f98a0;
+
+  @media (max-width: 768px) {
+    margin: 0 0.1rem;
+  }
 `;
 
