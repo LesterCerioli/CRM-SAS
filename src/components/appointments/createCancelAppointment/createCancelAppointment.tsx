@@ -10,46 +10,15 @@ interface Appointment {
   doctorName: string;
 }
 
-
 const patients = [
-  "Maria Silva",
-  "João Oliveira",
-  "Pedro Costa",
-  "Sofia Martins",
-  "Lucas Ferreira",
-  "Ana Paula",
-  "Gustavo Lima",
-  "Fernanda Alves",
-  "Marcos Souza",
-  "Bruna Silva",
-  "Lucas Pereira",
-  "Jéssica Alves",
-  "Carlos Nunes",
-  "Patrícia Rocha",
-  "Fábio Duarte",
-  "Cláudia Lima",
-  "Renato Borges",
-  "Rafael Silva",
-  "Carolina Andrade",
-  "Felipe Gonçalves",
-  "Amanda Cruz",
-  "Eduardo Alves",
-  "Gabriela Souza",
-  "Daniel Santos",
-  "Bianca Oliveira",
-  "Roberto Dias",
-  "Fernanda Lima",
-  "Marcelo Nunes",
-  "Renata Carvalho",
-  "Igor Ferreira",
+  "Maria Silva", "João Oliveira", "Pedro Costa", "Sofia Martins", "Lucas Ferreira",
+  "Ana Paula", "Gustavo Lima", "Fernanda Alves", "Marcos Souza", "Bruna Silva",
+  "Lucas Pereira", "Jéssica Alves", "Carlos Nunes", "Patrícia Rocha", "Fábio Duarte",
+  "Cláudia Lima", "Renato Borges", "Rafael Silva", "Carolina Andrade", "Felipe Gonçalves"
 ];
 
 const doctors = [
-  "Dr. Carlos Santos",
-  "Dra. Ana Beatriz",
-  "Dr. Ricardo Lima",
-  "Dra. Juliana Mendes",
-  "Dr. Gabriel Santos",
+  "Dr. Carlos Santos", "Dra. Ana Beatriz", "Dr. Ricardo Lima", "Dra. Juliana Mendes", "Dr. Gabriel Santos"
 ];
 
 const generateMockAppointments = (): Appointment[] => {
@@ -89,18 +58,18 @@ const CreateCancelAppointment: React.FC = () => {
   const [dateSearch, setDateSearch] = useState("");
   const [isTableVisible, setIsTableVisible] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768); 
-  const itemsPerPage =7;
+  const [isMobile, setIsMobile] = useState(false);
+  const itemsPerPage = 20;
 
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
     };
 
+    handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-
 
   const filteredAppointments = useMemo(() => {
     return appointments.filter((appointment) => {
@@ -139,7 +108,7 @@ const CreateCancelAppointment: React.FC = () => {
   return (
     <S.Container>
       <S.Content>
-        <S.Card>
+        <S.Card style={{ flexGrow: 1 }}>
           <S.Header>
             <S.Title>Consultas Canceladas</S.Title>
             <S.IconWrapper>
@@ -170,112 +139,118 @@ const CreateCancelAppointment: React.FC = () => {
             </S.FilterInputGroup>
           </S.FilterForm>
 
-          {isTableVisible && filteredAppointments.length > 0 && (
-            <>
-              <S.DesktopTable>
-                <S.Table>
-                  <S.TableHeader>
-                    <S.TableRow>
-                      <S.TableHead>Data de Agendamento</S.TableHead>
-                      <S.TableHead>Nome do Paciente</S.TableHead>
-                      <S.TableHead>Horário</S.TableHead>
-                      <S.TableHead>Nome do Médico</S.TableHead>
-                    </S.TableRow>
-                  </S.TableHeader>
-                  <S.TableBody>
+          {isTableVisible && (
+            <S.TableContainer style={{ flexGrow: 1 }}>
+              {filteredAppointments.length > 0 ? (
+                <>
+                  <S.DesktopTable>
+                    <S.Table>
+                      <S.TableHeader>
+                        <S.TableRow>
+                          <S.TableHead>Data</S.TableHead>
+                          <S.TableHead>Paciente</S.TableHead>
+                          <S.TableHead>Horário</S.TableHead>
+                          <S.TableHead>Médico</S.TableHead>
+                        </S.TableRow>
+                      </S.TableHeader>
+                      <S.TableBody>
+                        {paginatedAppointments.map((appointment) => (
+                          <S.TableRow key={appointment.id}>
+                            <S.TableCell>{appointment.appointmentDate}</S.TableCell>
+                            <S.TableCell>{appointment.patientName}</S.TableCell>
+                            <S.TableCell>{appointment.time}</S.TableCell>
+                            <S.TableCell>{appointment.doctorName}</S.TableCell>
+                          </S.TableRow>
+                        ))}
+                      </S.TableBody>
+                    </S.Table>
+                  </S.DesktopTable>
+                  <S.MobileCards>
                     {paginatedAppointments.map((appointment) => (
-                      <S.TableRow key={appointment.id}>
-                        <S.TableCell>{appointment.appointmentDate}</S.TableCell>
-                        <S.TableCell>{appointment.patientName}</S.TableCell>
-                        <S.TableCell>{appointment.time}</S.TableCell>
-                        <S.TableCell>{appointment.doctorName}</S.TableCell>
-                      </S.TableRow>
+                      <S.MobileCard key={appointment.id}>
+                        <S.MobileCardItem>
+                          <S.MobileLabel>Data:</S.MobileLabel>
+                          <span>{appointment.appointmentDate}</span>
+                        </S.MobileCardItem>
+                        <S.MobileCardItem>
+                          <S.MobileLabel>Paciente:</S.MobileLabel>
+                          <span>{appointment.patientName}</span>
+                        </S.MobileCardItem>
+                        <S.MobileCardItem>
+                          <S.MobileLabel>Horário:</S.MobileLabel>
+                          <span>{appointment.time}</span>
+                        </S.MobileCardItem>
+                        <S.MobileCardItem>
+                          <S.MobileLabel>Médico:</S.MobileLabel>
+                          <span>{appointment.doctorName}</span>
+                        </S.MobileCardItem>
+                      </S.MobileCard>
                     ))}
-                  </S.TableBody>
-                </S.Table>
-              </S.DesktopTable>
-              <S.MobileCards>
-                {paginatedAppointments.map((appointment) => (
-                  <S.MobileCard key={appointment.id}>
-                    <S.MobileCardItem>
-                      <S.MobileLabel>Data:</S.MobileLabel>
-                      <span>{appointment.appointmentDate}</span>
-                    </S.MobileCardItem>
-                    <S.MobileCardItem>
-                      <S.MobileLabel>Paciente:</S.MobileLabel>
-                      <span>{appointment.patientName}</span>
-                    </S.MobileCardItem>
-                    <S.MobileCardItem>
-                      <S.MobileLabel>Horário:</S.MobileLabel>
-                      <span>{appointment.time}</span>
-                    </S.MobileCardItem>
-                    <S.MobileCardItem>
-                      <S.MobileLabel>Médico:</S.MobileLabel>
-                      <span>{appointment.doctorName}</span>
-                    </S.MobileCardItem>
-                  </S.MobileCard>
-                ))}
-              </S.MobileCards>
-              <S.PaginationContainer>
-                <S.PaginationButton
-                  onClick={() => handlePageChange(currentPage - 1)}
-                  disabled={currentPage === 1}
-                >
-                  &lt;
-                </S.PaginationButton>
+                  </S.MobileCards>
+                  <S.PaginationContainer>
+                    <S.PaginationButton
+                      onClick={() => handlePageChange(currentPage - 1)}
+                      disabled={currentPage === 1}
+                    >
+                      &lt;
+                    </S.PaginationButton>
 
-                <S.PaginationNumbers>
-                  {Array.from({ length: totalPages }, (_, i) => i + 1)
-                    .filter(pageNum => {
-                      if (isMobile) { 
-                        return (
-                          pageNum === 1 ||
-                          pageNum === totalPages ||
-                          (pageNum >= currentPage - 1 && pageNum <= currentPage + 1)
-                        );
-                      }
-                      return (
-                        pageNum === 1 ||
-                        pageNum === totalPages ||
-                        (pageNum >= currentPage - 3 && pageNum <= currentPage + 3)
-                      );
-                    })
-                    .map((page, index, array) => {
-                      if (index > 0 && array[index - 1] !== page - 1) {
-                        return (
-                          <React.Fragment key={`ellipsis-${page}`}>
-                            <S.PaginationEllipsis>...</S.PaginationEllipsis>
-                            {page !== totalPages && (
-                              <S.PaginationButton
-                                onClick={() => handlePageChange(page)}
-                                disabled={currentPage === page}
-                              >
-                                {page}
-                              </S.PaginationButton>
-                            )}
-                          </React.Fragment>
-                        );
-                      }
-                      return (
-                        <S.PaginationButton
-                          key={page}
-                          onClick={() => handlePageChange(page)}
-                          disabled={currentPage === page}
-                        >
-                          {page}
-                        </S.PaginationButton>
-                      );
-                    })}
-                </S.PaginationNumbers>
+                    <S.PaginationNumbers>
+                      {Array.from({ length: totalPages }, (_, i) => i + 1)
+                        .filter(pageNum => {
+                          if (isMobile) { 
+                            return (
+                              pageNum === 1 ||
+                              pageNum === totalPages ||
+                              (pageNum >= currentPage - 1 && pageNum <= currentPage + 1)
+                            );
+                          }
+                          return (
+                            pageNum === 1 ||
+                            pageNum === totalPages ||
+                            (pageNum >= currentPage - 2 && pageNum <= currentPage + 2)
+                          );
+                        })
+                        .map((page, index, array) => {
+                          if (index > 0 && array[index - 1] !== page - 1) {
+                            return (
+                              <React.Fragment key={`ellipsis-${page}`}>
+                                <S.PaginationEllipsis>...</S.PaginationEllipsis>
+                                {page !== totalPages && (
+                                  <S.PaginationButton
+                                    onClick={() => handlePageChange(page)}
+                                    disabled={currentPage === page}
+                                  >
+                                    {page}
+                                  </S.PaginationButton>
+                                )}
+                              </React.Fragment>
+                            );
+                          }
+                          return (
+                            <S.PaginationButton
+                              key={page}
+                              onClick={() => handlePageChange(page)}
+                              disabled={currentPage === page}
+                            >
+                              {page}
+                            </S.PaginationButton>
+                          );
+                        })}
+                    </S.PaginationNumbers>
 
-                <S.PaginationButton
-                  onClick={() => handlePageChange(currentPage + 1)}
-                  disabled={currentPage === totalPages}
-                >
-                  &gt;
-                </S.PaginationButton>
-              </S.PaginationContainer>
-            </>
+                    <S.PaginationButton
+                      onClick={() => handlePageChange(currentPage + 1)}
+                      disabled={currentPage === totalPages}
+                    >
+                      &gt;
+                    </S.PaginationButton>
+                  </S.PaginationContainer>
+                </>
+              ) : (
+                <S.NoResultsMessage>Nenhum resultado encontrado.</S.NoResultsMessage>
+              )}
+            </S.TableContainer>
           )}
         </S.Card>
       </S.Content>
