@@ -1,4 +1,4 @@
-import { ImageContainer } from "@/components/crmServices/styles";
+
 import * as S from "./styles";
 
 interface ImageProvider{
