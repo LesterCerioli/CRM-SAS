@@ -1,6 +1,10 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
+width: 100%;
+height: auto;
+background-color: #4f98a0;
+
   button {
     text-transform: uppercase;
     padding: 12px 25px;
