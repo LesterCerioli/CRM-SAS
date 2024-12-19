@@ -1,36 +1,55 @@
-# File: azure-pipelines.yml
 trigger:
-  branches:
-    include:
-      - main
+- '*.*'
 
 pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  nodeVersion: '20.x'
+  system.debug: true  
 
 steps:
-- task: NodeTool@0
+# Define the Node.js version to use
+- task: UseNode@1
   inputs:
-    versionSpec: '$(nodeVersion)'
-  displayName: 'Install Node.js'
+    version: '20.x'  
+  displayName: 'Set Node.js version'
 
+# Clean npm cache
+- script: npm cache clean --force
+  displayName: 'Clean npm cache'
+
+# Remove node_modules and package-lock.json to ensure a clean slate
 - script: |
+    echo "Removing node_modules and package-lock.json"
+    rm -rf node_modules package-lock.json
+  displayName: 'Remove node_modules and lock file'
+
+# Install dependencies
+- script: |
+    echo "Installing dependencies"
     npm install
-    npm run build --production
-  displayName: 'Install dependencies and build'
+  displayName: 'Install dependencies'
 
-- task: PublishPipelineArtifact@1
+# Build the project
+- script: |
+    echo "Building the project"
+    npm run build
+  displayName: 'Build the project'
+
+# Verify build output before publishing
+- script: |
+    echo "Verifying build output"
+    if [ ! -d "out" ]; then
+      echo "Error: 'out' directory not found. Check your build step."
+      exit 1
+    fi
+    ls -al out
+  displayName: 'Verify build output'
+
+# Publish build artifacts
+- task: PublishBuildArtifacts@1
   inputs:
-    targetPath: '$(Build.ArtifactStagingDirectory)'
-    artifact: 'nextjs-build'
+    PathtoPublish: 'out'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
   displayName: 'Publish build artifacts'
-
-# Optional: Deploy to Azure App Service
-# - task: AzureWebApp@1
-#   inputs:
-#     azureSubscription: '<Your-Azure-Subscription>'
-#     appName: '<Your-App-Service-Name>'
-#     package: '$(Build.ArtifactStagingDirectory)'
-#   displayName: 'Deploy to Azure Web App'
