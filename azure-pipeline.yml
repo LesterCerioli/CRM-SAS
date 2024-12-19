@@ -1,0 +1,36 @@
+# File: azure-pipelines.yml
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  nodeVersion: '20.x'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '$(nodeVersion)'
+  displayName: 'Install Node.js'
+
+- script: |
+    npm install
+    npm run build --production
+  displayName: 'Install dependencies and build'
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Build.ArtifactStagingDirectory)'
+    artifact: 'nextjs-build'
+  displayName: 'Publish build artifacts'
+
+# Optional: Deploy to Azure App Service
+# - task: AzureWebApp@1
+#   inputs:
+#     azureSubscription: '<Your-Azure-Subscription>'
+#     appName: '<Your-App-Service-Name>'
+#     package: '$(Build.ArtifactStagingDirectory)'
+#   displayName: 'Deploy to Azure Web App'
