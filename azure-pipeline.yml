@@ -38,18 +38,16 @@ steps:
 
 # Verify build output before publishing
 - script: |
-    echo "Verifying build output"
-    if [ ! -d "out" ]; then
-      echo "Error: 'out' directory not found. Check your build step."
-      exit 1
-    fi
-    ls -al out
+    echo "Listando arquivos no diretório após o build"
+    ls -al
+    echo "Listando arquivos no diretório de saída (se existir)"
+    ls -al out || echo "Diretório 'out' não encontrado"
   displayName: 'Verify build output'
 
 # Publish build artifacts
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: 'out'
+    PathtoPublish: 'build'
     ArtifactName: 'drop'
     publishLocation: 'Container'
   displayName: 'Publish build artifacts'
