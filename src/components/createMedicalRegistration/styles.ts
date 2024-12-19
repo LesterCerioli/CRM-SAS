@@ -49,6 +49,7 @@ export const Label = styled.label`
   color: #4f98a0;
   font-weight: 900;
   font-size: 16px;
+ 
 
   @media (max-width: 768px) {
     font-size: 14px;
@@ -66,37 +67,38 @@ export const Input = styled.input`
   cursor: pointer;
 
   &::placeholder {
-    color: rgba(255, 255, 255, 0.7);
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: #4f98a0;
+    box-shadow: 0 0 0 2px rgba(79, 152, 160, 0.3);
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
   }
 
   &[type="date"] {
     appearance: none;
     -webkit-appearance: none;
-    position: relative;
     color: #fff;
     font-family: inherit;
     font-size: 1rem;
-    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.1);
+
     
     &::-webkit-calendar-picker-indicator {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      width: auto;
-      height: auto;
-      color: transparent;
-      background: transparent;
+      background-color: transparent;
       cursor: pointer;
-    }
-
-    &::-webkit-datetime-edit {
-      color: #fff;
+      opacity: 0.8;
+      filter: invert(1);
     }
 
     &::-webkit-datetime-edit-fields-wrapper {
-      padding: 0;
+      color: #fff;
     }
 
     &::-webkit-datetime-edit-text {
@@ -109,27 +111,6 @@ export const Input = styled.input`
     &::-webkit-datetime-edit-year-field {
       color: #fff;
     }
-
-    &::-webkit-inner-spin-button {
-      display: none;
-    }
-
-    &::-webkit-calendar-picker-indicator {
-      opacity: 1;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'%3E%3C/rect%3E%3Cline x1='16' y1='2' x2='16' y2='6'%3E%3C/line%3E%3Cline x1='8' y1='2' x2='8' y2='6'%3E%3C/line%3E%3Cline x1='3' y1='10' x2='21' y2='10'%3E%3C/line%3E%3C/svg%3E");
-      background-position: right 8px center;
-      background-repeat: no-repeat;
-      background-size: 20px;
-      width: 100%;
-      height: 100%;
-      cursor: pointer;
-    }
-  }
-
-  &:focus {
-    outline: none;
-    border-color: #4f98a0;
-    box-shadow: 0 0 0 2px rgba(79, 152, 160, 0.3);
   }
 
   @media (max-width: 768px) {
@@ -158,5 +139,13 @@ export const SubmitButton = styled.button`
     padding: 10px 16px;
     font-size: 0.9rem;
   }
+`;
+
+export const Message = styled.p`
+  grid-column: 1 / -1;
+  color: #4f98a0;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 10px;
 `;
 

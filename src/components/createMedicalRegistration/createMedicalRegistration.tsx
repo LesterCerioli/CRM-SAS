@@ -16,6 +16,8 @@ const CreateMedicalRegistration: React.FC = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
+  const [message, setMessage] = useState("");
+  const [showMessage, setShowMessage] = useState(false);
 
   const fetchDoctorData = useCallback(async () => {
     setIsLoading(true);
@@ -28,12 +30,9 @@ const CreateMedicalRegistration: React.FC = () => {
           ...data
         }));
         setIsDisabled(true);
-      } else {
-        alert('Error fetching doctor data');
       }
     } catch (error) {
-      console.error('Error:', error);
-      alert('Error fetching doctor data');
+      // Error handling without showing a message
     } finally {
       setIsLoading(false);
     }
@@ -53,9 +52,45 @@ const CreateMedicalRegistration: React.FC = () => {
     }));
   };
 
+  const validateCPF = (cpf: string) => {
+    const cpfRegex = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/;
+    return cpfRegex.test(cpf);
+  };
+
+  const validateIdentity = (identity: string) => {
+    const identityRegex = /^\d{2}\.\d{3}\.\d{3}-\d{1}$/;
+    return identityRegex.test(identity);
+  };
+
+  const validateCRM = (crm: string) => {
+    return crm.length === 6;
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
+    setMessage("");
+    setShowMessage(true);
+
+
+    if (!validateCPF(formData.cpf)) {
+      setMessage("CPF inválido. Use o formato 000.000.000-00");
+      setIsLoading(false);
+      return;
+    }
+
+    if (!validateIdentity(formData.identity)) {
+      setMessage("Identidade inválida. Use o formato 00.000.000-0");
+      setIsLoading(false);
+      return;
+    }
+
+    if (!validateCRM(formData.crm)) {
+      setMessage("CRM inválido. Deve conter 6 dígitos.");
+      setIsLoading(false);
+      return;
+    }
+
     try {
       const response = await fetch('/api/register-doctor', {
         method: 'POST',
@@ -64,8 +99,10 @@ const CreateMedicalRegistration: React.FC = () => {
         },
         body: JSON.stringify(formData),
       });
+
       if (response.ok) {
-        alert('Doctor registered successfully!');
+        const result = await response.json();
+        setMessage('Enviado com sucesso');
         setFormData({
           fullName: "",
           phone: "",
@@ -77,13 +114,14 @@ const CreateMedicalRegistration: React.FC = () => {
           birthDate: "",
         });
         setIsDisabled(false);
+        console.log('API Response:', result);
       } else {
         const errorData = await response.json();
-        alert(`Error registering doctor: ${errorData.message}`);
+        setMessage(`Erro ao registrar médico: ${errorData.message}`);
       }
     } catch (error) {
-      console.error('Error:', error);
-      alert('Error registering doctor');
+      setMessage('Erro ao registrar médico');
+      console.error('API Error:', error);
     } finally {
       setIsLoading(false);
     }
@@ -127,6 +165,7 @@ const CreateMedicalRegistration: React.FC = () => {
             onChange={handleChange}
             required
             maxLength={6}
+            disabled={isDisabled}
           />
         </S.InputGroup>
         <S.InputGroup>
@@ -163,6 +202,7 @@ const CreateMedicalRegistration: React.FC = () => {
             onChange={handleChange}
             required
             disabled={isDisabled}
+            placeholder="00.000.000-0"
           />
         </S.InputGroup>
         <S.InputGroup>
@@ -175,6 +215,7 @@ const CreateMedicalRegistration: React.FC = () => {
             onChange={handleChange}
             required
             disabled={isDisabled}
+            placeholder="000.000.000-00"
           />
         </S.InputGroup>
         <S.InputGroup>
@@ -189,6 +230,7 @@ const CreateMedicalRegistration: React.FC = () => {
             disabled={isDisabled}
           />
         </S.InputGroup>
+        {showMessage && message && <S.Message>{message}</S.Message>}
         <S.SubmitButton type="submit" disabled={isLoading}>
           {isLoading ? 'Carregando...' : 'Enviar'}
         </S.SubmitButton>
