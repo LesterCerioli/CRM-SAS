@@ -15,14 +15,10 @@ steps:
   displayName: 'Set Node.js version'
 
 # Clean npm cache
-- script: npm cache clean --force
-  displayName: 'Clean npm cache'
-
-# Remove node_modules and package-lock.json to ensure a clean slate
 - script: |
-    echo "Removing node_modules and package-lock.json"
-    rm -rf node_modules package-lock.json
-  displayName: 'Remove node_modules and lock file'
+    echo "Cleaning npm cache"
+    npm cache clean --force
+  displayName: 'Clean npm cache'
 
 # Install dependencies
 - script: |
@@ -30,24 +26,26 @@ steps:
     npm install
   displayName: 'Install dependencies'
 
-# Build the project
+# Build the project with Next.js
 - script: |
     echo "Building the project"
     npm run build
   displayName: 'Build the project'
 
-# Verify build output before publishing
+# Verify .next directory before publishing
 - script: |
-    echo "Listando arquivos no diretório após o build"
-    ls -al
-    echo "Listando arquivos no diretório de saída (se existir)"
-    ls -al out || echo "Diretório 'out' não encontrado"
+    echo "Verifying .next directory"
+    if [ ! -d ".next" ]; then
+      echo "Error: .next directory not found. Build might have failed."
+      exit 1
+    fi
+    ls -al .next
   displayName: 'Verify build output'
 
 # Publish build artifacts
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: 'build'
+    PathtoPublish: '.next'
     ArtifactName: 'drop'
     publishLocation: 'Container'
   displayName: 'Publish build artifacts'
