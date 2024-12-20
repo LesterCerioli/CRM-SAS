@@ -1,5 +1,4 @@
 {
-  
   "name": "medical-sas-frontend",
   "version": "0.1.0",
   "private": true,
@@ -38,6 +37,7 @@
     "react-modal": "^3.16.1",
     "react-quill": "^2.0.0",
     "react-responsive-carousel": "^3.2.23",
+    "react-scripts": "^5.0.1",
     "react-signature-canvas": "^1.0.6",
     "react-step-progress-bar": "^1.0.3",
     "styled-components": "^6.1.13",
@@ -46,6 +46,11 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^6.6.2",
     "@testing-library/react": "^16.0.1",
+    "@types/bonjour": "^3.5.13",
+    "@types/crypto-js": "^4.2.2",
+    "@types/eslint": "^9.6.1",
+    "@types/eslint-scope": "^3.7.7",
+    "@types/estree": "^1.0.6",
     "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "22.8.6",
     "@types/pdf-parse": "^1.1.4",
