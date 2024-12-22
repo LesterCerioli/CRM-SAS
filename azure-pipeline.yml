@@ -2,7 +2,7 @@ trigger:
 - '*.*'
 
 pool:
-  vmImage: 'ubuntu-latest'
+  name: 'sh001'
 
 variables:
   system.debug: true  
