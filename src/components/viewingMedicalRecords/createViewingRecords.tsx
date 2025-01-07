@@ -1,287 +1,320 @@
-"use client";
-import React, { useState, useEffect } from "react";
+"use client"
+
+import React, { useState, useEffect, useMemo } from "react";
 import * as S from "./styles";
 
-interface Prontuario {
-  id: string;
-  nomePaciente: string;
-  dataNascimento: string;
-  nomeMedico: string;
-  diagnostico: string;
-  planoTratamento: string;
-  notas: string;
-  dataCriacao: string;
-  dataAtualizacao: string;
-  status: string;
+interface MedicalRecord {
+  id: number;
+  patientName: string;
+  birthDate: string;
+  doctorName: string;
+  diagnosis: string;
+  treatmentPlan: string;
+  notes: string;
+  creationDate: string;
+  updateDate: string;
 }
 
-// Mock API functions
-const fetchProntuarios = async (): Promise<Prontuario[]> => {
-  // Simulating API delay
-  await new Promise(resolve => setTimeout(resolve, 1000));
-  return [
-    {
-      id: "1",
-      nomePaciente: "João Silva",
-      dataNascimento: "1990-05-15",
-      nomeMedico: "Dr. Carlos Santos",
-      diagnostico: "Hipertensão",
-      planoTratamento: "Medicação e mudança de dieta",
-      notas: "Paciente apresenta melhora",
-      dataCriacao: "2023-12-01",
-      dataAtualizacao: "2023-12-15",
-      status: "Em tratamento",
-    },
-    {
-      id: "2",
-      nomePaciente: "Maria Oliveira",
-      dataNascimento: "1985-08-22",
-      nomeMedico: "Dra. Ana Paula",
-      diagnostico: "Diabetes Tipo 2",
-      planoTratamento: "Insulina e dieta controlada",
-      notas: "Paciente necessita de acompanhamento regular",
-      dataCriacao: "2023-11-10",
-      dataAtualizacao: "2023-12-10",
-      status: "Em observação",
-    },
-  ];
+const patients = [
+  "Maria Silva", "João Oliveira", "Pedro Costa", "Sofia Martins", "Lucas Ferreira",
+  "Ana Paula", "Gustavo Lima", "Fernanda Alves", "Marcos Souza", "Bruna Silva",
+  "Lucas Pereira", "Jéssica Alves", "Carlos Nunes", "Patrícia Rocha", "Fábio Duarte",
+  "Cláudia Lima", "Renato Borges", "Rafael Silva", "Carolina Andrade", "Felipe Gonçalves"
+];
+
+const doctors = [
+  "Dr. Carlos Santos", "Dra. Ana Beatriz", "Dr. Ricardo Lima", "Dra. Juliana Mendes", "Dr. Gabriel Santos"
+];
+
+const diagnoses = [
+  "Hipertensão", "Diabetes Tipo 2", "Asma", "Artrite", "Depressão",
+  "Ansiedade", "Obesidade", "Enxaqueca", "Hipotireoidismo", "Gastrite"
+];
+
+const generateMockMedicalRecords = (): MedicalRecord[] => {
+  const records: MedicalRecord[] = [];
+
+  for (let i = 1; i <= 1200; i++) {
+    const randomPatient = patients[Math.floor(Math.random() * patients.length)];
+    const randomDoctor = doctors[Math.floor(Math.random() * doctors.length)];
+    const randomDiagnosis = diagnoses[Math.floor(Math.random() * diagnoses.length)];
+
+    const birthDate = new Date(
+      1950 + Math.floor(Math.random() * 50),
+      Math.floor(Math.random() * 12),
+      Math.floor(Math.random() * 28) + 1
+    );
+
+    const creationDate = new Date(
+      2020 + Math.floor(Math.random() * 4),
+      Math.floor(Math.random() * 12),
+      Math.floor(Math.random() * 28) + 1
+    );
+
+    const updateDate = new Date(creationDate);
+    updateDate.setDate(updateDate.getDate() + Math.floor(Math.random() * 30));
+
+    records.push({
+      id: i,
+      patientName: randomPatient,
+      birthDate: birthDate.toLocaleDateString("pt-BR"),
+      doctorName: randomDoctor,
+      diagnosis: randomDiagnosis,
+      treatmentPlan: `Plano de tratamento para ${randomDiagnosis}`,
+      notes: `Observações sobre o paciente com ${randomDiagnosis}`,
+      creationDate: creationDate.toLocaleDateString("pt-BR"),
+      updateDate: updateDate.toLocaleDateString("pt-BR"),
+    });
+  }
+
+  return records;
 };
 
-const searchPacientes = async (termo: string): Promise<{ nome: string; dataNascimento: string }[]> => {
-  // Simulating API delay
-  await new Promise(resolve => setTimeout(resolve, 500));
-  const pacientes = [
-    { nome: "João Silva", dataNascimento: "1990-05-15" },
-    { nome: "Maria Oliveira", dataNascimento: "1985-08-22" },
-  ];
-  return pacientes.filter(p => p.nome.toLowerCase().includes(termo.toLowerCase()));
-};
+const medicalRecords = generateMockMedicalRecords();
 
-const searchMedicos = async (termo: string): Promise<string[]> => {
-  // Simulating API delay
-  await new Promise(resolve => setTimeout(resolve, 500));
-  const medicos = ["Dr. Carlos Santos", "Dra. Ana Paula", "Dr. Roberto Martins"];
-  return medicos.filter(m => m.toLowerCase().includes(termo.toLowerCase()));
-};
-
-const ProntuarioMedico: React.FC = () => {
-  const [prontuarios, setProntuarios] = useState<Prontuario[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [orderBy, setOrderBy] = useState<keyof Prontuario>("dataCriacao");
-  const [nomePaciente, setNomePaciente] = useState("");
-  const [dataNascimento, setDataNascimento] = useState("");
-  const [nomeMedico, setNomeMedico] = useState("");
-  const [diagnostico, setDiagnostico] = useState("");
-  const [planoTratamento, setPlanoTratamento] = useState("");
-  const [notas, setNotas] = useState("");
-  const [isAuthenticated, setIsAuthenticated] = useState(true); // Simulating authenticated state
+const MedicalRecords: React.FC = () => {
+  const [patientSearch, setPatientSearch] = useState("");
+  const [doctorSearch, setDoctorSearch] = useState("");
+  const [dateSearch, setDateSearch] = useState("");
+  const [quickSearch, setQuickSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [selectedRecord, setSelectedRecord] = useState<MedicalRecord | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
+  const itemsPerPage = 20;
 
   useEffect(() => {
-    const loadProntuarios = async () => {
-      try {
-        setLoading(true);
-        const data = await fetchProntuarios();
-        setProntuarios(data);
-      } catch (err) {
-        console.error("Erro ao carregar prontuários:", err);
-        setError("Falha ao carregar os prontuários. Por favor, tente novamente.");
-      } finally {
-        setLoading(false);
-      }
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
     };
 
-    if (isAuthenticated) {
-      loadProntuarios();
-    }
-  }, [isAuthenticated]);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
-  const handlePacienteChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const valor = e.target.value;
-    setNomePaciente(valor);
+  const filteredRecords = useMemo(() => {
+    if (!isSearching && !quickSearch) return [];
 
-    if (valor.length >= 3) {
-      try {
-        const pacientes = await searchPacientes(valor);
-        if (pacientes.length > 0) {
-          setNomePaciente(pacientes[0].nome);
-          setDataNascimento(pacientes[0].dataNascimento);
-        }
-      } catch (err) {
-        console.error("Erro ao buscar pacientes:", err);
-      }
-    }
+    return medicalRecords.filter((record) => {
+      const matchQuickSearch = quickSearch
+        ? Object.values(record).some(value => 
+            value.toString().toLowerCase().includes(quickSearch.toLowerCase())
+          )
+        : true;
+      const matchPatient = record.patientName
+        .toLowerCase()
+        .includes(patientSearch.toLowerCase());
+      const matchDoctor = record.doctorName
+        .toLowerCase()
+        .includes(doctorSearch.toLowerCase());
+      const matchDate = record.creationDate
+        .toLowerCase()
+        .includes(dateSearch.toLowerCase());
+
+      return matchQuickSearch && matchPatient && matchDoctor && matchDate;
+    });
+  }, [patientSearch, doctorSearch, dateSearch, quickSearch, isSearching]);
+
+  const totalPages = Math.ceil(filteredRecords.length / itemsPerPage);
+
+  const paginatedRecords = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return filteredRecords.slice(startIndex, startIndex + itemsPerPage);
+  }, [filteredRecords, currentPage]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+    setIsSearching(patientSearch !== "" || doctorSearch !== "" || dateSearch !== "" || quickSearch !== "");
+  }, [patientSearch, doctorSearch, dateSearch, quickSearch]);
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
   };
 
-  const handleMedicoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const valor = e.target.value;
-    setNomeMedico(valor);
-
-    if (valor.length >= 2) {
-      try {
-        const medicos = await searchMedicos(valor);
-        if (medicos.length > 0) {
-          setNomeMedico(medicos[0]);
-        }
-      } catch (err) {
-        console.error("Erro ao buscar médicos:", err);
-      }
-    }
+  const handleRecordSelect = (record: MedicalRecord) => {
+    setSelectedRecord(record);
   };
-
-  const prontuariosFiltrados = prontuarios
-    .filter(prontuario => 
-      prontuario.nomePaciente.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      prontuario.nomeMedico.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      prontuario.diagnostico.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-    .sort((a, b) => a[orderBy].localeCompare(b[orderBy]));
-
-  if (!isAuthenticated) {
-    return <S.ErrorMessage>Você precisa estar autenticado para acessar esta página.</S.ErrorMessage>;
-  }
-
-  if (loading) {
-    return (
-      <S.LoadingContainer>
-        <S.Spinner />
-        <p>Carregando prontuários...</p>
-      </S.LoadingContainer>
-    );
-  }
-
-  if (error) {
-    return <S.ErrorMessage>{error}</S.ErrorMessage>;
-  }
 
   return (
     <S.Container>
-      <S.Header>
-        <h1>Prontuários Médicos</h1>
-        <S.Button>
-          <span>+</span>
-          <span className="sr-only">Adicionar novo prontuário</span>
-        </S.Button>
-      </S.Header>
+      <S.Content>
+        <S.Card>
+          <S.Header>
+            <S.Title>Prontuários Médicos</S.Title>
+            <S.IconWrapper>
+              <span className="cross-icon"></span>
+            </S.IconWrapper>
+          </S.Header>
 
-      <S.SearchSection>
-        <div className="flex gap-2 flex-wrap">
-          <S.Input
-            type="text"
-            placeholder="Pesquisar prontuários..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            aria-label="Pesquisar prontuários"
-          />
-          <S.Select
-            value={orderBy}
-            onChange={(e) => setOrderBy(e.target.value as keyof Prontuario)}
-          >
-            <option value="dataCriacao">Data de Criação</option>
-            <option value="nomePaciente">Nome do Paciente</option>
-            <option value="nomeMedico">Nome do Médico</option>
-            <option value="status">Status</option>
-          </S.Select>
-        </div>
-      </S.SearchSection>
+          <S.QuickSearchBar>
+            <S.QuickSearchInput
+              type="text"
+              placeholder="Pesquisa rápida (nome, médico, diagnóstico, data...)"
+              value={quickSearch}
+              onChange={(e) => setQuickSearch(e.target.value)}
+            />
+          </S.QuickSearchBar>
 
-      <S.Form onSubmit={(e) => e.preventDefault()}>
-        <S.FormGroup>
-          <label htmlFor="nomePaciente">Nome do Paciente</label>
-          <S.Input
-            id="nomePaciente"
-            type="text"
-            value={nomePaciente}
-            onChange={handlePacienteChange}
-            placeholder="Digite o nome do paciente"
-          />
-        </S.FormGroup>
+          <S.FilterForm>
+            <S.FilterInputGroup>
+              <S.FilterInput
+                type="text"
+                placeholder="Nome do Paciente"
+                value={patientSearch}
+                onChange={(e) => setPatientSearch(e.target.value)}
+              />
+              <S.FilterInput
+                type="text"
+                placeholder="Nome do Médico"
+                value={doctorSearch}
+                onChange={(e) => setDoctorSearch(e.target.value)}
+              />
+              <S.FilterInput
+                type="text"
+                placeholder="Data de Criação (dd/mm/aaaa)"
+                value={dateSearch}
+                onChange={(e) => setDateSearch(e.target.value)}
+              />
+            </S.FilterInputGroup>
+          </S.FilterForm>
 
-        <S.FormGroup>
-          <label htmlFor="dataNascimento">Data de Nascimento</label>
-          <S.Input
-            id="dataNascimento"
-            type="date"
-            value={dataNascimento}
-            readOnly
-            className="bg-gray-50"
-          />
-        </S.FormGroup>
+          {(isSearching || quickSearch) && (
+            <S.TableContainer>
+              {filteredRecords.length > 0 ? (
+                <>
+                  <S.DesktopTable>
+                    <S.Table>
+                      <S.TableHeader>
+                        <S.TableRow>
+                          <S.TableHead>Paciente</S.TableHead>
+                          <S.TableHead>Data de Nascimento</S.TableHead>
+                          <S.TableHead>Médico</S.TableHead>
+                          <S.TableHead>Diagnóstico</S.TableHead>
+                          <S.TableHead>Data de Criação</S.TableHead>
+                          <S.TableHead>Notas/Observações</S.TableHead>
+                        </S.TableRow>
+                      </S.TableHeader>
+                      <S.TableBody>
+                        {paginatedRecords.map((record) => (
+                          <S.TableRow
+                            key={record.id}
+                            onClick={() => handleRecordSelect(record)}
+                          >
+                            <S.TableCell>{record.patientName}</S.TableCell>
+                            <S.TableCell>{record.birthDate}</S.TableCell>
+                            <S.TableCell>{record.doctorName}</S.TableCell>
+                            <S.TableCell>{record.diagnosis}</S.TableCell>
+                            <S.TableCell>{record.creationDate}</S.TableCell>
+                            <S.TableCell>{record.notes}</S.TableCell>
+                          </S.TableRow>
+                        ))}
+                      </S.TableBody>
+                    </S.Table>
+                  </S.DesktopTable>
+                  <S.MobileCards>
+                    {paginatedRecords.map((record) => (
+                      <S.MobileCard
+                        key={record.id}
+                        onClick={() => handleRecordSelect(record)}
+                      >
+                        <S.MobileCardItem>
+                          <S.MobileLabel>Paciente:</S.MobileLabel>
+                          <span>{record.patientName}</span>
+                        </S.MobileCardItem>
+                        <S.MobileCardItem>
+                          <S.MobileLabel>Data de Nascimento:</S.MobileLabel>
+                          <span>{record.birthDate}</span>
+                        </S.MobileCardItem>
+                        <S.MobileCardItem>
+                          <S.MobileLabel>Médico:</S.MobileLabel>
+                          <span>{record.doctorName}</span>
+                        </S.MobileCardItem>
+                        <S.MobileCardItem>
+                          <S.MobileLabel>Diagnóstico:</S.MobileLabel>
+                          <span>{record.diagnosis}</span>
+                        </S.MobileCardItem>
+                        <S.MobileCardItem>
+                          <S.MobileLabel>Data de Criação:</S.MobileLabel>
+                          <span>{record.creationDate}</span>
+                        </S.MobileCardItem>
+                        <S.MobileCardItem>
+                          <S.MobileLabel>Notas/Observações:</S.MobileLabel>
+                          <span>{record.notes}</span>
+                        </S.MobileCardItem>
+                      </S.MobileCard>
+                    ))}
+                  </S.MobileCards>
+                  <S.PaginationContainer>
+                    <S.PaginationButton
+                      onClick={() => handlePageChange(currentPage - 1)}
+                      disabled={currentPage === 1}
+                    >
+                      &lt;
+                    </S.PaginationButton>
 
-        <S.FormGroup>
-          <label htmlFor="nomeMedico">Nome do Médico</label>
-          <S.Input
-            id="nomeMedico"
-            type="text"
-            value={nomeMedico}
-            onChange={handleMedicoChange}
-            placeholder="Digite o nome do médico"
-          />
-        </S.FormGroup>
+                    <S.PaginationNumbers>
+                      {Array.from({ length: totalPages }, (_, i) => i + 1)
+                        .filter(pageNum => {
+                          if (isMobile) {
+                            return (
+                              pageNum === 1 ||
+                              pageNum === totalPages ||
+                              (pageNum >= currentPage - 1 && pageNum <= currentPage + 1)
+                            );
+                          }
+                          return (
+                            pageNum === 1 ||
+                            pageNum === totalPages ||
+                            (pageNum >= currentPage - 2 && pageNum <= currentPage + 2)
+                          );
+                        })
+                        .map((page, index, array) => {
+                          if (index > 0 && array[index - 1] !== page - 1) {
+                            return (
+                              <React.Fragment key={`ellipsis-${page}`}>
+                                <S.PaginationEllipsis>...</S.PaginationEllipsis>
+                                {page !== totalPages && (
+                                  <S.PaginationButton
+                                    onClick={() => handlePageChange(page)}
+                                    disabled={currentPage === page}
+                                  >
+                                    {page}
+                                  </S.PaginationButton>
+                                )}
+                              </React.Fragment>
+                            );
+                          }
+                          return (
+                            <S.PaginationButton
+                              key={page}
+                              onClick={() => handlePageChange(page)}
+                              disabled={currentPage === page}
+                            >
+                              {page}
+                            </S.PaginationButton>
+                          );
+                        })}
+                    </S.PaginationNumbers>
 
-        <S.FormGroup>
-          <label htmlFor="diagnostico">Diagnóstico</label>
-          <S.Input
-            id="diagnostico"
-            type="text"
-            value={diagnostico}
-            onChange={(e) => setDiagnostico(e.target.value)}
-            placeholder="Digite o diagnóstico"
-          />
-        </S.FormGroup>
-
-        <S.FormGroup>
-          <label htmlFor="planoTratamento">Plano de Tratamento</label>
-          <S.Input
-            id="planoTratamento"
-            type="text"
-            value={planoTratamento}
-            onChange={(e) => setPlanoTratamento(e.target.value)}
-            placeholder="Digite o plano de tratamento"
-          />
-        </S.FormGroup>
-
-        <S.FormGroup>
-          <label htmlFor="notas">Notas/Observações</label>
-          <S.Textarea
-            id="notas"
-            value={notas}
-            onChange={(e) => setNotas(e.target.value)}
-            placeholder="Digite as observações"
-          />
-        </S.FormGroup>
-      </S.Form>
-
-      <S.TableContainer>
-        <table>
-          <thead>
-            <tr>
-              <th>Nome do Paciente</th>
-              <th>Data de Nascimento</th>
-              <th>Médico</th>
-              <th>Diagnóstico</th>
-              <th>Status</th>
-              <th>Última Atualização</th>
-            </tr>
-          </thead>
-          <tbody>
-            {prontuariosFiltrados.map((prontuario) => (
-              <tr key={prontuario.id}>
-                <td>{prontuario.nomePaciente}</td>
-                <td>{new Date(prontuario.dataNascimento).toLocaleDateString()}</td>
-                <td>{prontuario.nomeMedico}</td>
-                <td>{prontuario.diagnostico}</td>
-                <td>{prontuario.status}</td>
-                <td>{new Date(prontuario.dataAtualizacao).toLocaleDateString()}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </S.TableContainer>
+                    <S.PaginationButton
+                      onClick={() => handlePageChange(currentPage + 1)}
+                      disabled={currentPage === totalPages}
+                    >
+                      &gt;
+                    </S.PaginationButton>
+                  </S.PaginationContainer>
+                </>
+              ) : (
+                <S.NoResultsMessage>Nenhum resultado encontrado.</S.NoResultsMessage>
+              )}
+            </S.TableContainer>
+          )}
+        </S.Card>
+      </S.Content>
     </S.Container>
   );
 };
 
-export default ProntuarioMedico;
+export default MedicalRecords;
 

@@ -2,7 +2,8 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   background-color: #4f98a0;
-  padding: 25rem;
+  padding-top: 5rem;
+  padding-bottom: 5rem;
   
   
   button {
