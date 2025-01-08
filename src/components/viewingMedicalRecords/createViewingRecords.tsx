@@ -150,7 +150,7 @@ const MedicalRecords: React.FC = () => {
           <S.QuickSearchBar>
             <S.QuickSearchInput
               type="text"
-              placeholder="Pesquisa rápida (nome, médico, diagnóstico, data...)"
+              placeholder="CPF do Paciente"
               value={quickSearch}
               onChange={(e) => setQuickSearch(e.target.value)}
             />
@@ -164,18 +164,7 @@ const MedicalRecords: React.FC = () => {
                 value={patientSearch}
                 onChange={(e) => setPatientSearch(e.target.value)}
               />
-              <S.FilterInput
-                type="text"
-                placeholder="Nome do Médico"
-                value={doctorSearch}
-                onChange={(e) => setDoctorSearch(e.target.value)}
-              />
-              <S.FilterInput
-                type="text"
-                placeholder="Data de Criação (dd/mm/aaaa)"
-                value={dateSearch}
-                onChange={(e) => setDateSearch(e.target.value)}
-              />
+             
             </S.FilterInputGroup>
           </S.FilterForm>
 
