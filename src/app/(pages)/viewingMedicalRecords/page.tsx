@@ -4,6 +4,7 @@ import * as S from "./styles";
 import CreateViewingRecords from "@/components/viewingMedicalRecords/createViewingRecords";
 
 
+
 const ViewingMedicalRecords: React.FC = () => {
   return (
    <S.Container>

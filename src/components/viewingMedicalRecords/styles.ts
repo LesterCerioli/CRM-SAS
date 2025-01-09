@@ -1,118 +1,57 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  max-width: 100%;
-  min-height: 100vh;
-  margin: 0 auto;
-  padding: 10px;
-  margin-top: 5rem;
-`;
-
-export const Content = styled.div`
   max-width: 1200px;
   margin: 0 auto;
+  padding: 20px;
 `;
 
-export const Card = styled.div`
-  background-color: #FF7F50;
-  border-radius: 8px;
-  padding:24px;
-  box-shadow: 0 2px 4px rgba(0,0, 0, 0.1);
-`;
-
-export const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 7px;
+export const Header = styled.header`
+  margin-bottom: 20px;
 `;
 
 export const Title = styled.h1`
-  font-size: 20px;
-  color: #4f98a0;
-  margin: 0;
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
 `;
 
-export const IconWrapper = styled.div`
-  width: 30px;
-  height: 30px;
+export const FilterContainer = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color:#4f98a0;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: background-color 0.2s;
-
-
-  .cross-icon {
-    position: relative;
-    width: 20px;
-    height: 20px;
-
-  }
-
-  .cross-icon::before,
-  .cross-icon::after {
-    content: '';
-    position: absolute;
-    background-color: #FFFFFF;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-
-  .cross-icon::before {
-    width: 100%;
-    height: 2px;
-  }
-
-  .cross-icon::after {
-    width: 2px;
-    height: 100%;
-  }
+  gap: 20px;
+  margin-bottom: 20px;
 `;
 
-export const FilterForm = styled.form`
-  margin-bottom: 8px;
-`;
-
-export const FilterInputGroup = styled.div`
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-`;
-
-export const FilterInput = styled.input`
-  flex: 1;
-  min-width: 200px;
-  padding: 6px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
+export const NewPatientButton = styled.button`
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
   font-size: 16px;
-  background-color: rgba(255, 255, 255, 0.9);
-
-  &:focus {
-    outline: none;
-    border-color: #fff;
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
-  }
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
 `;
 
-export const QuickSearchBar = styled.div`
+export const InputGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+`;
+
+export const Label = styled.label`
+  font-size: 14px;
   margin-bottom: 5px;
 `;
 
-export const QuickSearchInput = styled(FilterInput)`
-  width: 100%;
-  font-size: 16px;
-`;
-
-export const TableContainer = styled.div`
-  background-color: #FF6347; 
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+export const Input = styled.input`
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
 `;
 
 export const Table = styled.table`
@@ -121,144 +60,169 @@ export const Table = styled.table`
 `;
 
 export const TableHeader = styled.thead`
-  background-color: #FF6347; 
-`;
-
-export const TableBody = styled.tbody`
-  tr {
-    background-color: #FF6347; 
-    color: white;
-  }
-
-  tr:nth-child(even) {
-    background-color: #FF7256; 
-  }
-
-  tr:hover {
-    background-color: #FF8066; 
-  }
+  background-color: #f2f2f2;
 `;
 
 export const TableRow = styled.tr`
-  cursor: pointer;
-  transition: background-color 0.2s;
-  font-size: 12px;
+  &:nth-child(even) {
+    background-color: #f8f8f8;
+  }
 `;
 
-export const TableHead = styled.th`
+export const TableHeaderCell = styled.th`
   padding: 12px;
   text-align: left;
-  font-weight: 600;
-  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  &:hover {
+    background-color: #e0e0e0;
+  }
 `;
+
+export const TableBody = styled.tbody``;
 
 export const TableCell = styled.td`
-  padding: 7px;
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+`;
+
+export const LoadingMessage = styled.div`
+  text-align: center;
+  font-size: 18px;
+  margin-top: 20px;
+`;
+
+export const GlobalErrorMessage = styled.div`
+  text-align: center;
+  font-size: 18px;
+  color: red;
+  margin-top: 20px;
+`;
+
+export const EditButton = styled.button`
+  background-color: #4CAF50;
+  border: none;
   color: white;
-  font-size: 12px;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 2px 2px;
+  cursor: pointer;
+  border-radius: 4px;
 `;
 
-export const MobileCards = styled.div`
-  display: none;
-
-  @media (max-width: 768px) {
-    display: block;
-  }
+export const EditForm = styled.div`
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 20px;
+  margin-bottom: 20px;
 `;
 
-export const MobileCard = styled.div`
-  background-color: #FF6347;
-  color: #ffffffff;
-  border-radius: 8px;
-  padding: 16px;
-  margin-bottom: 26px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+export const FormTitle = styled.h2`
+  font-size: 20px;
+  margin-bottom: 20px;
 `;
 
-export const MobileCardItem = styled.div`
-  margin-bottom: 8px;
+export const FormGroup = styled.div`
+  margin-bottom: 15px;
 `;
 
-export const MobileLabel = styled.span`
-  font-weight: 600;
-  margin-right: 8px;
+export const TextArea = styled.textarea`
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  resize: vertical;
 `;
 
-export const DesktopTable = styled.div`
-  @media (max-width: 768px) {
-    display: none;
-  }
-`;
-
-export const PaginationContainer = styled.div`
+export const ButtonGroup = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 24px;
+  justify-content: flex-end;
+  gap: 10px;
 `;
 
-export const PaginationButton = styled.button`
-  padding: 8px 12px;
-  margin: 0 4px;
-  background-color: rgba(255, 255, 255, 0.9);
-  color: #FF8C73;
-  border: 1px solid #FF8C73;
+export const SaveButton = styled.button`
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+`;
+
+export const CancelButton = styled.button`
+  background-color: #f44336;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+`;
+
+export const Suggestions = styled.ul`
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  border: 1px solid #ccc;
+  border-top: none;
+  max-height: 150px;
+  overflow-y: auto;
+`;
+
+export const SuggestionItem = styled.li`
+  padding: 8px;
+  cursor: pointer;
+  &:hover {
+    background-color: #f0f0f0;
+  }
+`;
+
+export const FormContainer = styled.div`
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+`;
+
+export const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+
+export const SubmitButton = styled.button`
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
   border-radius: 4px;
   cursor: pointer;
-  transition: all 0.2s;
+  font-size: 16px;
 
-  &:hover:not(:disabled) {
-    background-color: #FF8C73;
-    color: white;
-  }
-
-  &:disabled {
-    background-color: rgba(255, 255, 255, 0.5);
-    border-color: rgba(255, 140, 115, 0.5);
-    color: rgba(255, 140, 115, 0.5);
-    cursor: not-allowed;
+  &:hover {
+    background-color: #45a049;
   }
 `;
 
-export const PaginationNumbers = styled.div`
-  display: flex;
-`;
-
-export const PaginationEllipsis = styled.span`
-  padding: 8px 12px;
-`;
-
-export const NoResultsMessage = styled.p`
-  text-align: center;
-  color: #495057;
-  font-style: italic;
-`;
-
-export const RecordDetails = styled.div`
-  background-color: white;
-  border-radius: 8px;
-  padding: 24px;
-  margin-top: 24px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-`;
-
-export const DetailsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
-`;
-
-export const DetailItem = styled.div`
-  label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 4px;
-    color: #495057;
-  }
-
-  p {
-    margin: 0;
-    color: #495057;
-  }
+export const ErrorMessage = styled.span`
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
 `;
 
