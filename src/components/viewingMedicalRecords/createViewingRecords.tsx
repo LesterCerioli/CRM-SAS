@@ -1,7 +1,8 @@
 "use client";
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import * as S from "./styles";
-import AddMedicalRecord from "./addMedicalRecord/addMedicalRecord";
+import AddMedicalRecord from "../addMedicalRecord/addMedicalRecord";
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface MedicalRecord {
   id: string;
@@ -19,6 +20,7 @@ interface MedicalRecord {
   notes: string;
   createdAt: string;
   updatedAt: string;
+  familyPhone: string;
 }
 
 interface Patient {
@@ -31,17 +33,18 @@ interface Patient {
 }
 
 // Generate 1200 mock medical records
-const CreateViewingRecords = (): MedicalRecord[] => {
+const generateMockRecords = (): MedicalRecord[] => {
   const records: MedicalRecord[] = [];
   const now = new Date();
+  const twentyFourHoursAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
 
   for (let i = 0; i < 1200; i++) {
-    const isRecent = i < 50; // Make 50 records recent (less than 24 hours old)
+    // Make first 5 records from today (less than 24h old)
+    const isRecent = i < 5;
     const createdAt = isRecent
-      ? new Date(now.getTime() - Math.random() * 24 * 60 * 60 * 1000)
-      : new Date(now.getTime() - Math.random() * 30 * 24 * 60 * 60 * 1000);
-    const updatedAt = new Date(createdAt.getTime() + Math.random() * (now.getTime() - createdAt.getTime()));
-
+      ? new Date(now.getTime() - Math.random() * 12 * 60 * 60 * 1000) // Random time within last 12 hours
+      : new Date(now.getTime() - (24 * 60 * 60 * 1000 * (1 + Math.random() * 30))); // Random time between 24h and 30 days ago
+    
     records.push({
       id: `${i + 1}`,
       patientName: `Patient ${i + 1}`,
@@ -49,22 +52,23 @@ const CreateViewingRecords = (): MedicalRecord[] => {
       dateOfBirth: `${1950 + Math.floor(Math.random() * 50)}-${String(Math.floor(Math.random() * 12) + 1).padStart(2, '0')}-${String(Math.floor(Math.random() * 28) + 1).padStart(2, '0')}`,
       email: `patient${i + 1}@example.com`,
       phone: `(${Math.floor(Math.random() * 90) + 10}) 9${Math.floor(Math.random() * 9000) + 1000}-${Math.floor(Math.random() * 9000) + 1000}`,
+      familyPhone: `(${Math.floor(Math.random() * 90) + 10}) 9${Math.floor(Math.random() * 9000) + 1000}-${Math.floor(Math.random() * 9000) + 1000}`,
       doctorName: `Dr. ${['Silva', 'Santos', 'Oliveira', 'Rodrigues', 'Ferreira'][Math.floor(Math.random() * 5)]}`,
       diagnosis: ['Hipertensão', 'Diabetes Tipo 2', 'Artrite Reumatoide', 'Asma', 'Depressão'][Math.floor(Math.random() * 5)],
       treatmentPlan: {
-        description: 'Tratamento padrão',
+        description: isRecent ? 'Novo paciente - Em avaliação' : 'Tratamento em andamento',
         medications: ['Medicamento A', 'Medicamento B'],
       },
-      notes: 'Observações iniciais do paciente.',
+      notes: isRecent ? 'Primeira consulta realizada hoje' : 'Paciente em acompanhamento regular',
       createdAt: createdAt.toISOString(),
-      updatedAt: updatedAt.toISOString(),
+      updatedAt: createdAt.toISOString(), // Initially same as created
     });
   }
 
   return records;
 };
 
-const mockMedicalRecords = CreateViewingRecords();
+const mockMedicalRecords = generateMockRecords();
 
 const debounce = <F extends (...args: any[]) => any>(func: F, waitFor: number) => {
   let timeout: ReturnType<typeof setTimeout> | null = null;
@@ -101,6 +105,9 @@ const MedicalRecords: React.FC = () => {
   const [editingRecord, setEditingRecord] = useState<MedicalRecord | null>(null);
   const [doctorSuggestions, setDoctorSuggestions] = useState<string[]>([]);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isEditing, setIsEditing] = useState(false); // Added state for editing
+  const recordsPerPage = 10;
 
   useEffect(() => {
     fetchMedicalRecords();
@@ -126,6 +133,7 @@ const MedicalRecords: React.FC = () => {
     );
     setFilteredRecords(filtered);
     setShowDescriptions(patientName.length > 0 || patientCPF.length > 0);
+    setCurrentPage(1);
   }, [records, patientName, patientCPF]);
 
   const debouncedHandleFilter = useMemo(
@@ -153,6 +161,7 @@ const MedicalRecords: React.FC = () => {
 
   const handleEdit = (record: MedicalRecord) => {
     setEditingRecord(record);
+    setIsEditing(true); // Set isEditing to true when editing starts
   };
 
   const handleSave = (updatedRecord: MedicalRecord) => {
@@ -162,16 +171,20 @@ const MedicalRecords: React.FC = () => {
     setRecords(updatedRecords);
     setFilteredRecords(updatedRecords);
     setEditingRecord(null);
+    setIsEditing(false); // Set isEditing to false after saving
   };
 
   const handleCancel = () => {
     setEditingRecord(null);
+    setIsEditing(false); // Set isEditing to false after canceling
   };
 
   const isEditable = (record: MedicalRecord) => {
     const now = new Date();
     const createdAt = new Date(record.createdAt);
-    return now.getTime() - createdAt.getTime() <= 24 * 60 * 60 * 1000;
+    const timeDiff = now.getTime() - createdAt.getTime();
+    const hoursDiff = timeDiff / (1000 * 60 * 60);
+    return hoursDiff <= 24;
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -181,11 +194,17 @@ const MedicalRecords: React.FC = () => {
     }
 
     if (name === 'doctorName') {
-      // Simulating doctor name suggestions
       const suggestions = ['Dr. Silva', 'Dr. Santos', 'Dr. Oliveira', 'Dr. Rodrigues', 'Dr. Ferreira']
         .filter(doctor => doctor.toLowerCase().includes(value.toLowerCase()));
       setDoctorSuggestions(suggestions);
     }
+  };
+
+  const handleDoctorSelect = (doctor: string) => {
+    if (editingRecord) {
+      setEditingRecord(prev => prev ? { ...prev, doctorName: doctor } as MedicalRecord : null);
+    }
+    setDoctorSuggestions([]);
   };
 
   const handleTreatmentPlanChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -222,6 +241,7 @@ const MedicalRecords: React.FC = () => {
       dateOfBirth: patient.dateOfBirth,
       email: patient.email,
       phone: patient.contactPhone,
+      familyPhone: patient.familyPhone,
       doctorName: '',
       diagnosis: '',
       treatmentPlan: {
@@ -241,6 +261,15 @@ const MedicalRecords: React.FC = () => {
     setShowAddForm(false);
   };
 
+  const indexOfLastRecord = currentPage * recordsPerPage;
+  const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
+  const currentRecords = filteredRecords.slice(indexOfFirstRecord, indexOfLastRecord);
+
+  const paginate = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+    window.scrollTo(0, 0);  // Scroll to top when changing pages
+  };
+
   if (loading) return <S.LoadingMessage>Carregando prontuários médicos...</S.LoadingMessage>;
   if (error) return <S.GlobalErrorMessage>{error}</S.GlobalErrorMessage>;
 
@@ -254,7 +283,7 @@ const MedicalRecords: React.FC = () => {
           name: record.patientName,
           dateOfBirth: record.dateOfBirth,
           contactPhone: record.phone,
-          familyPhone: '',
+          familyPhone: record.familyPhone,
           email: record.email,
         }))}
       />
@@ -263,203 +292,267 @@ const MedicalRecords: React.FC = () => {
 
   return (
     <S.Container>
-      <S.Header>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-          <S.Title>Prontuários Médicos</S.Title>
-          <S.NewPatientButton onClick={handleAddNewRecord}>
-            + Novo Prontuário
-          </S.NewPatientButton>
-        </div>
-        <S.FilterContainer>
-          <S.InputGroup>
-            <S.Label>Nome do Paciente:</S.Label>
-            <S.Input
-              type="text"
-              value={patientName}
-              onChange={(e) => setPatientName(e.target.value)}
-              placeholder="Digite o nome do paciente"
-            />
-          </S.InputGroup>
-          <S.InputGroup>
-            <S.Label>CPF do Paciente:</S.Label>
-            <S.Input
-              type="text"
-              value={patientCPF}
-              onChange={(e) => setPatientCPF(e.target.value)}
-              placeholder="Digite o CPF do paciente"
-            />
-          </S.InputGroup>
-        </S.FilterContainer>
-      </S.Header>
-      {editingRecord && (
-        <S.EditForm>
-          <S.FormTitle>Editar Prontuário</S.FormTitle>
-          <S.FormGroup>
-            <S.Label>Nome do Paciente:</S.Label>
-            <S.Input type="text" value={editingRecord.patientName} readOnly />
-          </S.FormGroup>
-          <S.FormGroup>
-            <S.Label>CPF:</S.Label>
-            <S.Input type="text" value={editingRecord.patientCPF} readOnly />
-          </S.FormGroup>
-          <S.FormGroup>
-            <S.Label>Data de Nascimento:</S.Label>
-            <S.Input type="text" value={editingRecord.dateOfBirth} readOnly />
-          </S.FormGroup>
-          <S.FormGroup>
-            <S.Label>Data de Criação:</S.Label>
-            <S.Input type="text" value={new Date(editingRecord.createdAt).toLocaleString()} readOnly />
-          </S.FormGroup>
-          <S.FormGroup>
-            <S.Label>Data de Atualização:</S.Label>
-            <S.Input type="text" value={new Date(editingRecord.updatedAt).toLocaleString()} readOnly />
-          </S.FormGroup>
-
-          <S.FormGroup>
-            <S.Label>Nome do Médico:</S.Label>
-            <S.Input
-              type="text"
-              name="doctorName"
-              value={editingRecord.doctorName}
-              onChange={handleInputChange}
-            />
-            {doctorSuggestions.length > 0 && (
-              <S.Suggestions>
-                {doctorSuggestions.map((suggestion, index) => (
-                  <S.SuggestionItem
-                    key={index}
-                    onClick={() => {
-                      setEditingRecord(prev => prev ? { ...prev, doctorName: suggestion } as MedicalRecord : null);
-                      setDoctorSuggestions([]);
-                    }}
-                  >
-                    {suggestion}
-                  </S.SuggestionItem>
-                ))}
-              </S.Suggestions>
-            )}
-          </S.FormGroup>
-          <S.FormGroup>
-            <S.Label>Diagnóstico:</S.Label>
-            <S.Input
-              type="text"
-              name="diagnosis"
-              value={editingRecord.diagnosis}
-              onChange={handleInputChange}
-            />
-          </S.FormGroup>
-          <S.FormGroup>
-            <S.Label>Plano de Tratamento:</S.Label>
-            <S.TextArea
-              name="description"
-              value={editingRecord.treatmentPlan.description}
-              onChange={handleTreatmentPlanChange}
-            />
-          </S.FormGroup>
-          <S.FormGroup>
-            <S.Label>Medicamentos:</S.Label>
-            <S.Input
-              type="text"
-              name="medications"
-              value={editingRecord.treatmentPlan.medications.join(", ")}
-              onChange={(e) => {
-                const medicationsArray = e.target.value.split(", ");
-                if (editingRecord) {
-                  setEditingRecord(prev =>
-                    prev ? {
-                      ...prev,
-                      treatmentPlan: {
-                        ...prev.treatmentPlan,
-                        medications: medicationsArray,
-                      },
-                    } : null
-                  );
-                }
-              }}
-            />
-          </S.FormGroup>
-          <S.FormGroup>
-            <S.Label>Observações (obrigatório):</S.Label>
-            <S.TextArea
-              name="notes"
-              value={editingRecord.notes}
-              onChange={handleInputChange}
-              required
-            />
-          </S.FormGroup>
-          <S.ButtonGroup>
-            <S.SaveButton onClick={handleSaveEdit}>Salvar</S.SaveButton>
-            <S.CancelButton onClick={handleCancel}>Cancelar</S.CancelButton>
-          </S.ButtonGroup>
-        </S.EditForm>
-      )}
-      <S.Table>
-        {showDescriptions ? (
-          <>
-            <S.TableHeader>
-              <S.TableRow>
-                <S.TableHeaderCell>Nome do Paciente</S.TableHeaderCell>
-                <S.TableHeaderCell>CPF</S.TableHeaderCell>
-                <S.TableHeaderCell>Data de Nascimento</S.TableHeaderCell>
-                <S.TableHeaderCell>Email</S.TableHeaderCell>
-                <S.TableHeaderCell>Telefone</S.TableHeaderCell>
-                <S.TableHeaderCell>Nome do Médico</S.TableHeaderCell>
-                <S.TableHeaderCell>Diagnóstico</S.TableHeaderCell>
-                <S.TableHeaderCell>Plano de Tratamento</S.TableHeaderCell>
-                <S.TableHeaderCell>Observações</S.TableHeaderCell>
-                <S.TableHeaderCell>Data de Criação</S.TableHeaderCell>
-                <S.TableHeaderCell>Data de Atualização</S.TableHeaderCell>
-                <S.TableHeaderCell>Ações</S.TableHeaderCell>
-              </S.TableRow>
-            </S.TableHeader>
-            <S.TableBody>
-              {filteredRecords.map((record) => (
-                <S.TableRow key={record.id}>
-                  <S.TableCell>{record.patientName}</S.TableCell>
-                  <S.TableCell>{record.patientCPF}</S.TableCell>
-                  <S.TableCell>{record.dateOfBirth}</S.TableCell>
-                  <S.TableCell>{record.email}</S.TableCell>
-                  <S.TableCell>{record.phone}</S.TableCell>
-                  <S.TableCell>{record.doctorName}</S.TableCell>
-                  <S.TableCell>{record.diagnosis}</S.TableCell>
-                  <S.TableCell>
-                    {record.treatmentPlan.description}
-                    <br />
-                    Medicamentos: {record.treatmentPlan.medications.join(", ")}
-                  </S.TableCell>
-                  <S.TableCell>{record.notes}</S.TableCell>
-                  <S.TableCell>{new Date(record.createdAt).toLocaleString()}</S.TableCell>
-                  <S.TableCell>{new Date(record.updatedAt).toLocaleString()}</S.TableCell>
-                  <S.TableCell>
-                    {isEditable(record) && (
-                      <S.EditButton onClick={() => handleEdit(record)}>Editar</S.EditButton>
+      <S.FormWrapper $isExpanded={patientName.length > 0 || patientCPF.length > 0}>
+        <S.Header>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+            <S.Title>Prontuários Médicos</S.Title>
+            <S.NewPatientButton onClick={handleAddNewRecord}>
+              + Novo Prontuário
+            </S.NewPatientButton>
+          </div>
+          <S.FilterContainer>
+            <S.InputGroup>
+              <S.Label>Nome do Paciente:</S.Label>
+              <S.Input
+                type="text"
+                value={patientName}
+                onChange={(e) => setPatientName(e.target.value)}
+                placeholder="Digite o nome do paciente"
+              />
+            </S.InputGroup>
+            <S.InputGroup>
+              <S.Label>CPF do Paciente:</S.Label>
+              <S.Input
+                type="text"
+                value={patientCPF}
+                onChange={(e) => setPatientCPF(e.target.value)}
+                placeholder="Digite o CPF do paciente"
+              />
+            </S.InputGroup>
+          </S.FilterContainer>
+        </S.Header>
+        {isEditing && editingRecord && (
+          <S.EditFormContainer>
+            <S.FormTitle>Editar Prontuário</S.FormTitle>
+            <S.EditFormGrid>
+              <S.FormColumn>
+                <S.FormGroup>
+                  <S.FormLabel>Nome do Paciente:</S.FormLabel>
+                  <S.ReadOnlyInput type="text" value={editingRecord.patientName} readOnly />
+                </S.FormGroup>
+                <S.FormGroup>
+                  <S.FormLabel>CPF:</S.FormLabel>
+                  <S.ReadOnlyInput type="text" value={editingRecord.patientCPF} readOnly />
+                </S.FormGroup>
+                <S.FormGroup>
+                  <S.FormLabel>Data de Nascimento:</S.FormLabel>
+                  <S.ReadOnlyInput type="text" value={editingRecord.dateOfBirth} readOnly />
+                </S.FormGroup>
+                <S.FormGroup>
+                  <S.FormLabel>Telefone:</S.FormLabel>
+                  <S.ReadOnlyInput type="text" value={editingRecord.phone} readOnly />
+                </S.FormGroup>
+                <S.FormGroup>
+                  <S.FormLabel>Telefone Familiar:</S.FormLabel>
+                  <S.ReadOnlyInput type="text" value={editingRecord.familyPhone} readOnly />
+                </S.FormGroup>
+              </S.FormColumn>
+              <S.FormColumn>
+                <S.FormGroup>
+                  <S.FormLabel>Nome do Médico:</S.FormLabel>
+                  <S.DoctorInputWrapper>
+                    <S.Input
+                      type="text"
+                      name="doctorName"
+                      value={editingRecord.doctorName}
+                      onChange={handleInputChange}
+                      placeholder="Digite o nome do médico"
+                    />
+                    {doctorSuggestions.length > 0 && (
+                      <S.DoctorSuggestions>
+                        {doctorSuggestions.map((doctor, index) => (
+                          <S.DoctorSuggestionItem
+                            key={index}
+                            onClick={() => handleDoctorSelect(doctor)}
+                          >
+                            {doctor}
+                          </S.DoctorSuggestionItem>
+                        ))}
+                      </S.DoctorSuggestions>
                     )}
-                  </S.TableCell>
-                </S.TableRow>
-              ))}
-            </S.TableBody>
-          </>
-        ) : (
-          <S.TableBody>
-            <S.TableRow>
-              <S.TableCell colSpan={12}>
-              </S.TableCell>
-            </S.TableRow>
-          </S.TableBody>
+                  </S.DoctorInputWrapper>
+                </S.FormGroup>
+                <S.FormGroup>
+                  <S.FormLabel>Diagnóstico:</S.FormLabel>
+                  <S.Input
+                    type="text"
+                    name="diagnosis"
+                    value={editingRecord.diagnosis}
+                    onChange={handleInputChange}
+                  />
+                </S.FormGroup>
+                <S.FormGroup>
+                  <S.FormLabel>Medicamentos:</S.FormLabel>
+                  <S.Input
+                    type="text"
+                    name="medications"
+                    value={editingRecord.treatmentPlan.medications.join(", ")}
+                    onChange={(e) => {
+                      const medicationsArray = e.target.value.split(", ");
+                      if (editingRecord) {
+                        setEditingRecord(prev =>
+                          prev ? {
+                            ...prev,
+                            treatmentPlan: {
+                              ...prev.treatmentPlan,
+                              medications: medicationsArray,
+                            },
+                          } : null
+                        );
+                      }
+                    }}
+                  />
+                </S.FormGroup>
+                <S.FormGroup>
+                  <S.FormLabel>Plano de Tratamento:</S.FormLabel>
+                  <S.TextArea
+                    name="description"
+                    value={editingRecord.treatmentPlan.description}
+                    onChange={handleTreatmentPlanChange}
+                    rows={3}
+                  />
+                </S.FormGroup>
+                <S.FormGroup>
+                  <S.FormLabel>Observações (obrigatório):</S.FormLabel>
+                  <S.TextArea
+                    name="notes"
+                    value={editingRecord.notes}
+                    onChange={handleInputChange}
+                    required
+                    rows={3}
+                  />
+                </S.FormGroup>
+              </S.FormColumn>
+            </S.EditFormGrid>
+            <S.FormFooter>
+              <S.FormGroup>
+                <S.FormLabel>Data de Criação:</S.FormLabel>
+                <S.ReadOnlyInput type="text" value={new Date(editingRecord.createdAt).toLocaleString()} readOnly />
+              </S.FormGroup>
+              <S.FormGroup>
+                <S.FormLabel>Data de Atualização:</S.FormLabel>
+                <S.ReadOnlyInput type="text" value={new Date(editingRecord.updatedAt).toLocaleString()} readOnly />
+              </S.FormGroup>
+              <S.ButtonGroup>
+                <S.SaveButton onClick={handleSaveEdit}>Salvar</S.SaveButton>
+                <S.CancelButton onClick={handleCancel}>Cancelar</S.CancelButton>
+              </S.ButtonGroup>
+            </S.FormFooter>
+          </S.EditFormContainer>
         )}
-        {showDescriptions && filteredRecords.length === 0 && (
-          <S.TableBody>
-            <S.TableRow>
-              <S.TableCell colSpan={12}>
-                Nenhum prontuário encontrado para os critérios de pesquisa.
-              </S.TableCell>
-            </S.TableRow>
-          </S.TableBody>
+        {!isEditing && (
+          <S.TableWrapper $showDescriptions={showDescriptions}>
+            {showDescriptions ? (
+              <S.Table>
+                <S.TableHeader>
+                  <S.TableRow>
+                    <S.TableHeaderCell>Nome</S.TableHeaderCell>
+                    <S.TableHeaderCell>CPF</S.TableHeaderCell>
+                    <S.TableHeaderCell>Nasc.</S.TableHeaderCell>
+                    <S.TableHeaderCell>Email</S.TableHeaderCell>
+                    <S.TableHeaderCell>Tel.</S.TableHeaderCell>
+                    <S.TableHeaderCell>Tel. Familiar</S.TableHeaderCell>
+                    <S.TableHeaderCell>Médico</S.TableHeaderCell>
+                    <S.TableHeaderCell>Diag.</S.TableHeaderCell>
+                    <S.TableHeaderCell>Trat.</S.TableHeaderCell>
+                    <S.TableHeaderCell>Obs.</S.TableHeaderCell>
+                    <S.TableHeaderCell>Criação</S.TableHeaderCell>
+                    <S.TableHeaderCell>Atual.</S.TableHeaderCell>
+                    <S.TableHeaderCell>Ações</S.TableHeaderCell>
+                  </S.TableRow>
+                </S.TableHeader>
+                <S.TableBody>
+                  {currentRecords.map((record) => (
+                    <S.TableRow key={record.id}>
+                      <S.TableCell>{record.patientName}</S.TableCell>
+                      <S.TableCell>{record.patientCPF}</S.TableCell>
+                      <S.TableCell>{new Date(record.dateOfBirth).toLocaleDateString()}</S.TableCell>
+                      <S.TableCell>{record.email}</S.TableCell>
+                      <S.TableCell>{record.phone}</S.TableCell>
+                      <S.TableCell>{record.familyPhone}</S.TableCell>
+                      <S.TableCell>{record.doctorName}</S.TableCell>
+                      <S.TableCell>
+                        <S.TooltipContainer>
+                          <S.TruncatedText>{record.diagnosis}</S.TruncatedText>
+                          <S.Tooltip>{record.diagnosis}</S.Tooltip>
+                        </S.TooltipContainer>
+                      </S.TableCell>
+                      <S.TableCell>
+                        <S.TooltipContainer>
+                          <S.TreatmentCell>
+                            {record.treatmentPlan.description}
+                            <br />
+                            Med: {record.treatmentPlan.medications.join(", ")}
+                          </S.TreatmentCell>
+                          <S.Tooltip>
+                            {record.treatmentPlan.description}
+                            <br />
+                            Medicamentos: {record.treatmentPlan.medications.join(", ")}
+                          </S.Tooltip>
+                        </S.TooltipContainer>
+                      </S.TableCell>
+                      <S.TableCell>
+                        <S.TooltipContainer>
+                          <S.NotesCell>{record.notes}</S.NotesCell>
+                          <S.Tooltip>{record.notes}</S.Tooltip>
+                        </S.TooltipContainer>
+                      </S.TableCell>
+                      <S.TableCell>{new Date(record.createdAt).toLocaleDateString()}</S.TableCell>
+                      <S.TableCell>{new Date(record.updatedAt).toLocaleDateString()}</S.TableCell>
+                      <S.TableCell>
+                        <S.EditButton onClick={() => handleEdit(record)}>
+                          Editar
+                        </S.EditButton>
+                      </S.TableCell>
+                    </S.TableRow>
+                  ))}
+                </S.TableBody>
+              </S.Table>
+            ) : (
+              <S.EmptyTable />
+            )}
+          </S.TableWrapper>
         )}
-      </S.Table>
+        {showDescriptions && !isEditing && (
+          <S.PaginationContainer>
+            <S.PaginationButton
+              onClick={() => paginate(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              <ChevronLeft />
+            </S.PaginationButton>
+            {[...Array(Math.min(5, Math.ceil(filteredRecords.length / recordsPerPage)))].map((_, i) => (
+              <S.PaginationButton
+                key={i}
+                onClick={() => paginate(i + 1)}
+                disabled={currentPage === i + 1}
+              >
+                {i + 1}
+              </S.PaginationButton>
+            ))}
+            {Math.ceil(filteredRecords.length / recordsPerPage) > 5 && (
+              <S.PaginationEllipsis>...</S.PaginationEllipsis>
+            )}
+            {Math.ceil(filteredRecords.length / recordsPerPage) > 5 && (
+              <S.PaginationButton
+                onClick={() => paginate(Math.ceil(filteredRecords.length / recordsPerPage))}
+                disabled={currentPage === Math.ceil(filteredRecords.length / recordsPerPage)}
+              >
+                {Math.ceil(filteredRecords.length / recordsPerPage)}
+              </S.PaginationButton>
+            )}
+            <S.PaginationButton
+              onClick={() => paginate(currentPage + 1)}
+              disabled={currentPage === Math.ceil(filteredRecords.length / recordsPerPage)}
+            >
+              <ChevronRight />
+            </S.PaginationButton>
+          </S.PaginationContainer>
+        )}
+      </S.FormWrapper>
     </S.Container>
   );
 };
 
-export default CreateViewingRecords;
+export default MedicalRecords;
 
