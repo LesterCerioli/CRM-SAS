@@ -4,7 +4,7 @@ trigger:
       - dev/2  
 
 pool:
-  name: 'vsts001'
+  name: 'vts001'
 
 jobs:
 - job: SyncToGitHub
