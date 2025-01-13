@@ -48,21 +48,15 @@ steps:
     displayName: 'Set Node.js version'
 
   # Clean npm cache
-  - script: |
-      echo "Cleaning npm cache"
-      npm cache clean --force
+  - script: echo "Cleaning npm cache" && npm cache clean --force
     displayName: 'Clean npm cache'
 
   # Install dependencies
-  - script: |
-      echo "Installing dependencies"
-      npm install
+  - script: echo "Installing dependencies" && npm install
     displayName: 'Install dependencies'
 
   # Build the project with Next.js
-  - script: |
-      echo "Building the project"
-      npm run build
+  - script: echo "Building the project" && npm run build
     displayName: 'Build the project'
 
   # Verify .next directory before publishing
