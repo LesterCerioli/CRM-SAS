@@ -8,6 +8,36 @@ variables:
   system.debug: true  
 
 steps:
+# Step 1: Verify PR comments before proceeding
+- task: Bash@3
+  displayName: "Verify PR Comments"
+  env:
+    AZURE_DEVOPS_EXT_PAT: $(AZURE_DEVOPS_PAT)  
+  script: |
+    if [ -z "$(System.PullRequest.PullRequestId)" ]; then
+      echo "Not a Pull Request, skipping verification."
+      exit 0
+    fi
+    PR_ID=$(System.PullRequest.PullRequestId)
+    ORG_NAME="lesterlucasit"
+    PROJECT_NAME="my-project"
+    REPO_NAME="my-repository"
+
+    echo "Fetching comments from PR #$PR_ID..."
+    COMMENTS=$(curl -s -u ":$AZURE_DEVOPS_PAT" \
+    -H "Content-Type: application/json" \
+    "https://dev.azure.com/$ORG_NAME/$PROJECT_NAME/_apis/git/repositories/$REPO_NAME/pullRequests/$PR_ID/threads?api-version=7.1-preview.1" \
+    | jq -r '.value[] | .comments[] | select(.commentType=="Text") | .content')
+
+    UNRESOLVED=$(echo "$COMMENTS" | grep -E "Resolve(?!D)" || true)
+
+    if [ -n "$UNRESOLVED" ]; then
+      echo "❌ There are unresolved comments: $UNRESOLVED"
+      echo "Resolve coment5s"
+      exit 1
+    else
+      echo "✅ All comments are resolved."
+    fi
 # Define the Node.js version to use
 - task: UseNode@1
   inputs:
