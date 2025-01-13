@@ -1,11 +1,13 @@
 trigger:
-- '*.*'
+  branches:
+    include:
+      - '*'
 
 pool:
   name: 'vts001'
 
 variables:
-  system.debug: true  
+  system.debug: 'true'
 
 steps:
 # Step 1: Verify PR comments before proceeding
@@ -33,15 +35,16 @@ steps:
 
     if [ -n "$UNRESOLVED" ]; then
       echo "❌ There are unresolved comments: $UNRESOLVED"
-      echo "Resolve coment5s"
+      echo "Resolve comments before merging."
       exit 1
     else
       echo "✅ All comments are resolved."
     fi
+
 # Define the Node.js version to use
 - task: UseNode@1
   inputs:
-    version: '20.x'  
+    version: '20.x'
   displayName: 'Set Node.js version'
 
 # Clean npm cache
