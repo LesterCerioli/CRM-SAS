@@ -32,18 +32,16 @@ interface Patient {
   email: string;
 }
 
-// Generate 1200 mock medical records
 const generateMockRecords = (): MedicalRecord[] => {
   const records: MedicalRecord[] = [];
   const now = new Date();
   const twentyFourHoursAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
 
   for (let i = 0; i < 1200; i++) {
-    // Make first 5 records from today (less than 24h old)
     const isRecent = i < 5;
     const createdAt = isRecent
-      ? new Date(now.getTime() - Math.random() * 12 * 60 * 60 * 1000) // Random time within last 12 hours
-      : new Date(now.getTime() - (24 * 60 * 60 * 1000 * (1 + Math.random() * 30))); // Random time between 24h and 30 days ago
+      ? new Date(now.getTime() - Math.random() * 12 * 60 * 60 * 1000) 
+      : new Date(now.getTime() - (24 * 60 * 60 * 1000 * (1 + Math.random() * 30))); 
     
     records.push({
       id: `${i + 1}`,
@@ -61,7 +59,7 @@ const generateMockRecords = (): MedicalRecord[] => {
       },
       notes: isRecent ? 'Primeira consulta realizada hoje' : 'Paciente em acompanhamento regular',
       createdAt: createdAt.toISOString(),
-      updatedAt: createdAt.toISOString(), // Initially same as created
+      updatedAt: createdAt.toISOString(), 
     });
   }
 
@@ -106,7 +104,7 @@ const MedicalRecords: React.FC = () => {
   const [doctorSuggestions, setDoctorSuggestions] = useState<string[]>([]);
   const [showAddForm, setShowAddForm] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [isEditing, setIsEditing] = useState(false); // Added state for editing
+  const [isEditing, setIsEditing] = useState(false); 
   const recordsPerPage = 10;
 
   useEffect(() => {
@@ -161,7 +159,7 @@ const MedicalRecords: React.FC = () => {
 
   const handleEdit = (record: MedicalRecord) => {
     setEditingRecord(record);
-    setIsEditing(true); // Set isEditing to true when editing starts
+    setIsEditing(true);
   };
 
   const handleSave = (updatedRecord: MedicalRecord) => {
@@ -171,12 +169,12 @@ const MedicalRecords: React.FC = () => {
     setRecords(updatedRecords);
     setFilteredRecords(updatedRecords);
     setEditingRecord(null);
-    setIsEditing(false); // Set isEditing to false after saving
+    setIsEditing(false); 
   };
 
   const handleCancel = () => {
     setEditingRecord(null);
-    setIsEditing(false); // Set isEditing to false after canceling
+    setIsEditing(false); 
   };
 
   const isEditable = (record: MedicalRecord) => {
@@ -267,8 +265,68 @@ const MedicalRecords: React.FC = () => {
 
   const paginate = (pageNumber: number) => {
     setCurrentPage(pageNumber);
-    window.scrollTo(0, 0);  // Scroll to top when changing pages
+    window.scrollTo(0, 0); 
   };
+
+  const MobileRecordCard: React.FC<{ record: MedicalRecord }> = ({ record }) => (
+    <S.MobileCard>
+      <S.MobileCardHeader>
+        <S.MobileCardTitle>{record.patientName}</S.MobileCardTitle>
+        <S.MobileCardSubtitle>CPF: {record.patientCPF}</S.MobileCardSubtitle>
+      </S.MobileCardHeader>
+      <S.MobileCardContent>
+        <S.MobileCardItem>
+          <S.MobileCardLabel>Data de Nascimento:</S.MobileCardLabel>
+          <S.MobileCardValue>{new Date(record.dateOfBirth).toLocaleDateString()}</S.MobileCardValue>
+        </S.MobileCardItem>
+        <S.MobileCardItem>
+          <S.MobileCardLabel>Email:</S.MobileCardLabel>
+          <S.MobileCardValue>{record.email}</S.MobileCardValue>
+        </S.MobileCardItem>
+        <S.MobileCardItem>
+          <S.MobileCardLabel>Telefone:</S.MobileCardLabel>
+          <S.MobileCardValue>{record.phone}</S.MobileCardValue>
+        </S.MobileCardItem>
+        <S.MobileCardItem>
+          <S.MobileCardLabel>Telefone Familiar:</S.MobileCardLabel>
+          <S.MobileCardValue>{record.familyPhone}</S.MobileCardValue>
+        </S.MobileCardItem>
+        <S.MobileCardItem>
+          <S.MobileCardLabel>Médico:</S.MobileCardLabel>
+          <S.MobileCardValue>{record.doctorName}</S.MobileCardValue>
+        </S.MobileCardItem>
+        <S.MobileCardItem>
+          <S.MobileCardLabel>Diagnóstico:</S.MobileCardLabel>
+          <S.MobileCardValue>{record.diagnosis}</S.MobileCardValue>
+        </S.MobileCardItem>
+        <S.MobileCardItem>
+          <S.MobileCardLabel>Plano de Tratamento:</S.MobileCardLabel>
+          <S.MobileCardValue>{record.treatmentPlan.description}</S.MobileCardValue>
+        </S.MobileCardItem>
+        <S.MobileCardItem>
+          <S.MobileCardLabel>Medicamentos:</S.MobileCardLabel>
+          <S.MobileCardValue>{record.treatmentPlan.medications.join(", ")}</S.MobileCardValue>
+        </S.MobileCardItem>
+        <S.MobileCardItem>
+          <S.MobileCardLabel>Observações:</S.MobileCardLabel>
+          <S.MobileCardValue>{record.notes}</S.MobileCardValue>
+        </S.MobileCardItem>
+        <S.MobileCardItem>
+          <S.MobileCardLabel>Data de Criação:</S.MobileCardLabel>
+          <S.MobileCardValue>{new Date(record.createdAt).toLocaleString()}</S.MobileCardValue>
+        </S.MobileCardItem>
+        <S.MobileCardItem>
+          <S.MobileCardLabel>Última Atualização:</S.MobileCardLabel>
+          <S.MobileCardValue>{new Date(record.updatedAt).toLocaleString()}</S.MobileCardValue>
+        </S.MobileCardItem>
+      </S.MobileCardContent>
+      <S.MobileCardFooter>
+        <S.EditButton onClick={() => handleEdit(record)} disabled={!isEditable(record)}>
+          {isEditable(record) ? 'Editar' : 'Não editável'}
+        </S.EditButton>
+      </S.MobileCardFooter>
+    </S.MobileCard>
+  );
 
   if (loading) return <S.LoadingMessage>Carregando prontuários médicos...</S.LoadingMessage>;
   if (error) return <S.GlobalErrorMessage>{error}</S.GlobalErrorMessage>;
@@ -442,75 +500,82 @@ const MedicalRecords: React.FC = () => {
         )}
         {!isEditing && (
           <S.TableWrapper $showDescriptions={showDescriptions}>
-            {showDescriptions ? (
-              <S.Table>
-                <S.TableHeader>
-                  <S.TableRow>
-                    <S.TableHeaderCell>Nome</S.TableHeaderCell>
-                    <S.TableHeaderCell>CPF</S.TableHeaderCell>
-                    <S.TableHeaderCell>Nasc.</S.TableHeaderCell>
-                    <S.TableHeaderCell>Email</S.TableHeaderCell>
-                    <S.TableHeaderCell>Tel.</S.TableHeaderCell>
-                    <S.TableHeaderCell>Tel. Familiar</S.TableHeaderCell>
-                    <S.TableHeaderCell>Médico</S.TableHeaderCell>
-                    <S.TableHeaderCell>Diag.</S.TableHeaderCell>
-                    <S.TableHeaderCell>Trat.</S.TableHeaderCell>
-                    <S.TableHeaderCell>Obs.</S.TableHeaderCell>
-                    <S.TableHeaderCell>Criação</S.TableHeaderCell>
-                    <S.TableHeaderCell>Atual.</S.TableHeaderCell>
-                    <S.TableHeaderCell>Ações</S.TableHeaderCell>
-                  </S.TableRow>
-                </S.TableHeader>
-                <S.TableBody>
-                  {currentRecords.map((record) => (
-                    <S.TableRow key={record.id}>
-                      <S.TableCell>{record.patientName}</S.TableCell>
-                      <S.TableCell>{record.patientCPF}</S.TableCell>
-                      <S.TableCell>{new Date(record.dateOfBirth).toLocaleDateString()}</S.TableCell>
-                      <S.TableCell>{record.email}</S.TableCell>
-                      <S.TableCell>{record.phone}</S.TableCell>
-                      <S.TableCell>{record.familyPhone}</S.TableCell>
-                      <S.TableCell>{record.doctorName}</S.TableCell>
-                      <S.TableCell>
-                        <S.TooltipContainer>
-                          <S.TruncatedText>{record.diagnosis}</S.TruncatedText>
-                          <S.Tooltip>{record.diagnosis}</S.Tooltip>
-                        </S.TooltipContainer>
-                      </S.TableCell>
-                      <S.TableCell>
-                        <S.TooltipContainer>
-                          <S.TreatmentCell>
-                            {record.treatmentPlan.description}
-                            <br />
-                            Med: {record.treatmentPlan.medications.join(", ")}
-                          </S.TreatmentCell>
-                          <S.Tooltip>
-                            {record.treatmentPlan.description}
-                            <br />
-                            Medicamentos: {record.treatmentPlan.medications.join(", ")}
-                          </S.Tooltip>
-                        </S.TooltipContainer>
-                      </S.TableCell>
-                      <S.TableCell>
-                        <S.TooltipContainer>
-                          <S.NotesCell>{record.notes}</S.NotesCell>
-                          <S.Tooltip>{record.notes}</S.Tooltip>
-                        </S.TooltipContainer>
-                      </S.TableCell>
-                      <S.TableCell>{new Date(record.createdAt).toLocaleDateString()}</S.TableCell>
-                      <S.TableCell>{new Date(record.updatedAt).toLocaleDateString()}</S.TableCell>
-                      <S.TableCell>
-                        <S.EditButton onClick={() => handleEdit(record)}>
-                          Editar
-                        </S.EditButton>
-                      </S.TableCell>
+            <S.DesktopView>
+              {showDescriptions ? (
+                <S.Table>
+                  <S.TableHeader>
+                    <S.TableRow>
+                      <S.TableHeaderCell>Nome</S.TableHeaderCell>
+                      <S.TableHeaderCell>CPF</S.TableHeaderCell>
+                      <S.TableHeaderCell>Nasc.</S.TableHeaderCell>
+                      <S.TableHeaderCell>Email</S.TableHeaderCell>
+                      <S.TableHeaderCell>Tel.</S.TableHeaderCell>
+                      <S.TableHeaderCell>Tel. Familiar</S.TableHeaderCell>
+                      <S.TableHeaderCell>Médico</S.TableHeaderCell>
+                      <S.TableHeaderCell>Diag.</S.TableHeaderCell>
+                      <S.TableHeaderCell>Trat.</S.TableHeaderCell>
+                      <S.TableHeaderCell>Obs.</S.TableHeaderCell>
+                      <S.TableHeaderCell>Criação</S.TableHeaderCell>
+                      <S.TableHeaderCell>Atual.</S.TableHeaderCell>
+                      <S.TableHeaderCell>Ações</S.TableHeaderCell>
                     </S.TableRow>
-                  ))}
-                </S.TableBody>
-              </S.Table>
-            ) : (
-              <S.EmptyTable />
-            )}
+                  </S.TableHeader>
+                  <S.TableBody>
+                    {currentRecords.map((record) => (
+                      <S.TableRow key={record.id}>
+                        <S.TableCell>{record.patientName}</S.TableCell>
+                        <S.TableCell>{record.patientCPF}</S.TableCell>
+                        <S.TableCell>{new Date(record.dateOfBirth).toLocaleDateString()}</S.TableCell>
+                        <S.TableCell>{record.email}</S.TableCell>
+                        <S.TableCell>{record.phone}</S.TableCell>
+                        <S.TableCell>{record.familyPhone}</S.TableCell>
+                        <S.TableCell>{record.doctorName}</S.TableCell>
+                        <S.TableCell>
+                          <S.TooltipContainer>
+                            <S.TruncatedText>{record.diagnosis}</S.TruncatedText>
+                            <S.Tooltip>{record.diagnosis}</S.Tooltip>
+                          </S.TooltipContainer>
+                        </S.TableCell>
+                        <S.TableCell>
+                          <S.TooltipContainer>
+                            <S.TreatmentCell>
+                              {record.treatmentPlan.description}
+                              <br />
+                              Med: {record.treatmentPlan.medications.join(", ")}
+                            </S.TreatmentCell>
+                            <S.Tooltip>
+                              {record.treatmentPlan.description}
+                              <br />
+                              Medicamentos: {record.treatmentPlan.medications.join(", ")}
+                            </S.Tooltip>
+                          </S.TooltipContainer>
+                        </S.TableCell>
+                        <S.TableCell>
+                          <S.TooltipContainer>
+                            <S.NotesCell>{record.notes}</S.NotesCell>
+                            <S.Tooltip>{record.notes}</S.Tooltip>
+                          </S.TooltipContainer>
+                        </S.TableCell>
+                        <S.TableCell>{new Date(record.createdAt).toLocaleDateString()}</S.TableCell>
+                        <S.TableCell>{new Date(record.updatedAt).toLocaleDateString()}</S.TableCell>
+                        <S.TableCell>
+                          <S.EditButton onClick={() => handleEdit(record)}>
+                            Editar
+                          </S.EditButton>
+                        </S.TableCell>
+                      </S.TableRow>
+                    ))}
+                  </S.TableBody>
+                </S.Table>
+              ) : (
+                <S.EmptyTable />
+              )}
+            </S.DesktopView>
+            <S.MobileView>
+              {showDescriptions && currentRecords.map((record) => (
+                <MobileRecordCard key={record.id} record={record} />
+              ))}
+            </S.MobileView>
           </S.TableWrapper>
         )}
         {showDescriptions && !isEditing && (

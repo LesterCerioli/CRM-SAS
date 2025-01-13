@@ -6,6 +6,9 @@ export const Container = styled.div`
   height: 130vh;
   padding-top: 5rem;
   padding-bottom: 5rem;
+  @media (max-width: 768px) {
+    padding-bottom: 520rem;
+  }
   
   
   button {

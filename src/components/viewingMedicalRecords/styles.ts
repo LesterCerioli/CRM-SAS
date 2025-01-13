@@ -19,10 +19,17 @@ export const FormWrapper = styled.div<{ $isExpanded: boolean }>`
   max-width: 1200px;
   transition: min-height 0.3s ease-in-out;
   min-height: ${props => props.$isExpanded ? '500px' : '150px'};
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 10px;
+  }
 `;
 
 export const Header = styled.header`
   margin-bottom: 10px;
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 export const Title = styled.h1`
@@ -36,6 +43,9 @@ export const FilterContainer = styled.div`
   gap: 10px;
   margin-bottom: 10px;
   flex-wrap: wrap;
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 export const NewPatientButton = styled.button`
@@ -57,6 +67,10 @@ export const InputGroup = styled.div`
   flex-direction: column;
   flex: 1;
   min-width: 150px;
+  @media (max-width: 768px) {
+    width: 100%;
+    margin-bottom: 10px;
+  }
 `;
 
 export const Label = styled.label`
@@ -75,6 +89,11 @@ export const Input = styled.input`
   @media (max-width: 768px) {
     font-size: 16px;
     padding: 8px;
+    &::placeholder {
+      font-size: 14px;
+      white-space: nowrap;
+      overflow: visible;
+    }
   }
 `;
 
@@ -185,8 +204,8 @@ export const EditButton = styled.button`
   white-space: nowrap;
 
   @media (max-width: 768px) {
-    padding: 4px 8px;
-    font-size: 12px;
+    padding: 8px 16px;
+    font-size: 14px;
   }
 `;
 
@@ -294,6 +313,10 @@ export const PaginationContainer = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 10px;
+  @media (max-width: 768px) {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 `;
 
 export const PaginationButton = styled.button`
@@ -316,6 +339,9 @@ export const PaginationButton = styled.button`
 
   &:hover:not(:disabled) {
     background-color: #3d7a80;
+  }
+  @media (max-width: 768px) {
+    margin: 4px;
   }
 `;
 
@@ -483,5 +509,72 @@ export const Tooltip = styled.div`
     border-style: solid;
     border-color: #382EC4 transparent transparent transparent;
   }
+`;
+
+export const DesktopView = styled.div`
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+export const MobileView = styled.div`
+  display: none;
+  @media (max-width: 768px) {
+    display: block;
+  }
+`;
+
+export const MobileCard = styled.div`
+  background-color: #ffa573;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 16px;
+  overflow: hidden;
+`;
+
+export const MobileCardHeader = styled.div`
+  background-color: #ff7f50;
+  color: white;
+  padding: 12px 16px;
+`;
+
+export const MobileCardTitle = styled.h3`
+  margin: 0;
+  font-size: 18px;
+`;
+
+export const MobileCardSubtitle = styled.p`
+  margin: 4px 0 0;
+  font-size: 14px;
+`;
+
+export const MobileCardContent = styled.div`
+  padding: 16px;
+  color: white;
+`;
+
+export const MobileCardItem = styled.div`
+  margin-bottom: 12px;
+`;
+
+export const MobileCardLabel = styled.span`
+  font-weight: bold;
+  font-size: 14px;
+  color: white;
+  display: block;
+  margin-bottom: 4px;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+`;
+
+export const MobileCardValue = styled.span`
+  font-size: 14px;
+  color: white;
+`;
+
+export const MobileCardFooter = styled.div`
+  padding: 12px 16px;
+  background-color: #ff7f50;
+  display: flex;
+  justify-content: flex-end;
 `;
 
