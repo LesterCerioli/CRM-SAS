@@ -1,86 +1,53 @@
 trigger:
-  branches:
-    include:
-      - '*'
+- '*.*'
 
 pool:
   name: 'vts001'
 
 variables:
-  system.debug: 'true'
+  system.debug: true  
 
 steps:
-  # Step 1: Verify PR comments before proceeding
-  - task: Bash@3
-    displayName: "Verify PR Comments"
-    env:
-      AZURE_DEVOPS_EXT_PAT: $(AZURE_DEVOPS_PAT)
-    inputs:
-      targetType: 'inline'
-      script: |
-        if [ -z "$(System.PullRequest.PullRequestId)" ]; then
-          echo "Not a Pull Request, skipping verification."
-          exit 0
-        fi
-        PR_ID=$(System.PullRequest.PullRequestId)
-        ORG_NAME="lesterlucasit"
-        PROJECT_NAME="my-project"
-        REPO_NAME="my-repository"
+# Step 1: Verify PR comments before proceeding
 
-        echo "Fetching comments from PR #$PR_ID..."
-        COMMENTS=$(curl -s -u ":$AZURE_DEVOPS_PAT" \
-        -H "Content-Type: application/json" \
-        "https://dev.azure.com/$ORG_NAME/$PROJECT_NAME/_apis/git/repositories/$REPO_NAME/pullRequests/$PR_ID/threads?api-version=7.1-preview.1" \
-        | jq -r '.value[] | .comments[] | select(.commentType=="Text") | .content')
+# Define the Node.js version to use
+- task: UseNode@1
+  inputs:
+    version: '20.x'  
+  displayName: 'Set Node.js version'
 
-        UNRESOLVED=$(echo "$COMMENTS" | grep -E "Resolve(?!D)" || true)
+# Clean npm cache
+- script: |
+    echo "Cleaning npm cache"
+    npm cache clean --force
+  displayName: 'Clean npm cache'
 
-        if [ -n "$UNRESOLVED" ]; then
-          echo "❌ There are unresolved comments: $UNRESOLVED"
-          echo "Resolve comments before merging."
-          exit 1
-        else
-          echo "✅ All comments are resolved."
-        fi
+# Install dependencies
+- script: |
+    echo "Installing dependencies"
+    npm install
+  displayName: 'Install dependencies'
 
-  # Set Node.js version
-  - task: UseNode@1
-    inputs:
-      version: '20.x'
-    displayName: 'Set Node.js version'
+# Build the project with Next.js
+- script: |
+    echo "Building the project"
+    npm run build
+  displayName: 'Build the project'
 
-  # Clean npm cache
-  - script: |
-      echo "Cleaning npm cache"
-      npm cache clean --force
-    displayName: 'Clean npm cache'
+# Verify .next directory before publishing
+- script: |
+    echo "Verifying .next directory"
+    if [ ! -d ".next" ]; then
+      echo "Error: .next directory not found. Build might have failed."
+      exit 1
+    fi
+    ls -al .next
+  displayName: 'Verify build output'
 
-  # Install dependencies
-  - script: |
-      echo "Installing dependencies"
-      npm install
-    displayName: 'Install dependencies'
-
-  # Build the project with Next.js
-  - script: |
-      echo "Building the project"
-      npm run build
-    displayName: 'Build the project'
-
-  # Verify .next directory before publishing
-  - script: |
-      echo "Verifying .next directory"
-      if [ ! -d ".next" ]; then
-        echo "Error: .next directory not found. Build might have failed."
-        exit 1
-      fi
-      ls -al .next
-    displayName: 'Verify build output'
-
-  # Publish build artifacts
-  - task: PublishBuildArtifacts@1
-    inputs:
-      PathtoPublish: '.next'
-      ArtifactName: 'drop'
-      publishLocation: 'Container'
-    displayName: 'Publish build artifacts'
+# Publish build artifacts
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '.next'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+  displayName: 'Publish build artifacts'
