@@ -4,7 +4,7 @@ trigger:
       - dev/2  
 
 pool:
-  name: 'vts001'
+  vmImage: 'ubuntu-latest'
 
 jobs:
 - job: SyncToGitHub
