@@ -22,19 +22,19 @@ export const Container = styled.div`
 
 export const Form = styled.form`
   width: 100%;
-  max-width: 1200px; /* Ajuste da largura máxima */
+  max-width: 1200px; 
   background-color: #ffffff;
   border-radius: 8px;
   padding: 2rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   display: flex;
-  flex-wrap: wrap; /* Permite que os campos quebrem em linhas */
-  gap: 1.5rem; /* Espaçamento entre os campos */
-  justify-content: space-between; /* Distribui os campos horizontalmente */
+  flex-wrap: wrap; 
+  gap: 1.5rem; 
+  justify-content: space-between; 
 `;
 
 export const FieldGroup = styled.div`
-  flex: 1 1 calc(50% - 1rem); /* Cada campo ocupa 50% do espaço horizontal, menos o gap */
+  flex: 1 1 calc(50% - 1rem); 
   display: flex;
   flex-direction: column;
 
@@ -72,7 +72,7 @@ export const FieldGroup = styled.div`
 `;
 
 export const Button = styled.button`
-  flex: 1 1 100%; /* Botão ocupa toda a largura */
+  flex: 1 1 100%; 
   padding: 12px;
   background: #4f98a0;
   color: #fff;

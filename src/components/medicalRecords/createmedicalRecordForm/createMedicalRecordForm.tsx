@@ -18,7 +18,7 @@ const CreateMedicalRecordForm: React.FC = () => {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
+        setFormData((prev) => ({ ...prev, [name]: value });
     };
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -132,15 +132,7 @@ const CreateMedicalRecordForm: React.FC = () => {
                     />
                 </S.FieldGroup>
 
-                <S.FieldGroup>
-                    <label htmlFor="additionalNotes">Notas Adicionais:</label>
-                    <textarea
-                        id="additionalNotes"
-                        name="additionalNotes"
-                        value={formData.additionalNotes}
-                        onChange={handleChange}
-                    />
-                </S.FieldGroup>
+                
 
                 <S.Button type="submit">Salvar Prontuário</S.Button>
             </S.Form>
