@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import React, { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import * as S from "./styles";
 import AddMedicalRecord from "../addMedicalRecord/addMedicalRecord";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -21,6 +21,7 @@ interface MedicalRecord {
   createdAt: string;
   updatedAt: string;
   familyPhone: string;
+  doctorSignature?: string;
 }
 
 interface Patient {
@@ -113,9 +114,12 @@ const MedicalRecords: React.FC = () => {
   const [doctorSuggestions, setDoctorSuggestions] = useState<string[]>([]);
   const [showAddForm, setShowAddForm] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [isEditing, setIsEditing] = useState(false); 
-  const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null); 
+  const [isEditing, setIsEditing] = useState(false); // Added state for editing
+  const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null); // Added state for selected patient
   const recordsPerPage = 10;
+  const [signature, setSignature] = useState<string | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [isDrawing, setIsDrawing] = useState(false);
 
   useEffect(() => {
     fetchMedicalRecords();
@@ -165,8 +169,7 @@ const MedicalRecords: React.FC = () => {
     setSortField(field);
     setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     const sorted = [...filteredRecords].sort((a, b) => {
-      if (a[field] < b[field]) return sortOrder === "asc" ? -1 : 1;
-      if (a[field] > b[field]) return sortOrder === "asc" ? 1 : -1;
+      
       return 0;
     });
     setFilteredRecords(sorted);
@@ -174,7 +177,7 @@ const MedicalRecords: React.FC = () => {
 
   const handleEdit = (record: MedicalRecord) => {
     setEditingRecord(record);
-    setIsEditing(true); 
+    setIsEditing(true); // Set isEditing to true when editing starts
   };
 
   const handleSave = (updatedRecord: MedicalRecord) => {
@@ -184,12 +187,12 @@ const MedicalRecords: React.FC = () => {
     setRecords(updatedRecords);
     setFilteredRecords(updatedRecords);
     setEditingRecord(null);
-    setIsEditing(false); 
+    setIsEditing(false); // Set isEditing to false after saving
   };
 
   const handleCancel = () => {
     setEditingRecord(null);
-    setIsEditing(false); 
+    setIsEditing(false); // Set isEditing to false after canceling
   };
 
   const isEditable = (record: MedicalRecord) => {
@@ -239,10 +242,15 @@ const MedicalRecords: React.FC = () => {
       alert('O campo de observações é obrigatório.');
       return;
     }
-    handleSave(editingRecord);
+    if (!signature) {
+      alert('A assinatura do médico é obrigatória.');
+      return;
+    }
+    handleSave({...editingRecord, doctorSignature: signature});
+    setSignature(null);
   };
 
-  const handleAddNewRecord = (patient?: Patient) => { 
+  const handleAddNewRecord = (patient?: Patient) => { // Modified to accept optional patient
     setSelectedPatient(patient || null);
     setShowAddForm(true);
   };
@@ -282,13 +290,13 @@ const MedicalRecords: React.FC = () => {
 
   const paginate = (pageNumber: number) => {
     setCurrentPage(pageNumber);
-    window.scrollTo(0, 0);  
+    window.scrollTo(0, 0);  // Scroll to top when changing pages
   };
 
   const MobileRecordCard: React.FC<{ record: MedicalRecord }> = ({ record }) => (
     <S.MobileCard>
       <S.MobileCardHeader>
-        <S.MobileCardTitle onClick={() => handleAddNewRecord({ 
+        <S.MobileCardTitle onClick={() => handleAddNewRecord({ // Updated MobileCardTitle to be clickable
           cpf: record.patientCPF,
           name: record.patientName,
           dateOfBirth: record.dateOfBirth,
@@ -354,6 +362,59 @@ const MedicalRecords: React.FC = () => {
     </S.MobileCard>
   );
 
+  const startDrawing = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
+    setIsDrawing(true);
+    const canvas = canvasRef.current;
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        const rect = canvas.getBoundingClientRect();
+        const x = ('touches' in e ? e.touches[0].clientX : e.clientX) - rect.left;
+        const y = ('touches' in e ? e.touches[0].clientY : e.clientY) - rect.top;
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+      }
+    }
+  };
+
+  const draw = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
+    if (!isDrawing) return;
+    const canvas = canvasRef.current;
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        const rect = canvas.getBoundingClientRect();
+        const x = ('touches' in e ? e.touches[0].clientX : e.clientX) - rect.left;
+        const y = ('touches' in e ? e.touches[0].clientY : e.clientY) - rect.top;
+        ctx.lineTo(x, y);
+        ctx.stroke();
+      }
+    }
+  };
+
+  const stopDrawing = () => {
+    setIsDrawing(false);
+  };
+
+  const clearSignature = () => {
+    const canvas = canvasRef.current;
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    }
+    setSignature(null);
+  };
+
+  const saveSignature = () => {
+    const canvas = canvasRef.current;
+    if (canvas) {
+      const dataUrl = canvas.toDataURL();
+      setSignature(dataUrl);
+    }
+  };
+
   if (loading) return <S.LoadingMessage>Carregando prontuários médicos...</S.LoadingMessage>;
   if (error) return <S.GlobalErrorMessage>{error}</S.GlobalErrorMessage>;
 
@@ -370,7 +431,7 @@ const MedicalRecords: React.FC = () => {
           familyPhone: record.familyPhone,
           email: record.email,
         }))}
-        selectedPatient={selectedPatient} 
+        selectedPatient={selectedPatient} // Passando o paciente selecionado
       />
     );
   }
@@ -507,6 +568,26 @@ const MedicalRecords: React.FC = () => {
                     rows={3}
                   />
                 </S.FormGroup>
+                <S.FormGroup>
+                  <S.FormLabel>Assinatura do Médico:</S.FormLabel>
+                  <S.SignatureCanvas
+                    ref={canvasRef}
+                    width={400}
+                    height={200}
+                    onMouseDown={startDrawing}
+                    onMouseMove={draw}
+                    onMouseUp={stopDrawing}
+                    onMouseLeave={stopDrawing}
+                    onTouchStart={startDrawing}
+                    onTouchMove={draw}
+                    onTouchEnd={stopDrawing}
+                  />
+                  <S.SignatureButtonGroup>
+                    <S.SignatureButton onClick={clearSignature}>Limpar</S.SignatureButton>
+                    <S.SignatureButton onClick={saveSignature}>Salvar</S.SignatureButton>
+                  </S.SignatureButtonGroup>
+                  {signature && <S.SignatureSaved>Assinatura salva</S.SignatureSaved>}
+                </S.FormGroup>
               </S.FormColumn>
             </S.EditFormGrid>
             <S.FormFooter>
@@ -550,7 +631,7 @@ const MedicalRecords: React.FC = () => {
                   <S.TableBody>
                     {currentRecords.map((record) => (
                       <S.TableRow key={record.id}>
-                        <S.ClickableTableCell // Updated TableCell to be clickable
+                        <S.ClickableTableCell 
                           onClick={() => handleAddNewRecord({
                             cpf: record.patientCPF,
                             name: record.patientName,

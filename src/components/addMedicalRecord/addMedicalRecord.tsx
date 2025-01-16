@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import * as S from './addMedicalRecordStyles';
+import * as S from './styles';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
