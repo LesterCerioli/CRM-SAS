@@ -32,23 +32,32 @@ interface Patient {
   email: string;
 }
 
+// Generate 1200 mock medical records
 const generateMockRecords = (): MedicalRecord[] => {
   const records: MedicalRecord[] = [];
   const now = new Date();
   const twentyFourHoursAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
 
+  const firstNames = ['Carlos', 'Maria', 'João', 'Ana', 'Pedro', 'Luisa', 'Fernando', 'Mariana', 'Ricardo', 'Camila'];
+  const lastNames = ['Silva', 'Santos', 'Oliveira', 'Pereira', 'Ferreira', 'Rodrigues', 'Almeida', 'Costa', 'Carvalho', 'Gomes'];
+
   for (let i = 0; i < 1200; i++) {
     const isRecent = i < 5;
     const createdAt = isRecent
-      ? new Date(now.getTime() - Math.random() * 12 * 60 * 60 * 1000) 
-      : new Date(now.getTime() - (24 * 60 * 60 * 1000 * (1 + Math.random() * 30))); 
+      ? new Date(now.getTime() - Math.random() * 12 * 60 * 60 * 1000)
+      : new Date(now.getTime() - (24 * 60 * 60 * 1000 * (1 + Math.random() * 30)));
     
+    const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
+    const lastName1 = lastNames[Math.floor(Math.random() * lastNames.length)];
+    const lastName2 = lastNames[Math.floor(Math.random() * lastNames.length)];
+    const fullName = `${firstName} ${lastName1} ${lastName2}`;
+
     records.push({
       id: `${i + 1}`,
-      patientName: `Patient ${i + 1}`,
+      patientName: fullName,
       patientCPF: `${Math.floor(100000000 + Math.random() * 900000000)}-${Math.floor(10 + Math.random() * 90)}`,
       dateOfBirth: `${1950 + Math.floor(Math.random() * 50)}-${String(Math.floor(Math.random() * 12) + 1).padStart(2, '0')}-${String(Math.floor(Math.random() * 28) + 1).padStart(2, '0')}`,
-      email: `patient${i + 1}@example.com`,
+      email: `${firstName.toLowerCase()}.${lastName1.toLowerCase()}@example.com`,
       phone: `(${Math.floor(Math.random() * 90) + 10}) 9${Math.floor(Math.random() * 9000) + 1000}-${Math.floor(Math.random() * 9000) + 1000}`,
       familyPhone: `(${Math.floor(Math.random() * 90) + 10}) 9${Math.floor(Math.random() * 9000) + 1000}-${Math.floor(Math.random() * 9000) + 1000}`,
       doctorName: `Dr. ${['Silva', 'Santos', 'Oliveira', 'Rodrigues', 'Ferreira'][Math.floor(Math.random() * 5)]}`,
@@ -59,7 +68,7 @@ const generateMockRecords = (): MedicalRecord[] => {
       },
       notes: isRecent ? 'Primeira consulta realizada hoje' : 'Paciente em acompanhamento regular',
       createdAt: createdAt.toISOString(),
-      updatedAt: createdAt.toISOString(), 
+      updatedAt: createdAt.toISOString(),
     });
   }
 
@@ -105,6 +114,7 @@ const MedicalRecords: React.FC = () => {
   const [showAddForm, setShowAddForm] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [isEditing, setIsEditing] = useState(false); 
+  const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null); 
   const recordsPerPage = 10;
 
   useEffect(() => {
@@ -126,8 +136,8 @@ const MedicalRecords: React.FC = () => {
 
   const handleFilter = useCallback(() => {
     const filtered = records.filter(record =>
-      record.patientName.toLowerCase().includes(patientName.toLowerCase()) ||
-      record.patientCPF.includes(patientCPF)
+      record.patientName.toLowerCase().startsWith(patientName.toLowerCase()) ||
+      record.patientCPF.startsWith(patientCPF)
     );
     setFilteredRecords(filtered);
     setShowDescriptions(patientName.length > 0 || patientCPF.length > 0);
@@ -140,11 +150,16 @@ const MedicalRecords: React.FC = () => {
   );
 
   useEffect(() => {
-    debouncedHandleFilter();
+    if (patientName.length > 0 || patientCPF.length > 0) {
+      debouncedHandleFilter();
+    } else {
+      setFilteredRecords(records);
+      setShowDescriptions(false);
+    }
     return () => {
       debouncedHandleFilter.cancel();
     };
-  }, [debouncedHandleFilter]);
+  }, [debouncedHandleFilter, patientName, patientCPF, records]);
 
   const handleSort = (field: keyof MedicalRecord) => {
     setSortField(field);
@@ -159,7 +174,7 @@ const MedicalRecords: React.FC = () => {
 
   const handleEdit = (record: MedicalRecord) => {
     setEditingRecord(record);
-    setIsEditing(true);
+    setIsEditing(true); 
   };
 
   const handleSave = (updatedRecord: MedicalRecord) => {
@@ -227,7 +242,8 @@ const MedicalRecords: React.FC = () => {
     handleSave(editingRecord);
   };
 
-  const handleAddNewRecord = () => {
+  const handleAddNewRecord = (patient?: Patient) => { 
+    setSelectedPatient(patient || null);
     setShowAddForm(true);
   };
 
@@ -259,19 +275,29 @@ const MedicalRecords: React.FC = () => {
     setShowAddForm(false);
   };
 
+
   const indexOfLastRecord = currentPage * recordsPerPage;
   const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
   const currentRecords = filteredRecords.slice(indexOfFirstRecord, indexOfLastRecord);
 
   const paginate = (pageNumber: number) => {
     setCurrentPage(pageNumber);
-    window.scrollTo(0, 0); 
+    window.scrollTo(0, 0);  
   };
 
   const MobileRecordCard: React.FC<{ record: MedicalRecord }> = ({ record }) => (
     <S.MobileCard>
       <S.MobileCardHeader>
-        <S.MobileCardTitle>{record.patientName}</S.MobileCardTitle>
+        <S.MobileCardTitle onClick={() => handleAddNewRecord({ 
+          cpf: record.patientCPF,
+          name: record.patientName,
+          dateOfBirth: record.dateOfBirth,
+          contactPhone: record.phone,
+          familyPhone: record.familyPhone,
+          email: record.email,
+        })}>
+          {record.patientName}
+        </S.MobileCardTitle>
         <S.MobileCardSubtitle>CPF: {record.patientCPF}</S.MobileCardSubtitle>
       </S.MobileCardHeader>
       <S.MobileCardContent>
@@ -344,6 +370,7 @@ const MedicalRecords: React.FC = () => {
           familyPhone: record.familyPhone,
           email: record.email,
         }))}
+        selectedPatient={selectedPatient} 
       />
     );
   }
@@ -523,7 +550,18 @@ const MedicalRecords: React.FC = () => {
                   <S.TableBody>
                     {currentRecords.map((record) => (
                       <S.TableRow key={record.id}>
-                        <S.TableCell>{record.patientName}</S.TableCell>
+                        <S.ClickableTableCell // Updated TableCell to be clickable
+                          onClick={() => handleAddNewRecord({
+                            cpf: record.patientCPF,
+                            name: record.patientName,
+                            dateOfBirth: record.dateOfBirth,
+                            contactPhone: record.phone,
+                            familyPhone: record.familyPhone,
+                            email: record.email,
+                          })}
+                        >
+                          {record.patientName}
+                        </S.ClickableTableCell>
                         <S.TableCell>{record.patientCPF}</S.TableCell>
                         <S.TableCell>{new Date(record.dateOfBirth).toLocaleDateString()}</S.TableCell>
                         <S.TableCell>{record.email}</S.TableCell>

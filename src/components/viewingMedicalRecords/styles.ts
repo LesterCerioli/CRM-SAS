@@ -36,7 +36,6 @@ export const Title = styled.h1`
   font-size: 18px;
   color: #4f98a0;
   margin-bottom: 10px;
-  font-weight: bold;
 `;
 
 export const FilterContainer = styled.div`
@@ -44,7 +43,6 @@ export const FilterContainer = styled.div`
   gap: 10px;
   margin-bottom: 10px;
   flex-wrap: wrap;
-  font-weight: bold;
   @media (max-width: 768px) {
     flex-direction: column;
   }
@@ -59,7 +57,6 @@ export const NewPatientButton = styled.button`
   text-decoration: none;
   display: inline-block;
   font-size: 12px;
-  font-weight: bold;
   margin: 2px 2px;
   cursor: pointer;
   border-radius: 4px;
@@ -70,7 +67,6 @@ export const InputGroup = styled.div`
   flex-direction: column;
   flex: 1;
   min-width: 150px;
-  font-weight: bold;
   @media (max-width: 768px) {
     width: 100%;
     margin-bottom: 10px;
@@ -81,7 +77,6 @@ export const Label = styled.label`
   font-size: 12px;
   margin-bottom: 2px;
   color: white;
-  font-weight: bold;
 `;
 
 export const Input = styled.input`
@@ -90,12 +85,10 @@ export const Input = styled.input`
   border-radius: 4px;
   font-size: 14px;
   color: black;
-  font-weight: bold;
 
   @media (max-width: 768px) {
     font-size: 16px;
     padding: 8px;
-    font-weight: bold;
     &::placeholder {
       font-size: 14px;
       white-space: nowrap;
@@ -109,25 +102,21 @@ export const TableWrapper = styled.div<{ $showDescriptions: boolean }>`
   overflow: hidden;
   transition: max-height 0.3s ease-in-out;
   margin-top: 1rem;
-  font-weight: bold;
 `;
 
 export const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
   font-size: 10px;
- font-weight: bold;
 `;
 
 export const TableHeader = styled.thead`
   background-color: #ff7f50;
   position: sticky;
   top: 0;
-  font-weight: bold;
 `;
 
 export const TableRow = styled.tr`
- font-weight: bold;
   &:nth-child(even) {
     background-color: #ff7f50;
   }
@@ -154,11 +143,19 @@ export const TableCell = styled.td`
   position: relative;
   vertical-align: middle;
   word-break: break-word;
-  font-weight: bold;
 
   @media (max-width: 768px) {
     font-size: 12px;
     padding: 4px 2px;
+  }
+`;
+
+export const ClickableTableCell = styled(TableCell)`
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
   }
 `;
 
@@ -176,7 +173,6 @@ export const TruncatedText = styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-weight: bold;
 `;
 
 export const NotesCell = styled(TruncatedText)`
@@ -453,7 +449,7 @@ export const DoctorSuggestionItem = styled.li`
 `;
 
 export const EditFormContainer = styled.div`
-  background-color: #ffa573;
+  background-color: #ff6a33; 
   border-radius: 8px;
   padding: 20px;
   margin-bottom: 20px;
@@ -554,6 +550,12 @@ export const MobileCardHeader = styled.div`
 export const MobileCardTitle = styled.h3`
   margin: 0;
   font-size: 18px;
+  cursor: pointer;
+  transition: color 0.3s;
+
+  &:hover {
+    color: #4f98a0;
+  }
 `;
 
 export const MobileCardSubtitle = styled.p`
@@ -589,5 +591,11 @@ export const MobileCardFooter = styled.div`
   background-color: #ff7f50;
   display: flex;
   justify-content: flex-end;
+`;
+
+export const SignatureSavedMessage = styled.p`
+  color: #4CAF50;
+  font-size: 14px;
+  margin-top: 5px;
 `;
 

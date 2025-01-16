@@ -11,7 +11,7 @@ export const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: 50vh;
+  min-height: 100vh;
 `;
 
 export const FormTitle = styled.h2`

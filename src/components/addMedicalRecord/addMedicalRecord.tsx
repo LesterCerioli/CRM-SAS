@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import * as S from './styles';
+import * as S from './addMedicalRecordStyles';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -18,6 +18,7 @@ interface AddMedicalRecordProps {
   onSave: (patient: Patient) => void;
   onCancel: () => void;
   existingPatients: Patient[];
+  selectedPatient?: Patient | null;
 }
 
 const patientSchema = z.object({
@@ -31,11 +32,20 @@ const patientSchema = z.object({
 
 type PatientFormData = z.infer<typeof patientSchema>;
 
-const AddMedicalRecord: React.FC<AddMedicalRecordProps> = ({ onSave, onCancel, existingPatients }) => {
+const AddMedicalRecord: React.FC<AddMedicalRecordProps> = ({ onSave, onCancel, existingPatients, selectedPatient }) => {
   const [saveError, setSaveError] = useState<string | null>(null);
   const { register, handleSubmit, formState: { errors }, setValue, watch, reset } = useForm<PatientFormData>({
     resolver: zodResolver(patientSchema),
+    defaultValues: selectedPatient || {}
   });
+
+  useEffect(() => {
+    if (selectedPatient) {
+      Object.entries(selectedPatient).forEach(([key, value]) => {
+        setValue(key as keyof PatientFormData, value);
+      });
+    }
+  }, [selectedPatient, setValue]);
 
   const cpf = watch('cpf');
 
@@ -43,7 +53,7 @@ const AddMedicalRecord: React.FC<AddMedicalRecordProps> = ({ onSave, onCancel, e
     if (cpf && cpf.length === 11) {
       fetchPatientData(cpf);
     }
-  }, );
+  }, [cpf]);
 
   const fetchPatientData = async (cpf: string) => {
     try {
