@@ -3,6 +3,7 @@ import React, { useState, useEffect, useCallback, useMemo, useRef } from "react"
 import * as S from "./styles";
 import AddMedicalRecord from "../addMedicalRecord/addMedicalRecord";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import LaboratoryModule from '../laboratoryModule/laboratoryModule';
 
 interface MedicalRecord {
   id: string;
@@ -33,14 +34,13 @@ interface Patient {
   email: string;
 }
 
-// Generate 1200 mock medical records
+
 const generateMockRecords = (): MedicalRecord[] => {
   const records: MedicalRecord[] = [];
   const now = new Date();
-  const twentyFourHoursAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
 
-  const firstNames = ['Carlos', 'Maria', 'João', 'Ana', 'Pedro', 'Luisa', 'Fernando', 'Mariana', 'Ricardo', 'Camila'];
-  const lastNames = ['Silva', 'Santos', 'Oliveira', 'Pereira', 'Ferreira', 'Rodrigues', 'Almeida', 'Costa', 'Carvalho', 'Gomes'];
+  const firstNames = ['Carlos', 'Maria', 'João', 'Ana', 'Pedro', 'Luisa', 'Fernando', 'Mariana', 'Ricardo', 'Camila', 'José', 'Beatriz', 'Antônio', 'Isabela', 'Francisco', 'Laura', 'Paulo', 'Juliana', 'Lucas', 'Fernanda'];
+  const lastNames = ['Silva', 'Santos', 'Oliveira', 'Pereira', 'Ferreira', 'Rodrigues', 'Almeida', 'Costa', 'Carvalho', 'Gomes', 'Martins', 'Araújo', 'Melo', 'Barbosa', 'Sousa', 'Ribeiro', 'Alves', 'Monteiro', 'Mendes', 'Cardoso'];
 
   for (let i = 0; i < 1200; i++) {
     const isRecent = i < 5;
@@ -61,7 +61,7 @@ const generateMockRecords = (): MedicalRecord[] => {
       email: `${firstName.toLowerCase()}.${lastName1.toLowerCase()}@example.com`,
       phone: `(${Math.floor(Math.random() * 90) + 10}) 9${Math.floor(Math.random() * 9000) + 1000}-${Math.floor(Math.random() * 9000) + 1000}`,
       familyPhone: `(${Math.floor(Math.random() * 90) + 10}) 9${Math.floor(Math.random() * 9000) + 1000}-${Math.floor(Math.random() * 9000) + 1000}`,
-      doctorName: `Dr. ${['Silva', 'Santos', 'Oliveira', 'Rodrigues', 'Ferreira'][Math.floor(Math.random() * 5)]}`,
+      doctorName: `Dr. ${lastNames[Math.floor(Math.random() * lastNames.length)]}`,
       diagnosis: ['Hipertensão', 'Diabetes Tipo 2', 'Artrite Reumatoide', 'Asma', 'Depressão'][Math.floor(Math.random() * 5)],
       treatmentPlan: {
         description: isRecent ? 'Novo paciente - Em avaliação' : 'Tratamento em andamento',
@@ -114,8 +114,8 @@ const MedicalRecords: React.FC = () => {
   const [doctorSuggestions, setDoctorSuggestions] = useState<string[]>([]);
   const [showAddForm, setShowAddForm] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [isEditing, setIsEditing] = useState(false); // Added state for editing
-  const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null); // Added state for selected patient
+  const [isEditing, setIsEditing] = useState(false); 
+  const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null); 
   const recordsPerPage = 10;
   const [signature, setSignature] = useState<string | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -139,12 +139,17 @@ const MedicalRecords: React.FC = () => {
   };
 
   const handleFilter = useCallback(() => {
+    const searchTerm = (patientName + patientCPF).toLowerCase();
     const filtered = records.filter(record =>
-      record.patientName.toLowerCase().startsWith(patientName.toLowerCase()) ||
-      record.patientCPF.startsWith(patientCPF)
+      record.patientName.toLowerCase().includes(searchTerm) ||
+      record.patientCPF.includes(searchTerm) ||
+      record.email.toLowerCase().includes(searchTerm) ||
+      record.phone.includes(searchTerm) ||
+      record.familyPhone.includes(searchTerm) ||
+      record.doctorName.toLowerCase().includes(searchTerm)
     );
     setFilteredRecords(filtered);
-    setShowDescriptions(patientName.length > 0 || patientCPF.length > 0);
+    setShowDescriptions(searchTerm.length > 0);
     setCurrentPage(1);
   }, [records, patientName, patientCPF]);
 
@@ -155,21 +160,18 @@ const MedicalRecords: React.FC = () => {
 
   useEffect(() => {
     if (patientName.length > 0 || patientCPF.length > 0) {
-      debouncedHandleFilter();
+      handleFilter();
     } else {
-      setFilteredRecords(records);
+      setFilteredRecords([]);
       setShowDescriptions(false);
     }
-    return () => {
-      debouncedHandleFilter.cancel();
-    };
-  }, [debouncedHandleFilter, patientName, patientCPF, records]);
+  }, [handleFilter, patientName, patientCPF]);
 
   const handleSort = (field: keyof MedicalRecord) => {
     setSortField(field);
     setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     const sorted = [...filteredRecords].sort((a, b) => {
-      
+     
       return 0;
     });
     setFilteredRecords(sorted);
@@ -177,7 +179,7 @@ const MedicalRecords: React.FC = () => {
 
   const handleEdit = (record: MedicalRecord) => {
     setEditingRecord(record);
-    setIsEditing(true); // Set isEditing to true when editing starts
+    setIsEditing(true); 
   };
 
   const handleSave = (updatedRecord: MedicalRecord) => {
@@ -187,12 +189,12 @@ const MedicalRecords: React.FC = () => {
     setRecords(updatedRecords);
     setFilteredRecords(updatedRecords);
     setEditingRecord(null);
-    setIsEditing(false); // Set isEditing to false after saving
+    setIsEditing(false); 
   };
 
   const handleCancel = () => {
     setEditingRecord(null);
-    setIsEditing(false); // Set isEditing to false after canceling
+    setIsEditing(false); 
   };
 
   const isEditable = (record: MedicalRecord) => {
@@ -250,7 +252,7 @@ const MedicalRecords: React.FC = () => {
     setSignature(null);
   };
 
-  const handleAddNewRecord = (patient?: Patient) => { // Modified to accept optional patient
+  const handleAddNewRecord = (patient?: Patient) => { 
     setSelectedPatient(patient || null);
     setShowAddForm(true);
   };
@@ -290,13 +292,13 @@ const MedicalRecords: React.FC = () => {
 
   const paginate = (pageNumber: number) => {
     setCurrentPage(pageNumber);
-    window.scrollTo(0, 0);  // Scroll to top when changing pages
+    window.scrollTo(0, 0);  
   };
 
   const MobileRecordCard: React.FC<{ record: MedicalRecord }> = ({ record }) => (
     <S.MobileCard>
       <S.MobileCardHeader>
-        <S.MobileCardTitle onClick={() => handleAddNewRecord({ // Updated MobileCardTitle to be clickable
+        <S.MobileCardTitle onClick={() => handleAddNewRecord({ 
           cpf: record.patientCPF,
           name: record.patientName,
           dateOfBirth: record.dateOfBirth,
@@ -431,309 +433,293 @@ const MedicalRecords: React.FC = () => {
           familyPhone: record.familyPhone,
           email: record.email,
         }))}
-        selectedPatient={selectedPatient} // Passando o paciente selecionado
+        selectedPatient={selectedPatient} 
       />
     );
   }
 
   return (
     <S.Container>
-      <S.FormWrapper $isExpanded={patientName.length > 0 || patientCPF.length > 0}>
-        <S.Header>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-            <S.Title>Prontuários Médicos</S.Title>
-            <S.NewPatientButton onClick={handleAddNewRecord}>
-              + Novo Prontuário
-            </S.NewPatientButton>
-          </div>
-          <S.FilterContainer>
-            <S.InputGroup>
-              <S.Label>Nome do Paciente:</S.Label>
-              <S.Input
-                type="text"
-                value={patientName}
-                onChange={(e) => setPatientName(e.target.value)}
-                placeholder="Digite o nome do paciente"
-              />
-            </S.InputGroup>
-            <S.InputGroup>
-              <S.Label>CPF do Paciente:</S.Label>
-              <S.Input
-                type="text"
-                value={patientCPF}
-                onChange={(e) => setPatientCPF(e.target.value)}
-                placeholder="Digite o CPF do paciente"
-              />
-            </S.InputGroup>
-          </S.FilterContainer>
-        </S.Header>
-        {isEditing && editingRecord && (
-          <S.EditFormContainer>
-            <S.FormTitle>Editar Prontuário</S.FormTitle>
-            <S.EditFormGrid>
-              <S.FormColumn>
-                <S.FormGroup>
-                  <S.FormLabel>Nome do Paciente:</S.FormLabel>
-                  <S.ReadOnlyInput type="text" value={editingRecord.patientName} readOnly />
-                </S.FormGroup>
-                <S.FormGroup>
-                  <S.FormLabel>CPF:</S.FormLabel>
-                  <S.ReadOnlyInput type="text" value={editingRecord.patientCPF} readOnly />
-                </S.FormGroup>
-                <S.FormGroup>
-                  <S.FormLabel>Data de Nascimento:</S.FormLabel>
-                  <S.ReadOnlyInput type="text" value={editingRecord.dateOfBirth} readOnly />
-                </S.FormGroup>
-                <S.FormGroup>
-                  <S.FormLabel>Telefone:</S.FormLabel>
-                  <S.ReadOnlyInput type="text" value={editingRecord.phone} readOnly />
-                </S.FormGroup>
-                <S.FormGroup>
-                  <S.FormLabel>Telefone Familiar:</S.FormLabel>
-                  <S.ReadOnlyInput type="text" value={editingRecord.familyPhone} readOnly />
-                </S.FormGroup>
-              </S.FormColumn>
-              <S.FormColumn>
-                <S.FormGroup>
-                  <S.FormLabel>Nome do Médico:</S.FormLabel>
-                  <S.DoctorInputWrapper>
+      <div style={{ display: 'flex', width: '100%' }}>
+        <S.FormWrapper $isExpanded={patientName.length > 0 || patientCPF.length > 0}>
+          <S.Header>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+              <S.Title>Prontuários Médicos</S.Title>
+              <S.NewPatientButton >
+                + Novo Prontuário
+              </S.NewPatientButton>
+            </div>
+            <S.FilterContainer>
+              <S.InputGroup>
+                <S.Label>Nome do Paciente:</S.Label>
+                <S.Input
+                  type="text"
+                  value={patientName}
+                  onChange={(e) => setPatientName(e.target.value)}
+                  placeholder="Digite o nome do paciente"
+                />
+              </S.InputGroup>
+              <S.InputGroup>
+                <S.Label>CPF do Paciente:</S.Label>
+                <S.Input
+                  type="text"
+                  value={patientCPF}
+                  onChange={(e) => setPatientCPF(e.target.value)}
+                  placeholder="Digite o CPF do paciente"
+                />
+              </S.InputGroup>
+            </S.FilterContainer>
+          </S.Header>
+          {isEditing && editingRecord && (
+            <S.EditFormContainer>
+              <S.FormTitle>Editar Prontuário</S.FormTitle>
+              <S.EditFormGrid>
+                <S.FormColumn>
+                  <S.FormGroup>
+                    <S.FormLabel>Nome do Paciente:</S.FormLabel>
+                    <S.ReadOnlyInput type="text" value={editingRecord.patientName} readOnly />
+                  </S.FormGroup>
+                  <S.FormGroup>
+                    <S.FormLabel>CPF:</S.FormLabel>
+                    <S.ReadOnlyInput type="text" value={editingRecord.patientCPF} readOnly />
+                  </S.FormGroup>
+                  <S.FormGroup>
+                    <S.FormLabel>Data de Nascimento:</S.FormLabel>
+                    <S.ReadOnlyInput type="text" value={editingRecord.dateOfBirth} readOnly />
+                  </S.FormGroup>
+                  <S.FormGroup>
+                    <S.FormLabel>Telefone:</S.FormLabel>
+                    <S.ReadOnlyInput type="text" value={editingRecord.phone} readOnly />
+                  </S.FormGroup>
+                  <S.FormGroup>
+                    <S.FormLabel>Telefone Familiar:</S.FormLabel>
+                    <S.ReadOnlyInput type="text" value={editingRecord.familyPhone} readOnly />
+                  </S.FormGroup>
+                </S.FormColumn>
+                <S.FormColumn>
+                  <S.FormGroup>
+                    <S.FormLabel>Nome do Médico:</S.FormLabel>
+                    <S.DoctorInputWrapper>
+                      <S.Input
+                        type="text"
+                        name="doctorName"
+                        value={editingRecord.doctorName}
+                        onChange={handleInputChange}
+                        placeholder="Digite o nome do médico"
+                      />
+                      {doctorSuggestions.length > 0 && (
+                        <S.DoctorSuggestions>
+                          {doctorSuggestions.map((doctor, index) => (
+                            <S.DoctorSuggestionItem
+                              key={index}
+                              onClick={() => handleDoctorSelect(doctor)}
+                            >
+                              {doctor}
+                            </S.DoctorSuggestionItem>
+                          ))}
+                        </S.DoctorSuggestions>
+                      )}
+                    </S.DoctorInputWrapper>
+                  </S.FormGroup>
+                  <S.FormGroup>
+                    <S.FormLabel>Diagnóstico:</S.FormLabel>
                     <S.Input
                       type="text"
-                      name="doctorName"
-                      value={editingRecord.doctorName}
+                      name="diagnosis"
+                      value={editingRecord.diagnosis}
                       onChange={handleInputChange}
-                      placeholder="Digite o nome do médico"
                     />
-                    {doctorSuggestions.length > 0 && (
-                      <S.DoctorSuggestions>
-                        {doctorSuggestions.map((doctor, index) => (
-                          <S.DoctorSuggestionItem
-                            key={index}
-                            onClick={() => handleDoctorSelect(doctor)}
-                          >
-                            {doctor}
-                          </S.DoctorSuggestionItem>
+                  </S.FormGroup>
+                  <S.FormGroup>
+                    <S.FormLabel>Medicamentos:</S.FormLabel>
+                    <S.Input
+                      type="text"
+                      name="medications"
+                      value={editingRecord.treatmentPlan.medications.join(", ")}
+                      onChange={(e) => {
+                        const medicationsArray = e.target.value.split(", ");
+                        if (editingRecord) {
+                          setEditingRecord(prev =>
+                            prev ? {
+                              ...prev,
+                              treatmentPlan: {
+                                ...prev.treatmentPlan,
+                                medications: medicationsArray,
+                              },
+                            } : null
+                          );
+                        }
+                      }}
+                    />
+                  </S.FormGroup>
+                  <S.FormGroup>
+                    <S.FormLabel>Plano de Tratamento:</S.FormLabel>
+                    <S.TextArea
+                      name="description"
+                      value={editingRecord.treatmentPlan.description}
+                      onChange={handleTreatmentPlanChange}
+                      rows={3}
+                    />
+                  </S.FormGroup>
+                  <S.FormGroup>
+                    <S.FormLabel>Observações (obrigatório):</S.FormLabel>
+                    <S.TextArea
+                      name="notes"
+                      value={editingRecord.notes}
+                      onChange={handleInputChange}
+                      required
+                      rows={3}
+                    />
+                  </S.FormGroup>
+                  <S.FormGroup>
+                    <S.FormLabel>Assinatura do Médico:</S.FormLabel>
+                    <S.SignatureCanvas
+                      ref={canvasRef}
+                      width={400}
+                      height={200}
+                      onMouseDown={startDrawing}
+                      onMouseMove={draw}
+                      onMouseUp={stopDrawing}
+                      onMouseLeave={stopDrawing}
+                      onTouchStart={startDrawing}
+                      onTouchMove={draw}
+                      onTouchEnd={stopDrawing}
+                    />
+                    <S.SignatureButtonGroup>
+                      <S.SignatureButton onClick={clearSignature}>Limpar</S.SignatureButton>
+                      <S.SignatureButton onClick={saveSignature}>Salvar</S.SignatureButton>
+                    </S.SignatureButtonGroup>
+                    {signature && <S.SignatureSaved>Assinatura salva</S.SignatureSaved>}
+                  </S.FormGroup>
+                </S.FormColumn>
+              </S.EditFormGrid>
+              <S.FormFooter>
+                <S.FormGroup>
+                  <S.FormLabel>Data de Criação:</S.FormLabel>
+                  <S.ReadOnlyInput type="text" value={new Date(editingRecord.createdAt).toLocaleString()} readOnly />
+                </S.FormGroup>
+                <S.FormGroup>
+                  <S.FormLabel>Data de Atualização:</S.FormLabel>
+                  <S.ReadOnlyInput type="text" value={new Date(editingRecord.updatedAt).toLocaleString()} readOnly />
+                </S.FormGroup>
+                <S.ButtonGroup>
+                  <S.SaveButton onClick={handleSaveEdit}>Salvar</S.SaveButton>
+                  <S.CancelButton onClick={handleCancel}>Cancelar</S.CancelButton>
+                </S.ButtonGroup>
+              </S.FormFooter>
+            </S.EditFormContainer>
+          )}
+          {!isEditing && (
+            <S.TableWrapper $showDescriptions={showDescriptions}>
+              <S.DesktopView>
+                {(patientName.length > 0 || patientCPF.length > 0) && (
+                  filteredRecords.length > 0 ? (
+                    <S.Table>
+                      <S.TableHeader>
+                        <S.TableRow>
+                          <S.TableHeaderCell>Nome</S.TableHeaderCell>
+                          <S.TableHeaderCell>CPF</S.TableHeaderCell>
+                          <S.TableHeaderCell>Nasc.</S.TableHeaderCell>
+                          <S.TableHeaderCell>Email</S.TableHeaderCell>
+                          <S.TableHeaderCell>Tel.</S.TableHeaderCell>
+                          <S.TableHeaderCell>Tel. Familiar</S.TableHeaderCell>
+                          <S.TableHeaderCell>Médico</S.TableHeaderCell>
+                          <S.TableHeaderCell>Diag.</S.TableHeaderCell>
+                          <S.TableHeaderCell>Trat.</S.TableHeaderCell>
+                          <S.TableHeaderCell>Obs.</S.TableHeaderCell>
+                          <S.TableHeaderCell>Criação</S.TableHeaderCell>
+                          <S.TableHeaderCell>Atual.</S.TableHeaderCell>
+                          <S.TableHeaderCell>Ações</S.TableHeaderCell>
+                        </S.TableRow>
+                      </S.TableHeader>
+                      <S.TableBody>
+                        {currentRecords.map((record) => (
+                          <S.TableRow key={record.id}>
+                            <S.ClickableTableCell // Updated TableCell to be clickable
+                              onClick={() => handleAddNewRecord({
+                                cpf: record.patientCPF,
+                                name: record.patientName,
+                                dateOfBirth: record.dateOfBirth,
+                                contactPhone: record.phone,
+                                familyPhone: record.familyPhone,
+                                email: record.email,
+                              })}
+                            >
+                              {record.patientName}
+                            </S.ClickableTableCell>
+                            <S.TableCell>{record.patientCPF}</S.TableCell>
+                            <S.TableCell>{new Date(record.dateOfBirth).toLocaleDateString()}</S.TableCell>
+                            <S.TableCell>{record.email}</S.TableCell>
+                            <S.TableCell>{record.phone}</S.TableCell>
+                            <S.TableCell>{record.familyPhone}</S.TableCell>
+                            <S.TableCell>{record.doctorName}</S.TableCell>
+                            <S.TableCell>
+                              <S.TooltipContainer>
+                                <S.TruncatedText>{record.diagnosis}</S.TruncatedText>
+                                <S.Tooltip>{record.diagnosis}</S.Tooltip>
+                              </S.TooltipContainer>
+                            </S.TableCell>
+                            <S.TableCell>
+                              <S.TooltipContainer>
+                                <S.TreatmentCell>
+                                  {record.treatmentPlan.description}
+                                  <br />
+                                  Med: {record.treatmentPlan.medications.join(", ")}
+                                </S.TreatmentCell>
+                                <S.Tooltip>
+                                  {record.treatmentPlan.description}
+                                  <br />
+                                  Medicamentos: {record.treatmentPlan.medications.join(", ")}
+                                </S.Tooltip>
+                              </S.TooltipContainer>
+                            </S.TableCell>
+                            <S.TableCell>
+                              <S.TooltipContainer>
+                                <S.NotesCell>{record.notes}</S.NotesCell>
+                                <S.Tooltip>{record.notes}</S.Tooltip>
+                              </S.TooltipContainer>
+                            </S.TableCell>
+                            <S.TableCell>{new Date(record.createdAt).toLocaleDateString()}</S.TableCell>
+                            <S.TableCell>{new Date(record.updatedAt).toLocaleDateString()}</S.TableCell>
+                            <S.TableCell>
+                              <S.EditButton onClick={() => handleEdit(record)}>
+                                Editar
+                              </S.EditButton>
+                            </S.TableCell>
+                          </S.TableRow>
                         ))}
-                      </S.DoctorSuggestions>
-                    )}
-                  </S.DoctorInputWrapper>
-                </S.FormGroup>
-                <S.FormGroup>
-                  <S.FormLabel>Diagnóstico:</S.FormLabel>
-                  <S.Input
-                    type="text"
-                    name="diagnosis"
-                    value={editingRecord.diagnosis}
-                    onChange={handleInputChange}
-                  />
-                </S.FormGroup>
-                <S.FormGroup>
-                  <S.FormLabel>Medicamentos:</S.FormLabel>
-                  <S.Input
-                    type="text"
-                    name="medications"
-                    value={editingRecord.treatmentPlan.medications.join(", ")}
-                    onChange={(e) => {
-                      const medicationsArray = e.target.value.split(", ");
-                      if (editingRecord) {
-                        setEditingRecord(prev =>
-                          prev ? {
-                            ...prev,
-                            treatmentPlan: {
-                              ...prev.treatmentPlan,
-                              medications: medicationsArray,
-                            },
-                          } : null
-                        );
-                      }
-                    }}
-                  />
-                </S.FormGroup>
-                <S.FormGroup>
-                  <S.FormLabel>Plano de Tratamento:</S.FormLabel>
-                  <S.TextArea
-                    name="description"
-                    value={editingRecord.treatmentPlan.description}
-                    onChange={handleTreatmentPlanChange}
-                    rows={3}
-                  />
-                </S.FormGroup>
-                <S.FormGroup>
-                  <S.FormLabel>Observações (obrigatório):</S.FormLabel>
-                  <S.TextArea
-                    name="notes"
-                    value={editingRecord.notes}
-                    onChange={handleInputChange}
-                    required
-                    rows={3}
-                  />
-                </S.FormGroup>
-                <S.FormGroup>
-                  <S.FormLabel>Assinatura do Médico:</S.FormLabel>
-                  <S.SignatureCanvas
-                    ref={canvasRef}
-                    width={400}
-                    height={200}
-                    onMouseDown={startDrawing}
-                    onMouseMove={draw}
-                    onMouseUp={stopDrawing}
-                    onMouseLeave={stopDrawing}
-                    onTouchStart={startDrawing}
-                    onTouchMove={draw}
-                    onTouchEnd={stopDrawing}
-                  />
-                  <S.SignatureButtonGroup>
-                    <S.SignatureButton onClick={clearSignature}>Limpar</S.SignatureButton>
-                    <S.SignatureButton onClick={saveSignature}>Salvar</S.SignatureButton>
-                  </S.SignatureButtonGroup>
-                  {signature && <S.SignatureSaved>Assinatura salva</S.SignatureSaved>}
-                </S.FormGroup>
-              </S.FormColumn>
-            </S.EditFormGrid>
-            <S.FormFooter>
-              <S.FormGroup>
-                <S.FormLabel>Data de Criação:</S.FormLabel>
-                <S.ReadOnlyInput type="text" value={new Date(editingRecord.createdAt).toLocaleString()} readOnly />
-              </S.FormGroup>
-              <S.FormGroup>
-                <S.FormLabel>Data de Atualização:</S.FormLabel>
-                <S.ReadOnlyInput type="text" value={new Date(editingRecord.updatedAt).toLocaleString()} readOnly />
-              </S.FormGroup>
-              <S.ButtonGroup>
-                <S.SaveButton onClick={handleSaveEdit}>Salvar</S.SaveButton>
-                <S.CancelButton onClick={handleCancel}>Cancelar</S.CancelButton>
-              </S.ButtonGroup>
-            </S.FormFooter>
-          </S.EditFormContainer>
+                      </S.TableBody>
+                    </S.Table>
+                  ) : (
+                    <S.EmptyMessage>Nenhum prontuário encontrado.</S.EmptyMessage>
+                  )
+                )}
+              </S.DesktopView>
+              <S.MobileView>
+                {(patientName.length > 0 || patientCPF.length > 0) && (
+                  filteredRecords.length > 0 ? (
+                    currentRecords.map((record) => (
+                      <MobileRecordCard key={record.id} record={record} />
+                    ))
+                  ) : (
+                    <S.EmptyMessage>Nenhum prontuário encontrado.</S.EmptyMessage>
+                  )
+                )}
+              </S.MobileView>
+            </S.TableWrapper>
+          )}
+          
+        </S.FormWrapper>
+        {(patientName.length > 0 || patientCPF.length > 0) && (
+          <LaboratoryModule
+            patientId={editingRecord?.id}
+            onUpload={async (file, type) => {
+              // Here you would implement the file upload logic
+              console.log('Uploading file:', file, 'type:', type);
+            }}
+          />
         )}
-        {!isEditing && (
-          <S.TableWrapper $showDescriptions={showDescriptions}>
-            <S.DesktopView>
-              {showDescriptions ? (
-                <S.Table>
-                  <S.TableHeader>
-                    <S.TableRow>
-                      <S.TableHeaderCell>Nome</S.TableHeaderCell>
-                      <S.TableHeaderCell>CPF</S.TableHeaderCell>
-                      <S.TableHeaderCell>Nasc.</S.TableHeaderCell>
-                      <S.TableHeaderCell>Email</S.TableHeaderCell>
-                      <S.TableHeaderCell>Tel.</S.TableHeaderCell>
-                      <S.TableHeaderCell>Tel. Familiar</S.TableHeaderCell>
-                      <S.TableHeaderCell>Médico</S.TableHeaderCell>
-                      <S.TableHeaderCell>Diag.</S.TableHeaderCell>
-                      <S.TableHeaderCell>Trat.</S.TableHeaderCell>
-                      <S.TableHeaderCell>Obs.</S.TableHeaderCell>
-                      <S.TableHeaderCell>Criação</S.TableHeaderCell>
-                      <S.TableHeaderCell>Atual.</S.TableHeaderCell>
-                      <S.TableHeaderCell>Ações</S.TableHeaderCell>
-                    </S.TableRow>
-                  </S.TableHeader>
-                  <S.TableBody>
-                    {currentRecords.map((record) => (
-                      <S.TableRow key={record.id}>
-                        <S.ClickableTableCell 
-                          onClick={() => handleAddNewRecord({
-                            cpf: record.patientCPF,
-                            name: record.patientName,
-                            dateOfBirth: record.dateOfBirth,
-                            contactPhone: record.phone,
-                            familyPhone: record.familyPhone,
-                            email: record.email,
-                          })}
-                        >
-                          {record.patientName}
-                        </S.ClickableTableCell>
-                        <S.TableCell>{record.patientCPF}</S.TableCell>
-                        <S.TableCell>{new Date(record.dateOfBirth).toLocaleDateString()}</S.TableCell>
-                        <S.TableCell>{record.email}</S.TableCell>
-                        <S.TableCell>{record.phone}</S.TableCell>
-                        <S.TableCell>{record.familyPhone}</S.TableCell>
-                        <S.TableCell>{record.doctorName}</S.TableCell>
-                        <S.TableCell>
-                          <S.TooltipContainer>
-                            <S.TruncatedText>{record.diagnosis}</S.TruncatedText>
-                            <S.Tooltip>{record.diagnosis}</S.Tooltip>
-                          </S.TooltipContainer>
-                        </S.TableCell>
-                        <S.TableCell>
-                          <S.TooltipContainer>
-                            <S.TreatmentCell>
-                              {record.treatmentPlan.description}
-                              <br />
-                              Med: {record.treatmentPlan.medications.join(", ")}
-                            </S.TreatmentCell>
-                            <S.Tooltip>
-                              {record.treatmentPlan.description}
-                              <br />
-                              Medicamentos: {record.treatmentPlan.medications.join(", ")}
-                            </S.Tooltip>
-                          </S.TooltipContainer>
-                        </S.TableCell>
-                        <S.TableCell>
-                          <S.TooltipContainer>
-                            <S.NotesCell>{record.notes}</S.NotesCell>
-                            <S.Tooltip>{record.notes}</S.Tooltip>
-                          </S.TooltipContainer>
-                        </S.TableCell>
-                        <S.TableCell>{new Date(record.createdAt).toLocaleDateString()}</S.TableCell>
-                        <S.TableCell>{new Date(record.updatedAt).toLocaleDateString()}</S.TableCell>
-                        <S.TableCell>
-                          <S.EditButton onClick={() => handleEdit(record)}>
-                            Editar
-                          </S.EditButton>
-                        </S.TableCell>
-                      </S.TableRow>
-                    ))}
-                  </S.TableBody>
-                </S.Table>
-              ) : (
-                <S.EmptyTable />
-              )}
-            </S.DesktopView>
-            <S.MobileView>
-              {showDescriptions && currentRecords.map((record) => (
-                <MobileRecordCard key={record.id} record={record} />
-              ))}
-            </S.MobileView>
-          </S.TableWrapper>
-        )}
-        {showDescriptions && !isEditing && (
-          <S.PaginationContainer>
-            <S.PaginationButton
-              onClick={() => paginate(currentPage - 1)}
-              disabled={currentPage === 1}
-            >
-              <ChevronLeft />
-            </S.PaginationButton>
-            {[...Array(Math.min(5, Math.ceil(filteredRecords.length / recordsPerPage)))].map((_, i) => (
-              <S.PaginationButton
-                key={i}
-                onClick={() => paginate(i + 1)}
-                disabled={currentPage === i + 1}
-              >
-                {i + 1}
-              </S.PaginationButton>
-            ))}
-            {Math.ceil(filteredRecords.length / recordsPerPage) > 5 && (
-              <S.PaginationEllipsis>...</S.PaginationEllipsis>
-            )}
-            {Math.ceil(filteredRecords.length / recordsPerPage) > 5 && (
-              <S.PaginationButton
-                onClick={() => paginate(Math.ceil(filteredRecords.length / recordsPerPage))}
-                disabled={currentPage === Math.ceil(filteredRecords.length / recordsPerPage)}
-              >
-                {Math.ceil(filteredRecords.length / recordsPerPage)}
-              </S.PaginationButton>
-            )}
-            <S.PaginationButton
-              onClick={() => paginate(currentPage + 1)}
-              disabled={currentPage === Math.ceil(filteredRecords.length / recordsPerPage)}
-            >
-              <ChevronRight />
-            </S.PaginationButton>
-          </S.PaginationContainer>
-        )}
-      </S.FormWrapper>
+      </div>
     </S.Container>
   );
 };

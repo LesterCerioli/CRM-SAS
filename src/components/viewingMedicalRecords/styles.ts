@@ -36,14 +36,12 @@ export const Title = styled.h1`
   font-size: 18px;
   color: #4f98a0;
   margin-bottom: 10px;
-  font-weight: bold;
 `;
 
 export const FilterContainer = styled.div`
   display: flex;
   gap: 10px;
   margin-bottom: 10px;
-  font-weight: bold;
   flex-wrap: wrap;
   @media (max-width: 768px) {
     flex-direction: column;
@@ -62,7 +60,6 @@ export const NewPatientButton = styled.button`
   margin: 2px 2px;
   cursor: pointer;
   border-radius: 4px;
-  font-weight: bold;
 `;
 
 export const InputGroup = styled.div`
@@ -70,7 +67,6 @@ export const InputGroup = styled.div`
   flex-direction: column;
   flex: 1;
   min-width: 150px;
-  font-weight: bold;
   @media (max-width: 768px) {
     width: 100%;
     margin-bottom: 10px;
@@ -81,7 +77,6 @@ export const Label = styled.label`
   font-size: 12px;
   margin-bottom: 2px;
   color: white;
-  font-weight: bold;
 `;
 
 export const Input = styled.input`
@@ -90,7 +85,6 @@ export const Input = styled.input`
   border-radius: 4px;
   font-size: 14px;
   color: black;
-  font-weight: bold;
 
   @media (max-width: 768px) {
     font-size: 16px;
@@ -108,25 +102,21 @@ export const TableWrapper = styled.div<{ $showDescriptions: boolean }>`
   overflow: hidden;
   transition: max-height 0.3s ease-in-out;
   margin-top: 1rem;
-  font-weight: bold;
 `;
 
 export const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
   font-size: 10px;
-  font-weight: bold;
 `;
 
 export const TableHeader = styled.thead`
   background-color: #ff7f50;
   position: sticky;
   top: 0;
-  font-weight: bold;
 `;
 
 export const TableRow = styled.tr`
-font-weight: bold;
   &:nth-child(even) {
     background-color: #ff7f50;
   }
@@ -139,7 +129,6 @@ export const TableHeaderCell = styled.th`
   font-weight: bold;
   cursor: pointer;
   color: white;
-  font-weight: bold;
   &:hover {
     background-color: rgba(255, 255, 255, 0.1);
   }
@@ -154,7 +143,6 @@ export const TableCell = styled.td`
   position: relative;
   vertical-align: middle;
   word-break: break-word;
-  font-weight: bold;
 
   @media (max-width: 768px) {
     font-size: 12px;
@@ -163,7 +151,6 @@ export const TableCell = styled.td`
 `;
 
 export const ClickableTableCell = styled(TableCell)`
-font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s;
 
@@ -173,7 +160,6 @@ font-weight: bold;
 `;
 
 export const TreatmentCell = styled.div`
-font-weight: bold;
   max-height: 40px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -184,14 +170,12 @@ font-weight: bold;
 `;
 
 export const TruncatedText = styled.div`
-font-weight: bold;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 `;
 
 export const NotesCell = styled(TruncatedText)`
-font-weight: bold;
   max-height: 40px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -648,5 +632,12 @@ export const SignatureSaved = styled.p`
   color: #4CAF50;
   font-size: 14px;
   margin-top: 5px;
+`;
+
+export const EmptyMessage = styled.div`
+  text-align: center;
+  font-size: 16px;
+  color: white;
+  margin-top: 20px;
 `;
 
