@@ -641,3 +641,8 @@ export const EmptyMessage = styled.div`
   margin-top: 20px;
 `;
 
+export const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end; /* Alinha o botão à direita */
+  margin-top: 20px; /* Espaçamento acima do botão */
+`;
