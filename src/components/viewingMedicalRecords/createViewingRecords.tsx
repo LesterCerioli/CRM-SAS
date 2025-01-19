@@ -4,6 +4,7 @@ import * as S from "./styles";
 import AddMedicalRecord from "../addMedicalRecord/addMedicalRecord";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import LaboratoryModule from '../laboratoryModule/laboratoryModule';
+import CreateNewAppointmentButton from "../medicalRecords/button-create-appointment/createAppointmentButton";
 
 interface MedicalRecord {
   id: string;
@@ -47,7 +48,7 @@ const generateMockRecords = (): MedicalRecord[] => {
     const createdAt = isRecent
       ? new Date(now.getTime() - Math.random() * 12 * 60 * 60 * 1000)
       : new Date(now.getTime() - (24 * 60 * 60 * 1000 * (1 + Math.random() * 30)));
-    
+
     const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
     const lastName1 = lastNames[Math.floor(Math.random() * lastNames.length)];
     const lastName2 = lastNames[Math.floor(Math.random() * lastNames.length)];
@@ -114,8 +115,8 @@ const MedicalRecords: React.FC = () => {
   const [doctorSuggestions, setDoctorSuggestions] = useState<string[]>([]);
   const [showAddForm, setShowAddForm] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [isEditing, setIsEditing] = useState(false); 
-  const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null); 
+  const [isEditing, setIsEditing] = useState(false);
+  const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
   const recordsPerPage = 10;
   const [signature, setSignature] = useState<string | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -171,7 +172,7 @@ const MedicalRecords: React.FC = () => {
     setSortField(field);
     setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     const sorted = [...filteredRecords].sort((a, b) => {
-     
+
       return 0;
     });
     setFilteredRecords(sorted);
@@ -179,7 +180,7 @@ const MedicalRecords: React.FC = () => {
 
   const handleEdit = (record: MedicalRecord) => {
     setEditingRecord(record);
-    setIsEditing(true); 
+    setIsEditing(true);
   };
 
   const handleSave = (updatedRecord: MedicalRecord) => {
@@ -189,12 +190,12 @@ const MedicalRecords: React.FC = () => {
     setRecords(updatedRecords);
     setFilteredRecords(updatedRecords);
     setEditingRecord(null);
-    setIsEditing(false); 
+    setIsEditing(false);
   };
 
   const handleCancel = () => {
     setEditingRecord(null);
-    setIsEditing(false); 
+    setIsEditing(false);
   };
 
   const isEditable = (record: MedicalRecord) => {
@@ -248,11 +249,11 @@ const MedicalRecords: React.FC = () => {
       alert('A assinatura do médico é obrigatória.');
       return;
     }
-    handleSave({...editingRecord, doctorSignature: signature});
+    handleSave({ ...editingRecord, doctorSignature: signature });
     setSignature(null);
   };
 
-  const handleAddNewRecord = (patient?: Patient) => { 
+  const handleAddNewRecord = (patient?: Patient) => {
     setSelectedPatient(patient || null);
     setShowAddForm(true);
   };
@@ -292,13 +293,13 @@ const MedicalRecords: React.FC = () => {
 
   const paginate = (pageNumber: number) => {
     setCurrentPage(pageNumber);
-    window.scrollTo(0, 0);  
+    window.scrollTo(0, 0);
   };
 
   const MobileRecordCard: React.FC<{ record: MedicalRecord }> = ({ record }) => (
     <S.MobileCard>
       <S.MobileCardHeader>
-        <S.MobileCardTitle onClick={() => handleAddNewRecord({ 
+        <S.MobileCardTitle onClick={() => handleAddNewRecord({
           cpf: record.patientCPF,
           name: record.patientName,
           dateOfBirth: record.dateOfBirth,
@@ -433,7 +434,7 @@ const MedicalRecords: React.FC = () => {
           familyPhone: record.familyPhone,
           email: record.email,
         }))}
-        selectedPatient={selectedPatient} 
+        selectedPatient={selectedPatient}
       />
     );
   }
@@ -602,6 +603,9 @@ const MedicalRecords: React.FC = () => {
                   <S.FormLabel>Data de Atualização:</S.FormLabel>
                   <S.ReadOnlyInput type="text" value={new Date(editingRecord.updatedAt).toLocaleString()} readOnly />
                 </S.FormGroup>
+                <S.ButtonWrapper>
+                  <CreateNewAppointmentButton />
+                </S.ButtonWrapper>
                 <S.ButtonGroup>
                   <S.SaveButton onClick={handleSaveEdit}>Salvar</S.SaveButton>
                   <S.CancelButton onClick={handleCancel}>Cancelar</S.CancelButton>
@@ -708,7 +712,7 @@ const MedicalRecords: React.FC = () => {
               </S.MobileView>
             </S.TableWrapper>
           )}
-          
+
         </S.FormWrapper>
         {(patientName.length > 0 || patientCPF.length > 0) && (
           <LaboratoryModule
