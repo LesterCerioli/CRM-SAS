@@ -28,7 +28,7 @@ const Button = styled.button`
 
 const CreateNewAppointmentButton: React.FC = () => {
   const handleClick = () => {
-    alert("Novo Atendimento criado!");
+    //alert("Novo Atendimento criado!");
     // Aqui você pode adicionar lógica para criar o atendimento
   };
 
