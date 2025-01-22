@@ -1,10 +1,10 @@
 "use client";
 import React, { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import * as S from "./styles";
-import AddMedicalRecord from "../addMedicalRecord/addMedicalRecord";
+import AddMedicalRecord from "../../addMedicalRecord/addMedicalRecord";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import LaboratoryModule from '../laboratoryModule/laboratoryModule';
-import CreateNewAppointmentButton from "../medicalRecords/button-create-appointment/createAppointmentButton";
+import LaboratoryModule from '../../laboratoryModule/laboratoryModule';
+import CreateNewAppointmentButton from "../button-create-appointment/createAppointmentButton";
 
 interface MedicalRecord {
   id: string;
