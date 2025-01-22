@@ -9,7 +9,7 @@ const Appointment: React.FC = () => {
     return (
         <S.Container>
             <AppointmentHeader />
-            <h1>Marcação de Consultas</h1>
+            <h1>Appointment Bookings</h1>
             <CreateAppointmentsForm />
         </S.Container>
     );
