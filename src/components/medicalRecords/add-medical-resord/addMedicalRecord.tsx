@@ -1,68 +1,108 @@
-import { useState } from "react";
-import { string } from "zod"
-import * as S from "./stykes";
-
+"use client";
+import React, { useState } from "react";
+import * as S from "./styles"
 
 interface MedicalRecord {
-    id: string,
-    diagnosis: string,
-    treatmentPlan: {
-        description: string;
-        medications: string[];
-    };
-    notes: string;
-    updatedAt: string;
+  id: string;
+  patientName: string;
+  diagnosis: string;
+  treatmentPlan: {
+    description: string;
+    medications: string[];
+  };
+  notes: string;
+  updatedAt: string;
 }
+
 interface AddMedicalRecordProps {
-    onSave: (record: MedicalRecord) => void;
+  medicalRecord: MedicalRecord;
+  isReadOnly?: boolean;
+  onSave?: (updatedRecord: MedicalRecord) => void;
 }
-const AddMedicalRecord: React.FC<AddMedicalRecordProps> = ({ onSave }) => {
-    const [diagnosis, setDiagnosis] = useState("");
-    const [treatmentDescription, setTreatmentDescription] = useState("");
-    const [medications, setMedications] = useState("");
 
-    const handleSave = () => {
-        const newRecord: MedicalRecord = {
-            id: Date.now().toString(),
-            diagnosis,
-            treatmentPlan: {
-                description: treatmentDescription,
-                medications: medications.split(",").map((med) => med.trim()),
-            },
-            notes: "",
-            updatedAt: new Date().toISOString(),
-        };
-        onSave(newRecord);
-        setDiagnosis("");
-        setTreatmentDescription("");
-        setMedications("");
-    };
-    return(
-        <S.Form>
-            <S.Label>Diagnóstico:</S.Label>
-            <S.TextArea
-                value={diagnosis}
-                onChange={(e) => setDiagnosis(e.target.value)}
+const AddMedicalRecord: React.FC<AddMedicalRecordProps> = ({
+  medicalRecord,
+  isReadOnly = false,
+  onSave,
+}) => {
+  const [formData, setFormData] = useState<MedicalRecord>({ ...medicalRecord });
 
-            />
-            <S.Label>Plano de Tratamento</S.Label>
-            <S.TextArea
-                value={treatmentDescription}
-                onChange={(e) => setTreatmentDescription(e.target.value)}
-            />
-            <S.Label>Medicamentos:</S.Label>
-            <S.Input
-                type="text"
-                value={medications}
-                onChange={(e) => setMedications(e.target.value)}
-                placeholder="Separe os medicamentos por vírgula"
-            />
-            <S.Button type="button" onClick={handleSave}>
-                Salvar
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
-            </S.Button>
+  const handleSave = () => {
+    if (onSave) onSave(formData);
+  };
 
-        </S.Form>
-    );
+  return (
+    <S.Form>
+      <S.Label>
+        Nome do Paciente:
+        <S.Input
+          type="text"
+          name="patientName"
+          value={formData.patientName}
+          onChange={handleInputChange}
+          disabled={isReadOnly}
+        />
+      </S.Label>
+      <S.Label>
+        Diagnosis:
+        <S.TextArea
+          name="diagnosis"
+          value={formData.diagnosis}
+          onChange={handleInputChange}
+          disabled={isReadOnly}
+        />
+      </S.Label>
+      <S.Label>
+        Treatment Plan:
+        <S.TextArea
+          name="treatmentPlan.description"
+          value={formData.treatmentPlan.description}
+          onChange={(e) =>
+            setFormData((prev) => ({
+              ...prev,
+              treatmentPlan: { ...prev.treatmentPlan, description: e.target.value },
+            }))
+          }
+          disabled={isReadOnly}
+        />
+      </S.Label>
+      <S.Label>
+        Medications:
+        <S.Input
+          type="text"
+          name="treatmentPlan.medications"
+          value={formData.treatmentPlan.medications.join(", ")}
+          onChange={(e) =>
+            setFormData((prev) => ({
+              ...prev,
+              treatmentPlan: {
+                ...prev.treatmentPlan,
+                medications: e.target.value.split(", "),
+              },
+            }))
+          }
+          disabled={isReadOnly}
+        />
+      </S.Label>
+      <S.Label>
+        Notes:
+        <S.TextArea
+          name="notes"
+          value={formData.notes}
+          onChange={handleInputChange}
+          disabled={isReadOnly}
+        />
+      </S.Label>
+      {!isReadOnly && <S.Button onClick={handleSave}>Salvar</S.Button>}
+    </S.Form>
+  );
 };
+
 export default AddMedicalRecord;

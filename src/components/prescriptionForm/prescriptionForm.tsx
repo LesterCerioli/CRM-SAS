@@ -259,7 +259,7 @@ const PrescriptionForm: React.FC = () => {
             />
             <S.SignatureButtons>
               <button type="button" onClick={handleClearSignature}>
-                Limpar Assinatura
+                Clear Signature
               </button>
               <button type="button" onClick={handleSaveSignature}>
                 Salvar Assinatura

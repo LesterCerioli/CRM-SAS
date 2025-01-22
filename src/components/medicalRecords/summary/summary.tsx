@@ -26,16 +26,16 @@ const Summary: React.FC<SummaryProps> = ({ data }) => {
             marginTop: "2rem"
         }}>
             <h2 style={{ color: "#333", marginBottom: "1rem" }}>Resumo do Prontuário</h2>
-            <p><strong>Nome do Paciente:</strong> {data.patientName}</p>
-            <p><strong>Data de Nascimento:</strong> {data.dateOfBirth}</p>
-            <p><strong>Sexo:</strong> {data.gender === "M" ? "Masculino" : "Feminino"}</p>
-            <p><strong>Idade:</strong> {data.age}</p>
-            <p><strong>Histórico Médico:</strong> {data.medicalHistory}</p>
-            <p><strong>Medicações:</strong> {data.medications}</p>
-            <p><strong>Sintomas:</strong> {data.symptoms}</p>
-            <p><strong>Diagnóstico:</strong> {data.diagnosis}</p>
-            <p><strong>Plano de Tratamento:</strong> {data.treatmentPlan}</p>
-            <p><strong>Notas Adicionais:</strong> {data.additionalNotes}</p>
+            <p><strong>Patient Name:</strong> {data.patientName}</p>
+            <p><strong>Date of Birth:</strong> {data.dateOfBirth}</p>
+            <p><strong>Gender:</strong> {data.gender === "M" ? "Masculino" : "Feminino"}</p>
+            <p><strong>Age:</strong> {data.age}</p>
+            <p><strong>Medical History:</strong> {data.medicalHistory}</p>
+            <p><strong>Medications:</strong> {data.medications}</p>
+            <p><strong>Symptoms:</strong> {data.symptoms}</p>
+            <p><strong>Diagnosis:</strong> {data.diagnosis}</p>
+            <p><strong>Treatment Plan:</strong> {data.treatmentPlan}</p>
+            <p><strong>Additional Plan:</strong> {data.additionalNotes}</p>
         </div>
     );
 };

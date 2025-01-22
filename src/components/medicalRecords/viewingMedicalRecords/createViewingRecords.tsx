@@ -309,11 +309,11 @@ const MedicalRecords: React.FC = () => {
         })}>
           {record.patientName}
         </S.MobileCardTitle>
-        <S.MobileCardSubtitle>CPF: {record.patientCPF}</S.MobileCardSubtitle>
+        <S.MobileCardSubtitle>CPF/SSID: {record.patientCPF}</S.MobileCardSubtitle>
       </S.MobileCardHeader>
       <S.MobileCardContent>
         <S.MobileCardItem>
-          <S.MobileCardLabel>Data de Nascimento:</S.MobileCardLabel>
+          <S.MobileCardLabel>Date of Birth:</S.MobileCardLabel>
           <S.MobileCardValue>{new Date(record.dateOfBirth).toLocaleDateString()}</S.MobileCardValue>
         </S.MobileCardItem>
         <S.MobileCardItem>
@@ -321,45 +321,45 @@ const MedicalRecords: React.FC = () => {
           <S.MobileCardValue>{record.email}</S.MobileCardValue>
         </S.MobileCardItem>
         <S.MobileCardItem>
-          <S.MobileCardLabel>Telefone:</S.MobileCardLabel>
+          <S.MobileCardLabel>Telephone:</S.MobileCardLabel>
           <S.MobileCardValue>{record.phone}</S.MobileCardValue>
         </S.MobileCardItem>
         <S.MobileCardItem>
-          <S.MobileCardLabel>Telefone Familiar:</S.MobileCardLabel>
+          <S.MobileCardLabel>Family Telephone:</S.MobileCardLabel>
           <S.MobileCardValue>{record.familyPhone}</S.MobileCardValue>
         </S.MobileCardItem>
         <S.MobileCardItem>
-          <S.MobileCardLabel>Médico:</S.MobileCardLabel>
+          <S.MobileCardLabel>Doctor:</S.MobileCardLabel>
           <S.MobileCardValue>{record.doctorName}</S.MobileCardValue>
         </S.MobileCardItem>
         <S.MobileCardItem>
-          <S.MobileCardLabel>Diagnóstico:</S.MobileCardLabel>
+          <S.MobileCardLabel>Diagnosis:</S.MobileCardLabel>
           <S.MobileCardValue>{record.diagnosis}</S.MobileCardValue>
         </S.MobileCardItem>
         <S.MobileCardItem>
-          <S.MobileCardLabel>Plano de Tratamento:</S.MobileCardLabel>
+          <S.MobileCardLabel>Treatmentt Plan:</S.MobileCardLabel>
           <S.MobileCardValue>{record.treatmentPlan.description}</S.MobileCardValue>
         </S.MobileCardItem>
         <S.MobileCardItem>
-          <S.MobileCardLabel>Medicamentos:</S.MobileCardLabel>
+          <S.MobileCardLabel>Medications:</S.MobileCardLabel>
           <S.MobileCardValue>{record.treatmentPlan.medications.join(", ")}</S.MobileCardValue>
         </S.MobileCardItem>
         <S.MobileCardItem>
-          <S.MobileCardLabel>Observações:</S.MobileCardLabel>
+          <S.MobileCardLabel>Notes:</S.MobileCardLabel>
           <S.MobileCardValue>{record.notes}</S.MobileCardValue>
         </S.MobileCardItem>
         <S.MobileCardItem>
-          <S.MobileCardLabel>Data de Criação:</S.MobileCardLabel>
+          <S.MobileCardLabel>Creation Date:</S.MobileCardLabel>
           <S.MobileCardValue>{new Date(record.createdAt).toLocaleString()}</S.MobileCardValue>
         </S.MobileCardItem>
         <S.MobileCardItem>
-          <S.MobileCardLabel>Última Atualização:</S.MobileCardLabel>
+          <S.MobileCardLabel>Last Update:</S.MobileCardLabel>
           <S.MobileCardValue>{new Date(record.updatedAt).toLocaleString()}</S.MobileCardValue>
         </S.MobileCardItem>
       </S.MobileCardContent>
       <S.MobileCardFooter>
         <S.EditButton onClick={() => handleEdit(record)} disabled={!isEditable(record)}>
-          {isEditable(record) ? 'Editar' : 'Não editável'}
+          {isEditable(record) ? 'Edit' : 'Not editable'}
         </S.EditButton>
       </S.MobileCardFooter>
     </S.MobileCard>
@@ -418,7 +418,7 @@ const MedicalRecords: React.FC = () => {
     }
   };
 
-  if (loading) return <S.LoadingMessage>Carregando prontuários médicos...</S.LoadingMessage>;
+  if (loading) return <S.LoadingMessage>Loading medical records...</S.LoadingMessage>;
   if (error) return <S.GlobalErrorMessage>{error}</S.GlobalErrorMessage>;
 
   if (showAddForm) {
@@ -445,68 +445,66 @@ const MedicalRecords: React.FC = () => {
         <S.FormWrapper $isExpanded={patientName.length > 0 || patientCPF.length > 0}>
           <S.Header>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-              <S.Title>Prontuários Médicos</S.Title>
-              <S.NewPatientButton >
-                + Novo Prontuário
-              </S.NewPatientButton>
+              <S.Title>Medical Records</S.Title>
+
             </div>
             <S.FilterContainer>
               <S.InputGroup>
-                <S.Label>Nome do Paciente:</S.Label>
+                <S.Label>Paciente Name:</S.Label>
                 <S.Input
                   type="text"
                   value={patientName}
                   onChange={(e) => setPatientName(e.target.value)}
-                  placeholder="Digite o nome do paciente"
+                  placeholder="Enter patient name"
                 />
               </S.InputGroup>
               <S.InputGroup>
-                <S.Label>CPF do Paciente:</S.Label>
+                <S.Label>Pacient CPF/SSN:</S.Label>
                 <S.Input
                   type="text"
                   value={patientCPF}
                   onChange={(e) => setPatientCPF(e.target.value)}
-                  placeholder="Digite o CPF do paciente"
+                  placeholder="Enter the patient's CPF or SSN"
                 />
               </S.InputGroup>
             </S.FilterContainer>
           </S.Header>
           {isEditing && editingRecord && (
             <S.EditFormContainer>
-              <S.FormTitle>Editar Prontuário</S.FormTitle>
+              <S.FormTitle>Edit Medical Record</S.FormTitle>
               <S.EditFormGrid>
                 <S.FormColumn>
                   <S.FormGroup>
-                    <S.FormLabel>Nome do Paciente:</S.FormLabel>
+                    <S.FormLabel>Patient Name:</S.FormLabel>
                     <S.ReadOnlyInput type="text" value={editingRecord.patientName} readOnly />
                   </S.FormGroup>
                   <S.FormGroup>
-                    <S.FormLabel>CPF:</S.FormLabel>
+                    <S.FormLabel>CPF/SSID:</S.FormLabel>
                     <S.ReadOnlyInput type="text" value={editingRecord.patientCPF} readOnly />
                   </S.FormGroup>
                   <S.FormGroup>
-                    <S.FormLabel>Data de Nascimento:</S.FormLabel>
+                    <S.FormLabel>Date of Birth:</S.FormLabel>
                     <S.ReadOnlyInput type="text" value={editingRecord.dateOfBirth} readOnly />
                   </S.FormGroup>
                   <S.FormGroup>
-                    <S.FormLabel>Telefone:</S.FormLabel>
+                    <S.FormLabel>Telephone:</S.FormLabel>
                     <S.ReadOnlyInput type="text" value={editingRecord.phone} readOnly />
                   </S.FormGroup>
                   <S.FormGroup>
-                    <S.FormLabel>Telefone Familiar:</S.FormLabel>
+                    <S.FormLabel>Family Telephone:</S.FormLabel>
                     <S.ReadOnlyInput type="text" value={editingRecord.familyPhone} readOnly />
                   </S.FormGroup>
                 </S.FormColumn>
                 <S.FormColumn>
                   <S.FormGroup>
-                    <S.FormLabel>Nome do Médico:</S.FormLabel>
+                    <S.FormLabel>Doctor Name:</S.FormLabel>
                     <S.DoctorInputWrapper>
                       <S.Input
                         type="text"
                         name="doctorName"
                         value={editingRecord.doctorName}
                         onChange={handleInputChange}
-                        placeholder="Digite o nome do médico"
+                        placeholder="Enter doctor name"
                       />
                       {doctorSuggestions.length > 0 && (
                         <S.DoctorSuggestions>
@@ -523,7 +521,7 @@ const MedicalRecords: React.FC = () => {
                     </S.DoctorInputWrapper>
                   </S.FormGroup>
                   <S.FormGroup>
-                    <S.FormLabel>Diagnóstico:</S.FormLabel>
+                    <S.FormLabel>Diagnosis:</S.FormLabel>
                     <S.Input
                       type="text"
                       name="diagnosis"
@@ -532,7 +530,7 @@ const MedicalRecords: React.FC = () => {
                     />
                   </S.FormGroup>
                   <S.FormGroup>
-                    <S.FormLabel>Medicamentos:</S.FormLabel>
+                    <S.FormLabel>Medications:</S.FormLabel>
                     <S.Input
                       type="text"
                       name="medications"
@@ -554,7 +552,7 @@ const MedicalRecords: React.FC = () => {
                     />
                   </S.FormGroup>
                   <S.FormGroup>
-                    <S.FormLabel>Plano de Tratamento:</S.FormLabel>
+                    <S.FormLabel>Treatment Plan:</S.FormLabel>
                     <S.TextArea
                       name="description"
                       value={editingRecord.treatmentPlan.description}
@@ -563,7 +561,7 @@ const MedicalRecords: React.FC = () => {
                     />
                   </S.FormGroup>
                   <S.FormGroup>
-                    <S.FormLabel>Observações (obrigatório):</S.FormLabel>
+                    <S.FormLabel>Notes (optional):</S.FormLabel>
                     <S.TextArea
                       name="notes"
                       value={editingRecord.notes}
@@ -573,7 +571,7 @@ const MedicalRecords: React.FC = () => {
                     />
                   </S.FormGroup>
                   <S.FormGroup>
-                    <S.FormLabel>Assinatura do Médico:</S.FormLabel>
+                    <S.FormLabel>Doctor Signature :</S.FormLabel>
                     <S.SignatureCanvas
                       ref={canvasRef}
                       width={400}
@@ -587,28 +585,33 @@ const MedicalRecords: React.FC = () => {
                       onTouchEnd={stopDrawing}
                     />
                     <S.SignatureButtonGroup>
-                      <S.SignatureButton onClick={clearSignature}>Limpar</S.SignatureButton>
-                      <S.SignatureButton onClick={saveSignature}>Salvar</S.SignatureButton>
+                      <S.SignatureButton onClick={clearSignature}>Clear</S.SignatureButton>
+                      <S.SignatureButton onClick={saveSignature}>Save</S.SignatureButton>
                     </S.SignatureButtonGroup>
-                    {signature && <S.SignatureSaved>Assinatura salva</S.SignatureSaved>}
+                    {signature && <S.SignatureSaved>Signature saved</S.SignatureSaved>}
                   </S.FormGroup>
                 </S.FormColumn>
               </S.EditFormGrid>
               <S.FormFooter>
                 <S.FormGroup>
-                  <S.FormLabel>Data de Criação:</S.FormLabel>
+                  <S.FormLabel>Creation Date:</S.FormLabel>
                   <S.ReadOnlyInput type="text" value={new Date(editingRecord.createdAt).toLocaleString()} readOnly />
                 </S.FormGroup>
                 <S.FormGroup>
-                  <S.FormLabel>Data de Atualização:</S.FormLabel>
+                  <S.FormLabel>Update Date:</S.FormLabel>
                   <S.ReadOnlyInput type="text" value={new Date(editingRecord.updatedAt).toLocaleString()} readOnly />
                 </S.FormGroup>
                 <S.ButtonWrapper>
-                  <CreateNewAppointmentButton />
+                  <CreateNewAppointmentButton
+                    onAddNewAppointment={() => {
+                      setShowAddForm(true);
+                    }}
+
+                  />
                 </S.ButtonWrapper>
                 <S.ButtonGroup>
-                  <S.SaveButton onClick={handleSaveEdit}>Salvar</S.SaveButton>
-                  <S.CancelButton onClick={handleCancel}>Cancelar</S.CancelButton>
+                  <S.SaveButton onClick={handleSaveEdit}>Save</S.SaveButton>
+                  <S.CancelButton onClick={handleCancel}>Cancel</S.CancelButton>
                 </S.ButtonGroup>
               </S.FormFooter>
             </S.EditFormContainer>
@@ -621,25 +624,25 @@ const MedicalRecords: React.FC = () => {
                     <S.Table>
                       <S.TableHeader>
                         <S.TableRow>
-                          <S.TableHeaderCell>Nome</S.TableHeaderCell>
-                          <S.TableHeaderCell>CPF</S.TableHeaderCell>
-                          <S.TableHeaderCell>Nasc.</S.TableHeaderCell>
+                          <S.TableHeaderCell>Name</S.TableHeaderCell>
+                          <S.TableHeaderCell>CPF/SSN</S.TableHeaderCell>
+                          <S.TableHeaderCell>Birth.</S.TableHeaderCell>
                           <S.TableHeaderCell>Email</S.TableHeaderCell>
                           <S.TableHeaderCell>Tel.</S.TableHeaderCell>
-                          <S.TableHeaderCell>Tel. Familiar</S.TableHeaderCell>
-                          <S.TableHeaderCell>Médico</S.TableHeaderCell>
+                          <S.TableHeaderCell>Family Tel.</S.TableHeaderCell>
+                          <S.TableHeaderCell>Doctor</S.TableHeaderCell>
                           <S.TableHeaderCell>Diag.</S.TableHeaderCell>
-                          <S.TableHeaderCell>Trat.</S.TableHeaderCell>
-                          <S.TableHeaderCell>Obs.</S.TableHeaderCell>
-                          <S.TableHeaderCell>Criação</S.TableHeaderCell>
-                          <S.TableHeaderCell>Atual.</S.TableHeaderCell>
-                          <S.TableHeaderCell>Ações</S.TableHeaderCell>
+                          <S.TableHeaderCell>Treat.</S.TableHeaderCell>
+                          <S.TableHeaderCell>Notes.</S.TableHeaderCell>
+                          <S.TableHeaderCell>Creation</S.TableHeaderCell>
+                          <S.TableHeaderCell>Update.</S.TableHeaderCell>
+                          <S.TableHeaderCell>Actions</S.TableHeaderCell>
                         </S.TableRow>
                       </S.TableHeader>
                       <S.TableBody>
                         {currentRecords.map((record) => (
                           <S.TableRow key={record.id}>
-                            <S.ClickableTableCell // Updated TableCell to be clickable
+                            <S.ClickableTableCell 
                               onClick={() => handleAddNewRecord({
                                 cpf: record.patientCPF,
                                 name: record.patientName,
@@ -668,12 +671,12 @@ const MedicalRecords: React.FC = () => {
                                 <S.TreatmentCell>
                                   {record.treatmentPlan.description}
                                   <br />
-                                  Med: {record.treatmentPlan.medications.join(", ")}
+                                  Doctor: {record.treatmentPlan.medications.join(", ")}
                                 </S.TreatmentCell>
                                 <S.Tooltip>
                                   {record.treatmentPlan.description}
                                   <br />
-                                  Medicamentos: {record.treatmentPlan.medications.join(", ")}
+                                  Medications: {record.treatmentPlan.medications.join(", ")}
                                 </S.Tooltip>
                               </S.TooltipContainer>
                             </S.TableCell>
@@ -687,7 +690,7 @@ const MedicalRecords: React.FC = () => {
                             <S.TableCell>{new Date(record.updatedAt).toLocaleDateString()}</S.TableCell>
                             <S.TableCell>
                               <S.EditButton onClick={() => handleEdit(record)}>
-                                Editar
+                                Edit
                               </S.EditButton>
                             </S.TableCell>
                           </S.TableRow>
@@ -695,7 +698,7 @@ const MedicalRecords: React.FC = () => {
                       </S.TableBody>
                     </S.Table>
                   ) : (
-                    <S.EmptyMessage>Nenhum prontuário encontrado.</S.EmptyMessage>
+                    <S.EmptyMessage>No medical records found.</S.EmptyMessage>
                   )
                 )}
               </S.DesktopView>
@@ -706,7 +709,7 @@ const MedicalRecords: React.FC = () => {
                       <MobileRecordCard key={record.id} record={record} />
                     ))
                   ) : (
-                    <S.EmptyMessage>Nenhum prontuário encontrado.</S.EmptyMessage>
+                    <S.EmptyMessage>No medical records found.</S.EmptyMessage>
                   )
                 )}
               </S.MobileView>
@@ -718,7 +721,7 @@ const MedicalRecords: React.FC = () => {
           <LaboratoryModule
             patientId={editingRecord?.id}
             onUpload={async (file, type) => {
-              // Here you would implement the file upload logic
+              
               console.log('Uploading file:', file, 'type:', type);
             }}
           />
