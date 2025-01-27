@@ -1,12 +1,12 @@
 "use client";
 import React from "react";
 import * as S from "./styles";
-import CreateMedicalRegistration from "@/components/createMedicalRegistration/createMedicalRegistration";
+import CreateDoctorRegistration from "@/components/createDoctorRegistration/createDoctorRegistration";
 
 const Doctor: React.FC = () => {
     return (
         <S.Container>
-            <CreateMedicalRegistration/>
+            <CreateDoctorRegistration />
         </S.Container>
     )
 
