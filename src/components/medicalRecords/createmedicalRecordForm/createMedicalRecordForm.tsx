@@ -29,10 +29,10 @@ const CreateMedicalRecordForm: React.FC = () => {
     return (
         <S.Container>
             <S.Form onSubmit={handleSubmit}>
-                <h1>Prontuário Médico</h1>
+                <h1>Medical Record</h1>
 
                 <S.FieldGroup>
-                    <label htmlFor="patientName">Nome do Paciente:</label>
+                    <label htmlFor="patientName">Pacient Name:</label>
                     <input
                         type="text"
                         id="patientName"
@@ -44,7 +44,7 @@ const CreateMedicalRecordForm: React.FC = () => {
                 </S.FieldGroup>
 
                 <S.FieldGroup>
-                    <label htmlFor="dateOfBirth">Data de Nascimento:</label>
+                    <label htmlFor="dateOfBirth">Date of Birth:</label>
                     <input
                         type="date"
                         id="dateOfBirth"
@@ -56,7 +56,7 @@ const CreateMedicalRecordForm: React.FC = () => {
                 </S.FieldGroup>
 
                 <S.FieldGroup>
-                    <label htmlFor="gender">Sexo:</label>
+                    <label htmlFor="gender">Sex:</label>
                     <select
                         id="gender"
                         name="gender"
@@ -65,13 +65,13 @@ const CreateMedicalRecordForm: React.FC = () => {
                         required
                     >
                         <option value="">Selecione</option>
-                        <option value="M">Masculino</option>
-                        <option value="F">Feminino</option>
+                        <option value="M">Masc</option>
+                        <option value="F">Fem</option>
                     </select>
                 </S.FieldGroup>
 
                 <S.FieldGroup>
-                    <label htmlFor="age">Idade:</label>
+                    <label htmlFor="age">Age:</label>
                     <input
                         type="number"
                         id="age"
@@ -83,7 +83,7 @@ const CreateMedicalRecordForm: React.FC = () => {
                 </S.FieldGroup>
 
                 <S.FieldGroup>
-                    <label htmlFor="medicalHistory">Histórico Médico:</label>
+                    <label htmlFor="medicalHistory">Medical History:</label>
                     <textarea
                         id="medicalHistory"
                         name="medicalHistory"
@@ -93,7 +93,7 @@ const CreateMedicalRecordForm: React.FC = () => {
                 </S.FieldGroup>
 
                 <S.FieldGroup>
-                    <label htmlFor="medications">Medicações:</label>
+                    <label htmlFor="medications">Medications:</label>
                     <textarea
                         id="medications"
                         name="medications"
@@ -103,7 +103,7 @@ const CreateMedicalRecordForm: React.FC = () => {
                 </S.FieldGroup>
 
                 <S.FieldGroup>
-                    <label htmlFor="symptoms">Sintomas:</label>
+                    <label htmlFor="symptoms">Symptoms:</label>
                     <textarea
                         id="symptoms"
                         name="symptoms"
@@ -113,7 +113,7 @@ const CreateMedicalRecordForm: React.FC = () => {
                 </S.FieldGroup>
 
                 <S.FieldGroup>
-                    <label htmlFor="diagnosis">Diagnóstico:</label>
+                    <label htmlFor="diagnosis">Diagnosis:</label>
                     <textarea
                         id="diagnosis"
                         name="diagnosis"
@@ -123,7 +123,7 @@ const CreateMedicalRecordForm: React.FC = () => {
                 </S.FieldGroup>
 
                 <S.FieldGroup>
-                    <label htmlFor="treatmentPlan">Plano de Tratamento:</label>
+                    <label htmlFor="treatmentPlan">Treatment Plan:</label>
                     <textarea
                         id="treatmentPlan"
                         name="treatmentPlan"
@@ -133,7 +133,7 @@ const CreateMedicalRecordForm: React.FC = () => {
                 </S.FieldGroup>
 
                 <S.FieldGroup>
-                    <label htmlFor="additionalNotes">Notas Adicionais:</label>
+                    <label htmlFor="additionalNotes">Additional Notes :</label>
                     <textarea
                         id="additionalNotes"
                         name="additionalNotes"

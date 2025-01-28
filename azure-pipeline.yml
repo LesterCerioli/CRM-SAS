@@ -1,36 +1,53 @@
-# File: azure-pipelines.yml
 trigger:
-  branches:
-    include:
-      - main
+- '*.*'
 
 pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  nodeVersion: '20.x'
+  system.debug: true  
 
 steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '$(nodeVersion)'
-  displayName: 'Install Node.js'
+# Step 1: Verify PR comments before proceeding
 
+# Define the Node.js version to use
+- task: UseNode@1
+  inputs:
+    version: '20.x'  
+  displayName: 'Set Node.js version'
+
+# Clean npm cache
 - script: |
+    echo "Cleaning npm cache"
+    npm cache clean --force
+  displayName: 'Clean npm cache'
+
+# Install dependencies
+- script: |
+    echo "Installing dependencies"
     npm install
-    npm run build --production
-  displayName: 'Install dependencies and build'
+  displayName: 'Install dependencies'
 
-- task: PublishPipelineArtifact@1
+# Build the project with Next.js
+- script: |
+    echo "Building the project"
+    npm run build
+  displayName: 'Build the project'
+
+# Verify .next directory before publishing
+- script: |
+    echo "Verifying .next directory"
+    if [ ! -d ".next" ]; then
+      echo "Error: .next directory not found. Build might have failed."
+      exit 1
+    fi
+    ls -al .next
+  displayName: 'Verify build output'
+
+# Publish build artifacts
+- task: PublishBuildArtifacts@1
   inputs:
-    targetPath: '$(Build.ArtifactStagingDirectory)'
-    artifact: 'nextjs-build'
+    PathtoPublish: '.next'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
   displayName: 'Publish build artifacts'
-
-# Optional: Deploy to Azure App Service
-# - task: AzureWebApp@1
-#   inputs:
-#     azureSubscription: '<Your-Azure-Subscription>'
-#     appName: '<Your-App-Service-Name>'
-#     package: '$(Build.ArtifactStagingDirectory)'
-#   displayName: 'Deploy to Azure Web App'

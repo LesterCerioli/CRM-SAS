@@ -3,12 +3,11 @@ import styled from "styled-components";
 export const Container = styled.div`
   background-color: #4f98a0;
   width: 100%;
-  height: auto;
-  
-
+  height: 130vh;
+  padding-top: 5rem;
+  padding-bottom: 5rem;
   @media (max-width: 768px) {
-    padding-top: 5rem;
-    padding-bottom: 5rem;
+    padding-bottom: 520rem;
   }
   
   
@@ -29,3 +28,10 @@ export const Container = styled.div`
   }
 `;
 
+export const Cokkies = styled.div`
+  height: 100%;
+  position: sticky;
+  bottom: 20px;
+  right: 20px;
+  z-index: 100;
+`;
