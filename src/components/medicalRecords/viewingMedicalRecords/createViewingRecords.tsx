@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback, useMemo, useRef } from "react"
 import * as S from "./styles";
 import AddMedicalRecord from "../../addMedicalRecord/addMedicalRecord";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import LaboratoryModule from '../../laboratoryModule/laboratoryModule';
+import LaboratoryModule from '../../labor/laboratoryModule/laboratoryModule';
 import CreateNewAppointmentButton from "../button-create-appointment/createAppointmentButton";
 
 interface MedicalRecord {
@@ -642,7 +642,7 @@ const MedicalRecords: React.FC = () => {
                       <S.TableBody>
                         {currentRecords.map((record) => (
                           <S.TableRow key={record.id}>
-                            <S.ClickableTableCell 
+                            <S.ClickableTableCell
                               onClick={() => handleAddNewRecord({
                                 cpf: record.patientCPF,
                                 name: record.patientName,
@@ -721,7 +721,7 @@ const MedicalRecords: React.FC = () => {
           <LaboratoryModule
             patientId={editingRecord?.id}
             onUpload={async (file, type) => {
-              
+
               console.log('Uploading file:', file, 'type:', type);
             }}
           />
