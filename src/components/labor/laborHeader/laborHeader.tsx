@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { CgClose } from "react-icons/cg";
 
+
 export function LaborHeader() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 

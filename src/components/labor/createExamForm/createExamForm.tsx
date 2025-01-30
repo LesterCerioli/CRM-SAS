@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -12,78 +11,15 @@ const CreateExamForm: React.FC = () => {
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [showForm, setShowForm] = useState(false);
     const [patientName, setPatientName] = useState("");
-    const [selectedCategory, setSelectedCategory] = useState("");
-    const [selectedExam, setSelectedExam] = useState("");
     const [time, setTime] = useState("");
+    const [selectedDoctor, setSelectedDoctor] = useState("");
+    const [searchDoctor, setSearchDoctor] = useState("");
     const [hoveredDate, setHoveredDate] = useState<Date | null>(null);
     const [errors, setErrors] = useState({
         patientName: "",
         time: "",
-        selectedCategory: "",
-        selectedExam: "",
+        selectedDoctor: "",
     });
-    const examCategories: ExamCategoriesType = {
-        "Blood": [
-            "Complete Blood Count",
-            "Fasting Blood Glucose",
-            "Total Cholesterol and Fractions (LDL, HDL, VLDL)",
-            "Triglycerides",
-            "Creatinine",
-            "Urea",
-            "TGO (AST) and TGP (ALT) - Liver Enzymes",
-            "Bilirubins (total, direct, and indirect)",
-            "Uric Acid",
-            "C-Reactive Protein (CRP)",
-            "Coagulation Test (TP, TTPA, INR)",
-            "Glycated Hemoglobin (HbA1c)",
-            "Vitamins (Vitamin D, Vitamin B12, Folic Acid)",
-            "Thyroid Hormones (TSH, T3, T4 Free)",
-            "Hepatitis Serology (Hepatitis A, B, C)",
-            "HIV (Rapid Test, ELISA)",
-            "COVID-19 PCR Test"
-        ],
-        "Urine and Stool": [
-            "Urinalysis (EAS)",
-            "Urine Culture with Antibiogram",
-            "Parasitological Stool Examination",
-            "Stool Culture",
-            "Fecal Occult Blood Test"
-        ],
-        "Imaging": [
-            "Chest X-ray",
-            "Bone and Joint X-ray",
-            "Total Abdominal Ultrasound",
-            "Transvaginal Ultrasound",
-            "Thyroid Ultrasound",
-            "Computed Tomography (CT)",
-            "Magnetic Resonance Imaging (MRI)",
-            "Mammography",
-            "Bone Densitometry",
-            "Echocardiogram"
-        ],
-        "Cardiological": [
-            "Electrocardiogram (ECG)",
-            "Exercise Stress Test",
-            "Holter Monitoring (24 Hours)",
-            "Ambulatory Blood Pressure Monitoring (ABPM)",
-            "Cardiac Catheterization"
-        ],
-        "Respiratory": [
-            "Spirometry (Pulmonary Function Test)",
-            "Arterial Blood Gas Analysis",
-            "Pulse Oximetry"
-        ],
-        "Neurological": [
-            "Electroencephalogram (EEG)",
-            "Electroneuromyography"
-        ],
-        "Gynecological": [
-            "Pap Smear",
-            "Colposcopy",
-            "Obstetric Ultrasound",
-            "Fetal Doppler"
-        ]
-    };
 
     const scheduledAppointment: Record<string, string[]> = {
         "01/12/2024": [
@@ -96,6 +32,24 @@ const CreateExamForm: React.FC = () => {
         ],
     };
 
+    const doctors = [
+        "Dr. João - Cardiologista",
+        "Dra. Maria - Dermatologista",
+        "Dr. Carlos - Ortopedista",
+        "Dra. Ana - Pediatra",
+        "Dr. Pedro - Neurologista",
+        "Dra. Luísa - Ginecologista",
+        "Dr. Ricardo - Oftalmologista",
+        "Dra. Beatriz - Endocrinologista",
+        "Dr. Rafael - Urologista",
+        "Dra. Sofia - Reumatologista",
+        "Dr. Henrique - Psiquiatra",
+        "Dra. Clara - Infectologista",
+        "Dr. Gustavo - Oncologista",
+        "Dra. Juliana - Nefrologista",
+        "Dr. Leonardo - Anestesiologista",
+        "Dra. Carolina - Hematologista",
+    ];
 
     useEffect(() => {
         const intervalId = setInterval(() => {
@@ -146,8 +100,7 @@ const CreateExamForm: React.FC = () => {
         const newErrors = {
             patientName: patientName.trim() ? "" : "Preencha este campo",
             time: time ? "" : "Preencha este campo",
-            selectedCategory: selectedCategory ? "" : "Preencha este campo",
-            selectedExam: selectedExam ? "" : "Fill field",
+            selectedDoctor: selectedDoctor ? "" : "Preencha este campo",
         };
         setErrors(newErrors);
         return !Object.values(newErrors).some((error) => error !== "");
@@ -183,16 +136,18 @@ const CreateExamForm: React.FC = () => {
     const resetForm = () => {
         setPatientName("");
         setTime("");
-
+        setSelectedDoctor("");
+        setSearchDoctor("");
         setErrors({
             patientName: "",
             time: "",
-            selectedCategory: "",
-            selectedExam: "",
+            selectedDoctor: "",
         });
     };
 
-
+    const filteredDoctors = doctors.filter((doctor) =>
+        doctor.toLowerCase().includes(searchDoctor.toLowerCase())
+    );
 
     const getAppointmentsSummary = (date: Date): string[] => {
         const dateKey = date.toISOString().split("T")[0];
@@ -290,37 +245,6 @@ const CreateExamForm: React.FC = () => {
                                 <S.ErrorText>{errors.patientName}</S.ErrorText>
                             )}
                         </S.InputContainer>
-                        <S.InputContainer>
-                            <S.Select
-                                value={selectedCategory}
-                                onChange={(e) => {
-                                    setSelectedCategory(e.target.value);
-                                    setSelectedExam("");
-                                }}
-                            >
-                                <option value="">Select Category</option>
-                                {Object.keys(examCategories).map((category) => (
-                                    <option key={category} value={category}>
-                                        {category}
-                                    </option>
-                                ))}
-                            </S.Select>
-                        </S.InputContainer>
-                        {selectedCategory && (
-                            <S.InputContainer>
-                                <S.Select
-                                    value={selectedExam}
-                                    onChange={(e) => setSelectedExam(e.target.value)}
-                                >
-                                    <option value="">Select Exam</option>
-                                    {examCategories[selectedCategory]?.map((exam) => (
-                                        <option key={exam} value={exam}>
-                                            {exam}
-                                        </option>
-                                    ))}
-                                </S.Select>
-                            </S.InputContainer>
-                        )}
                         <S.DisabledInput
                             value={selectedDate?.toLocaleDateString("pt-BR") || ""}
                             disabled
@@ -337,6 +261,46 @@ const CreateExamForm: React.FC = () => {
                             />
                             {errors.time && <S.ErrorText>{errors.time}</S.ErrorText>}
                         </S.InputContainer>
+                        <S.InputContainer>
+                            <div style={{ position: "relative" }}>
+                                <S.Input
+                                    type="text"
+                                    value={searchDoctor}
+                                    onChange={(e) => {
+                                        setSearchDoctor(e.target.value);
+                                        setSelectedDoctor("");
+                                        setErrors({ ...errors, selectedDoctor: "" });
+                                    }}
+                                    onFocus={() => setShowForm(true)}
+                                    placeholder="Select or enter doctor name"
+                                    style={{ borderColor: errors.selectedDoctor ? "red" : "#ccc" }}
+                                />
+                                {errors.selectedDoctor && (
+                                    <S.ErrorText>{errors.selectedDoctor}</S.ErrorText>
+                                )}
+                                {searchDoctor && filteredDoctors.length > 0 && (
+                                    <S.Dropdown>
+                                        {filteredDoctors.map((doctor, index) => (
+                                            <S.DropdownItem
+                                                key={index}
+                                                onClick={() => {
+                                                    setSelectedDoctor(doctor);
+                                                    setSearchDoctor(doctor);
+                                                    setErrors({ ...errors, selectedDoctor: "" });
+                                                }}
+                                            >
+                                                {doctor}
+                                            </S.DropdownItem>
+                                        ))}
+                                    </S.Dropdown>
+                                )}
+                            </div>
+                            {selectedDoctor && (
+                                <S.SelectedMedico>
+                                    Médico selecionado: {selectedDoctor}
+                                </S.SelectedMedico>
+                            )}
+                        </S.InputContainer>
 
                         <S.ButtonContainer>
                             <S.ConfirmButton onClick={handleSubmit}>Confirmar</S.ConfirmButton>
@@ -350,5 +314,3 @@ const CreateExamForm: React.FC = () => {
 };
 
 export default CreateExamForm;
-
-

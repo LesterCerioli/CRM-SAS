@@ -409,4 +409,3 @@ export const SelectedMedico = styled.p`
   color: #333;
   font-weight: 500;
 `;
-
