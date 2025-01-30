@@ -15,13 +15,12 @@ const CreateExamForm: React.FC = () => {
     const [selectedCategory, setSelectedCategory] = useState("");
     const [selectedExam, setSelectedExam] = useState("");
     const [time, setTime] = useState("");
-    const [selectedDoctor, setSelectedDoctor] = useState("");
-    const [searchDoctor, setSearchDoctor] = useState("");
     const [hoveredDate, setHoveredDate] = useState<Date | null>(null);
     const [errors, setErrors] = useState({
         patientName: "",
         time: "",
-        selectedDoctor: "",
+        selectedCategory: "",
+        selectedExam: "",
     });
     const examCategories: ExamCategoriesType = {
         "Blood": [
@@ -97,24 +96,6 @@ const CreateExamForm: React.FC = () => {
         ],
     };
 
-    const doctors = [
-        "Dr. João - Cardiologista",
-        "Dra. Maria - Dermatologista",
-        "Dr. Carlos - Ortopedista",
-        "Dra. Ana - Pediatra",
-        "Dr. Pedro - Neurologista",
-        "Dra. Luísa - Ginecologista",
-        "Dr. Ricardo - Oftalmologista",
-        "Dra. Beatriz - Endocrinologista",
-        "Dr. Rafael - Urologista",
-        "Dra. Sofia - Reumatologista",
-        "Dr. Henrique - Psiquiatra",
-        "Dra. Clara - Infectologista",
-        "Dr. Gustavo - Oncologista",
-        "Dra. Juliana - Nefrologista",
-        "Dr. Leonardo - Anestesiologista",
-        "Dra. Carolina - Hematologista",
-    ];
 
     useEffect(() => {
         const intervalId = setInterval(() => {
@@ -165,7 +146,8 @@ const CreateExamForm: React.FC = () => {
         const newErrors = {
             patientName: patientName.trim() ? "" : "Preencha este campo",
             time: time ? "" : "Preencha este campo",
-            selectedDoctor: selectedDoctor ? "" : "Preencha este campo",
+            selectedCategory: selectedCategory ? "" : "Preencha este campo",
+            selectedExam: selectedExam ? "" : "Fill field",
         };
         setErrors(newErrors);
         return !Object.values(newErrors).some((error) => error !== "");
@@ -201,18 +183,16 @@ const CreateExamForm: React.FC = () => {
     const resetForm = () => {
         setPatientName("");
         setTime("");
-        setSelectedDoctor("");
-        setSearchDoctor("");
+
         setErrors({
             patientName: "",
             time: "",
-            selectedDoctor: "",
+            selectedCategory: "",
+            selectedExam: "",
         });
     };
 
-    const filteredDoctors = doctors.filter((doctor) =>
-        doctor.toLowerCase().includes(searchDoctor.toLowerCase())
-    );
+
 
     const getAppointmentsSummary = (date: Date): string[] => {
         const dateKey = date.toISOString().split("T")[0];
@@ -356,46 +336,6 @@ const CreateExamForm: React.FC = () => {
                                 style={{ borderColor: errors.time ? "red" : "#ccc" }}
                             />
                             {errors.time && <S.ErrorText>{errors.time}</S.ErrorText>}
-                        </S.InputContainer>
-                        <S.InputContainer>
-                            <div style={{ position: "relative" }}>
-                                <S.Input
-                                    type="text"
-                                    value={searchDoctor}
-                                    onChange={(e) => {
-                                        setSearchDoctor(e.target.value);
-                                        setSelectedDoctor("");
-                                        setErrors({ ...errors, selectedDoctor: "" });
-                                    }}
-                                    onFocus={() => setShowForm(true)}
-                                    placeholder="Select or enter doctor name"
-                                    style={{ borderColor: errors.selectedDoctor ? "red" : "#ccc" }}
-                                />
-                                {errors.selectedDoctor && (
-                                    <S.ErrorText>{errors.selectedDoctor}</S.ErrorText>
-                                )}
-                                {searchDoctor && filteredDoctors.length > 0 && (
-                                    <S.Dropdown>
-                                        {filteredDoctors.map((doctor, index) => (
-                                            <S.DropdownItem
-                                                key={index}
-                                                onClick={() => {
-                                                    setSelectedDoctor(doctor);
-                                                    setSearchDoctor(doctor);
-                                                    setErrors({ ...errors, selectedDoctor: "" });
-                                                }}
-                                            >
-                                                {doctor}
-                                            </S.DropdownItem>
-                                        ))}
-                                    </S.Dropdown>
-                                )}
-                            </div>
-                            {selectedDoctor && (
-                                <S.SelectedMedico>
-                                    Médico selecionado: {selectedDoctor}
-                                </S.SelectedMedico>
-                            )}
                         </S.InputContainer>
 
                         <S.ButtonContainer>
