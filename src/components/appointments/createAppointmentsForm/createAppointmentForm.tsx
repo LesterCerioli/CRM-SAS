@@ -230,10 +230,10 @@ const CreateAppointmentsForm: React.FC = () => {
         )}
         {showForm && (
           <S.FormContainer>
-            <S.FormHeader>Scheduling</S.FormHeader>
+            <S.FormHeader>Agendamento</S.FormHeader>
             <S.InputContainer>
               <S.Input
-                placeholder="Patient Name"
+                placeholder="Nome do Paciente"
                 value={patientName}
                 onChange={(e) => {
                   setPatientName(e.target.value);
@@ -272,7 +272,7 @@ const CreateAppointmentsForm: React.FC = () => {
                     setErrors({ ...errors, selectedDoctor: "" });
                   }}
                   onFocus={() => setShowForm(true)}
-                  placeholder="Select or enter doctor name"
+                  placeholder="Selecione ou digite o nome do médico."
                   style={{ borderColor: errors.selectedDoctor ? "red" : "#ccc" }}
                 />
                 {errors.selectedDoctor && (
