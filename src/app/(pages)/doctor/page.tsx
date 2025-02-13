@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import * as S from "./styles";
-import CreateDoctorRegistration from "@/components/createDoctorRegistration/createDoctorRegistration";
+import CreateDoctorRegistration from "@/components/doctors/createDoctorRegistration/createDoctorRegistration";
 
 const Doctor: React.FC = () => {
     return (
