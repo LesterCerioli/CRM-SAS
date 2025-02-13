@@ -19,11 +19,11 @@ export class Subscription {
     status: string,
     endDate?: Date | null
   ) {
-    this.id = uuidv4(); // ✅ Auto-generates UUID
+    this.id = uuidv4(); 
     this.organizationId = organizationId;
     this.plan = plan;
     this.startDate = startDate;
-    this.endDate = endDate ?? null; // ✅ Default to null if not provided
+    this.endDate = endDate ?? null; 
     this.status = status;
     this.createdAt = new Date();
     this.updatedAt = new Date();

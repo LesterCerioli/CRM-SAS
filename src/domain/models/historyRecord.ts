@@ -13,7 +13,7 @@ export class HistoryRecord {
     details?: string,
     timestamp: Date = new Date()
   ) {
-    this.id = uuidv4(); // Generate a UUID automatically
+    this.id = uuidv4(); 
     this.medicalRecordId = medicalRecordId;
     this.action = action;
     this.details = details;
