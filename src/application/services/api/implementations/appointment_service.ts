@@ -6,10 +6,10 @@ import { v4 as uuidv4 } from "uuid";
 import { pool } from "@/infrastructure/db/postgres/db";
 import { logService } from "./log_service";
 
-
 export class AppointmentService implements AppointmentServiceContract {
   private readonly MAX_RETRIES = 5;
 
+  /** 📌 Create a new appointment */
   async create(appointment: AppointmentDTO, acceptLanguage: string): Promise<string> {
     return this.retryOperation(async () => {
       const startTime = new Date();
@@ -34,146 +34,174 @@ export class AppointmentService implements AppointmentServiceContract {
         ];
 
         const result = await pool.query(query, values);
-        
-        logService.log(startTime, "success"); 
+        logService.log(startTime, "success");
         return result.rows[0].id;
       } catch (error) {
-        logService.log(startTime, "failure"); 
-        throw error;
+        logService.log(startTime, "failure");
+        throw new Error("Failed to create appointment: " + error);
       }
     });
   }
 
-  async update(appointment: AppointmentDTO, acceptLanguage: string): Promise<void> {
+  /** 📌 Update an appointment */
+  async update(id: string, appointmentUpdates: Partial<AppointmentDTO>): Promise<boolean> {
     return this.retryOperation(async () => {
       const startTime = new Date();
       try {
-        const formattedDate = this.formatDateForLocale(appointment.dateTime, acceptLanguage);
+        if (!id || Object.keys(appointmentUpdates).length === 0) {
+          logService.log(startTime, "failure");
+          throw new Error("Invalid request payload or missing ID");
+        }
 
+        const fieldsToUpdate = Object.keys(appointmentUpdates)
+          .map((key, index) => `${key} = $${index + 2}`)
+          .join(", ");
+
+        const values = [id, ...Object.values(appointmentUpdates)];
         const query = `
           UPDATE appointments
-          SET organization_id = $2, patient_id = $3, user_id = $4, date_time = $5, status = $6, notes = $7, updated_at = NOW()
+          SET ${fieldsToUpdate}, updated_at = NOW()
           WHERE id = $1
+          RETURNING id;
         `;
 
-        const values = [
-          appointment.id,
-          appointment.organizationId,
-          appointment.patientId,
-          appointment.userId,
-          formattedDate,
-          appointment.status,
-          appointment.notes,
-        ];
+        const result = await pool.query(query, values);
+        if (result.rowCount === 0) {
+          logService.log(startTime, "failure");
+          return false;
+        }
 
-        await pool.query(query, values);
-        
-        logService.log(startTime, "success"); 
+        logService.log(startTime, "success");
+        return true;
       } catch (error) {
-        logService.log(startTime, "failure"); 
-        throw error;
+        logService.log(startTime, "failure");
+        throw new Error("Failed to update appointment: " + error);
       }
     });
   }
 
+  /** 📌 Find appointments by date */
   async findByDateTime(dateTime: Date, acceptLanguage: string): Promise<AppointmentDTO[]> {
     return this.retryOperation(async () => {
       const startTime = new Date();
       try {
         const formattedDate = this.formatDateForLocale(dateTime, acceptLanguage);
 
-        const query = `SELECT * FROM appointments WHERE date_time = $1`;
+        const query = `SELECT * FROM appointments WHERE DATE(date_time) = $1`;
         const result = await pool.query(query, [formattedDate]);
 
-        logService.log(startTime, "success"); 
-
-        return result.rows.map((a: any) => ({
-          id: a.id,
-          organizationId: a.organization_id,
-          patientId: a.patient_id,
-          userId: a.user_id,
-          dateTime: new Date(a.date_time),
-          status: a.status,
-          notes: a.notes,
-          createdAt: new Date(a.created_at),
-          updatedAt: new Date(a.updated_at),
-        }));
+        logService.log(startTime, "success");
+        return result.rows.map((a: any) => this.mapAppointment(a));
       } catch (error) {
-        logService.log(startTime, "failure"); 
-        throw error;
+        logService.log(startTime, "failure");
+        throw new Error("Failed to retrieve appointments by date: " + error);
       }
     });
   }
 
-  async getAll(acceptLanguage: string): Promise<AppointmentDTO[]> {
+  /** 📌 Delete an appointment */
+  async delete(id: string): Promise<boolean> {
+    return this.retryOperation(async () => {
+      const startTime = new Date();
+      try {
+        const query = `DELETE FROM appointments WHERE id = $1 RETURNING id`;
+        const result = await pool.query(query, [id]);
+
+        if (result.rowCount === 0) {
+          logService.log(startTime, "failure");
+          return false;
+        }
+
+        logService.log(startTime, "success");
+        return true;
+      } catch (error) {
+        logService.log(startTime, "failure");
+        throw new Error("Failed to delete appointment: " + error);
+      }
+    });
+  }
+
+  /** 📌 Retrieve all appointments */
+  async getAll(): Promise<AppointmentDTO[]> {
     return this.retryOperation(async () => {
       const startTime = new Date();
       try {
         const query = `SELECT * FROM appointments ORDER BY created_at DESC`;
         const result = await pool.query(query);
 
-        logService.log(startTime, "success"); 
-
-        return result.rows.map((a: any) => ({
-          id: a.id,
-          organizationId: a.organization_id,
-          patientId: a.patient_id,
-          userId: a.user_id,
-          dateTime: new Date(a.date_time),
-          status: a.status,
-          notes: a.notes,
-          createdAt: new Date(a.created_at),
-          updatedAt: new Date(a.updated_at),
-        }));
+        logService.log(startTime, "success");
+        return result.rows.map((a: any) => this.mapAppointment(a));
       } catch (error) {
-        logService.log(startTime, "failure"); // ✅ Log failure
-        throw error;
+        logService.log(startTime, "failure");
+        throw new Error("Failed to retrieve appointments: " + error);
       }
     });
   }
 
-  /**
-   * Formats the date based on the user's language preference.
-   */
+  /** 📌 Retrieve an appointment by ID */
+  async findById(id: string): Promise<AppointmentDTO | null> {
+    const startTime = new Date();
+    try {
+      const query = `SELECT * FROM appointments WHERE id = $1`;
+      const result = await pool.query(query, [id]);
+
+      if (result.rows.length === 0) {
+        logService.log(startTime, "failure");
+        return null;
+      }
+
+      logService.log(startTime, "success");
+      return this.mapAppointment(result.rows[0]);
+    } catch (error) {
+      logService.log(startTime, "failure");
+      throw new Error("Failed to retrieve appointment: " + error);
+    }
+  }
+
+  /** 📌 Map raw DB results to AppointmentDTO */
+  private mapAppointment(a: any): AppointmentDTO {
+    return {
+      id: a.id,
+      organizationId: a.organization_id,
+      patientId: a.patient_id,
+      userId: a.user_id,
+      dateTime: new Date(a.date_time),
+      status: a.status,
+      notes: a.notes,
+      createdAt: new Date(a.created_at),
+      updatedAt: new Date(a.updated_at),
+    };
+  }
+
+  /** 📌 Format dates for different locales */
   private formatDateForLocale(date: Date, acceptLanguage: string): string {
     const locale = acceptLanguage?.toLowerCase().includes("pt-br") ? "pt-BR" : "en-US";
     return locale === "pt-BR"
       ? format(date, "dd/MM/yyyy", { locale: ptBR })
-      : format(date, "yyyy/MM/dd");
+      : format(date, "yyyy-MM-dd");
   }
 
-  /**
-   * Retries the given database operation up to MAX_RETRIES with exponential backoff.
-   */
+  /** 📌 Retry operation with exponential backoff */
   private async retryOperation<T>(operation: () => Promise<T>): Promise<T> {
     let attempts = 0;
-
     while (attempts < this.MAX_RETRIES) {
       const startTime = new Date();
       try {
-        const result = await operation();
-        return result;
+        return await operation();
       } catch (error) {
         attempts++;
-        console.error(`Operation failed (Attempt ${attempts}/${this.MAX_RETRIES}):`, error);
-
+        console.error(`Attempt ${attempts}/${this.MAX_RETRIES} failed:`, error);
         if (attempts >= this.MAX_RETRIES) {
-          logService.log(startTime, "failure"); // ✅ Log failure if max retries reached
+          logService.log(startTime, "failure");
           throw new Error("Database operation failed after multiple retries.");
         }
-
-        // Log retry attempt
-        console.warn(`Retrying operation in ${2 ** attempts} seconds...`);
         await this.sleep(2 ** attempts * 1000);
       }
     }
-
     throw new Error("Unexpected error in retry mechanism.");
   }
 
-  /**
-   * Delays execution for a specified time (used for retry backoff).
-   */
+  /** 📌 Helper function to delay execution */
   private sleep(ms: number): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
