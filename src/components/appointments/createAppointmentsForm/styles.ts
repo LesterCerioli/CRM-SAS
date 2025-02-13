@@ -42,6 +42,11 @@ export const CalendarContainer = styled.div`
     }
   }
 `
+export const EmptyDay = styled.div`
+  width: 12px;
+  height: 10px;
+  visibility: hidden;
+`;
 
 export const TopTabs = styled.div`
   position: absolute;

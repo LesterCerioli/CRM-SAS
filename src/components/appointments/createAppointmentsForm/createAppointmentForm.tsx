@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import * as S from "./styles";
 import axios from "axios";
 
-const weekdays = ["S", "T", "Q", "Q", "S", "S", "D"];
+const weekdays = ["D", "S", "T", "Q", "Q", "S", "S"];
 
 const CreateAppointmentsForm: React.FC = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -218,7 +218,7 @@ const CreateAppointmentsForm: React.FC = () => {
                     {date.getDate()}
                   </S.Day>
                 ) : (
-                  <div key={index} />
+                  <S.EmptyDay key={index} />
                 )
               )}
             </S.Days>

@@ -167,10 +167,10 @@ const CreateDoctorRegistration: React.FC = () => {
 
   return (
     <S.Container>
-      <S.Title>Doctor Registration</S.Title>
+      <S.Title>Cadastro de Médicos</S.Title>
       <S.Form onSubmit={handleSubmit}>
         <S.InputGroup>
-          <S.Label htmlFor="fullName">Doctor Fullname</S.Label>
+          <S.Label htmlFor="fullName">Nome Completo</S.Label>
           <S.Input
             type="text"
             id="fullName"
@@ -182,7 +182,7 @@ const CreateDoctorRegistration: React.FC = () => {
           />
         </S.InputGroup>
         <S.InputGroup>
-          <S.Label htmlFor="phone">Telephone Number</S.Label>
+          <S.Label htmlFor="phone">Telefone</S.Label>
           <S.Input
             type="tel"
             id="phone"
@@ -235,7 +235,7 @@ const CreateDoctorRegistration: React.FC = () => {
           </>
         )}
         <S.InputGroup>
-          <S.Label htmlFor="specialty">Specialty</S.Label>
+          <S.Label htmlFor="specialty">Especialidade</S.Label>
           <S.Select
             id="specialty"
             name="specialty"
@@ -244,7 +244,7 @@ const CreateDoctorRegistration: React.FC = () => {
             required
             disabled={isDisabled}
           >
-            <option value="">Select Specialty</option>
+            <option value="">Selecione Especialidade</option>
             {specialties.map((specialty) => (
               <option key={specialty} value={specialty}>
                 {specialty}
@@ -306,7 +306,7 @@ const CreateDoctorRegistration: React.FC = () => {
         )}
         <S.InputGroup>
           <S.CheckboxGroup>
-            <S.Label htmlFor="isFromUS">Is from US?</S.Label>
+            <S.Label htmlFor="isFromUS">From US?</S.Label>
             <S.Checkbox
               type="checkbox"
               id="isFromUS"
