@@ -1,6 +1,6 @@
 import { Pool } from "pg";
 import { v4 as uuidv4 } from "uuid";
-import { logService } from "@/application/services/api/implementations/log_service";
+import { logService } from "@/application/services/implementations/log_service";
 import dotenv from "dotenv";
 
 dotenv.config();

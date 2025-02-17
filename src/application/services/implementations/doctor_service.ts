@@ -1,7 +1,7 @@
 import { Pool } from "pg";
 import { v4 as uuidv4 } from "uuid";
-import { DoctorServiceContract } from "@/application/services/api/contracts/doctor_service_contract";
-import { logService } from "@/application/services/api/implementations/log_service";
+import { DoctorServiceContract } from "@/application/services/contracts/doctor_service_contract";
+import { logService } from "@/application/services/implementations/log_service";
 import { DoctorDTO } from "@/domain/dtos/doctorDTO";
 import dotenv from "dotenv";
 

@@ -18,3 +18,14 @@ If you want to learn more about creating good readme files then refer the follow
 - [ASP.NET Core](https://github.com/aspnet/Home)
 - [Visual Studio Code](https://github.com/Microsoft/vscode)
 - [Chakra Core](https://github.com/Microsoft/ChakraCore)
+
+
+# API Routes
+
+| Método | Endpoint                      | Descrição                                |
+|--------|-------------------------------|------------------------------------------|
+| POST   | `/appointments`                | Create a new appointment               |
+| GET    | `/appointments`                | List everyon appointments            |
+| GET    | `/appointments/by-date?date=YYYY-MM-DD` | Find appointment by date            |
+| GET    | `/appointments/:id`            | Find appointment by ID           |
+| DELETE | `/appointments/:id`            | Delete an appointment by ID          |

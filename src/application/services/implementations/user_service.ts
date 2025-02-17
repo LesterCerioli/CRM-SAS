@@ -1,27 +1,22 @@
 import { Pool } from "pg";
 import { v4 as uuidv4 } from "uuid";
-import { logService } from "@/application/services/api/implementations/log_service";
+import { logService } from "@/application/services/implementations/log_service";
 import dotenv from "dotenv";
-
 
 dotenv.config();
 
-interface PatientDTO {
+interface UserDTO {
     id?: string;
-    organizationId: string;
-    cpf: string;
     name: string;
-    dob: Date;
-    gender: string;
-    address: string;
-    contact: string;
+    email: string;
+    role: string;
     createdAt?: Date;
     updatedAt?: Date;
 }
 
-export class PatientService {
+export class UserService {
     private readonly pool: Pool;
-    private readonly serviceName = "PatientService";
+    private readonly serviceName = "UserService";
     private readonly MAX_RETRIES = 5;
 
     constructor() {
@@ -34,143 +29,146 @@ export class PatientService {
         });
     }
 
-    /** Creates a new patient */
-    async create(patient: PatientDTO): Promise<string> {
+    /** Creates a new user */
+    async create(user: UserDTO): Promise<string> {
         return this.retryOperation(async () => {
             const startTime = new Date();
             try {
-                console.log(`[${this.serviceName}] Creating a new patient`);
+                console.log(`[${this.serviceName}] Creating a new user`);
 
-                const patientId = uuidv4();
+                if (!user.name || !user.email || !user.role) {
+                    throw new Error("Missing required fields: name, email, or role");
+                }
+
+                // Check if email already exists
+                const checkQuery = `SELECT id FROM users WHERE email = $1`;
+                const checkResult = await this.pool.query(checkQuery, [user.email]);
+
+                if (checkResult.rows.length > 0) {
+                    throw new Error("Email already exists");
+                }
+
+                const userId = uuidv4();
                 const query = `
-                    INSERT INTO patients (id, organization_id, cpf, name, dob, gender, address, contact, created_at, updated_at)
-                    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW(), NOW())
+                    INSERT INTO users (id, name, email, role, created_at, updated_at)
+                    VALUES ($1, $2, $3, $4, NOW(), NOW())
                     RETURNING id
                 `;
 
-                const values = [
-                    patientId,
-                    patient.organizationId,
-                    patient.cpf,
-                    patient.name,
-                    patient.dob,
-                    patient.gender,
-                    patient.address,
-                    patient.contact,
-                ];
+                const values = [userId, user.name, user.email, user.role];
 
                 const result = await this.pool.query(query, values);
 
-                console.log(`[${this.serviceName}] Patient created with ID: ${patientId}`);
+                console.log(`[${this.serviceName}] User created with ID: ${userId}`);
                 logService.log(startTime, "success");
                 return result.rows[0].id;
             } catch (error) {
-                console.error(`[${this.serviceName}] Failed to create patient`, error);
+                console.error(`[${this.serviceName}] Failed to create user`, error);
                 logService.log(startTime, "failure");
                 throw error;
             }
         });
     }
 
-    /** Gets patients by name */
-    async getByName(name: string): Promise<PatientDTO[]> {
+    /** Gets users by email */
+    async getByEmail(email: string): Promise<UserDTO[]> {
         return this.retryOperation(async () => {
             const startTime = new Date();
             try {
-                console.log(`[${this.serviceName}] Fetching patients by name: ${name}`);
+                console.log(`[${this.serviceName}] Fetching users by email: ${email}`);
 
-                const query = `SELECT * FROM patients WHERE LOWER(name) = LOWER($1)`;
+                const query = `SELECT * FROM users WHERE email = $1`;
+                const result = await this.pool.query(query, [email]);
+
+                console.log(`[${this.serviceName}] Fetched users successfully`);
+                logService.log(startTime, "success");
+                return result.rows;
+            } catch (error) {
+                console.error(`[${this.serviceName}] Failed to fetch users by email`, error);
+                logService.log(startTime, "failure");
+                throw error;
+            }
+        });
+    }
+
+    /** Gets users by name */
+    async getByName(name: string): Promise<UserDTO[]> {
+        return this.retryOperation(async () => {
+            const startTime = new Date();
+            try {
+                console.log(`[${this.serviceName}] Fetching users by name: ${name}`);
+
+                const query = `SELECT * FROM users WHERE LOWER(name) = LOWER($1)`;
                 const result = await this.pool.query(query, [name]);
 
-                console.log(`[${this.serviceName}] Fetched patients successfully`);
+                console.log(`[${this.serviceName}] Fetched users successfully`);
                 logService.log(startTime, "success");
                 return result.rows;
             } catch (error) {
-                console.error(`[${this.serviceName}] Failed to fetch patients by name`, error);
+                console.error(`[${this.serviceName}] Failed to fetch users by name`, error);
                 logService.log(startTime, "failure");
                 throw error;
             }
         });
     }
 
-    /** Gets patients by CPF */
-    async getByCPF(cpf: string): Promise<PatientDTO[]> {
+    /** Gets users by role */
+    async getByRole(role: string): Promise<UserDTO[]> {
         return this.retryOperation(async () => {
             const startTime = new Date();
             try {
-                console.log(`[${this.serviceName}] Fetching patients by CPF: ${cpf}`);
+                console.log(`[${this.serviceName}] Fetching users by role: ${role}`);
 
-                const query = `SELECT * FROM patients WHERE cpf = $1`;
-                const result = await this.pool.query(query, [cpf]);
+                const query = `SELECT * FROM users WHERE role = $1`;
+                const result = await this.pool.query(query, [role]);
 
-                console.log(`[${this.serviceName}] Fetched patients successfully`);
+                console.log(`[${this.serviceName}] Fetched users successfully`);
                 logService.log(startTime, "success");
                 return result.rows;
             } catch (error) {
-                console.error(`[${this.serviceName}] Failed to fetch patients by CPF`, error);
+                console.error(`[${this.serviceName}] Failed to fetch users by role`, error);
                 logService.log(startTime, "failure");
                 throw error;
             }
         });
     }
 
-    /** Gets patients by date of birth */
-    async getByDOB(dob: Date): Promise<PatientDTO[]> {
+    /** Gets users by creation date */
+    async getByCreatedAt(createdAt: Date): Promise<UserDTO[]> {
         return this.retryOperation(async () => {
             const startTime = new Date();
             try {
-                console.log(`[${this.serviceName}] Fetching patients by DOB: ${dob}`);
+                console.log(`[${this.serviceName}] Fetching users created at: ${createdAt}`);
 
-                const query = `SELECT * FROM patients WHERE dob = $1`;
-                const result = await this.pool.query(query, [dob]);
-
-                console.log(`[${this.serviceName}] Fetched patients successfully`);
-                logService.log(startTime, "success");
-                return result.rows;
-            } catch (error) {
-                console.error(`[${this.serviceName}] Failed to fetch patients by DOB`, error);
-                logService.log(startTime, "failure");
-                throw error;
-            }
-        });
-    }
-
-    /** Gets patients by creation date */
-    async getByCreatedAt(createdAt: Date): Promise<PatientDTO[]> {
-        return this.retryOperation(async () => {
-            const startTime = new Date();
-            try {
-                console.log(`[${this.serviceName}] Fetching patients created at: ${createdAt}`);
-
-                const query = `SELECT * FROM patients WHERE DATE(created_at) = $1`;
+                const query = `SELECT * FROM users WHERE DATE(created_at) = $1`;
                 const result = await this.pool.query(query, [createdAt.toISOString().split("T")[0]]);
 
-                console.log(`[${this.serviceName}] Fetched patients successfully`);
+                console.log(`[${this.serviceName}] Fetched users successfully`);
                 logService.log(startTime, "success");
                 return result.rows;
             } catch (error) {
-                console.error(`[${this.serviceName}] Failed to fetch patients by CreatedAt`, error);
+                console.error(`[${this.serviceName}] Failed to fetch users by createdAt`, error);
                 logService.log(startTime, "failure");
                 throw error;
             }
         });
     }
 
-    /** Gets all patients */
-    async getPatientsList(): Promise<PatientDTO[]> {
+    /** Gets users by update date */
+    async getByUpdatedAt(updatedAt: Date): Promise<UserDTO[]> {
         return this.retryOperation(async () => {
             const startTime = new Date();
             try {
-                console.log(`[${this.serviceName}] Fetching all patients`);
+                console.log(`[${this.serviceName}] Fetching users updated at: ${updatedAt}`);
 
-                const query = `SELECT * FROM patients ORDER BY created_at DESC`;
-                const result = await this.pool.query(query);
+                const query = `SELECT * FROM users WHERE DATE(updated_at) = $1`;
+                const result = await this.pool.query(query, [updatedAt.toISOString().split("T")[0]]);
 
-                console.log(`[${this.serviceName}] Fetched all patients successfully`);
+                console.log(`[${this.serviceName}] Fetched users successfully`);
                 logService.log(startTime, "success");
                 return result.rows;
             } catch (error) {
-                console.error(`[${this.serviceName}] Failed to fetch patients`, error);
+                console.error(`[${this.serviceName}] Failed to fetch users by updatedAt`, error);
                 logService.log(startTime, "failure");
                 throw error;
             }
@@ -209,4 +207,4 @@ export class PatientService {
     }
 }
 
-export default new PatientService();
+export default new UserService();

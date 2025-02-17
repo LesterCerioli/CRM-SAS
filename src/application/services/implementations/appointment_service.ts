@@ -5,6 +5,7 @@ import { ptBR } from "date-fns/locale";
 import { v4 as uuidv4 } from "uuid";
 import { pool } from "@/infrastructure/db/postgres/db";
 import { logService } from "./log_service";
+import { PatientDTO } from "@/domain/dtos/patientDTO";
 
 export class AppointmentService implements AppointmentServiceContract {
   private readonly MAX_RETRIES = 5;
@@ -137,6 +138,27 @@ export class AppointmentService implements AppointmentServiceContract {
       }
     });
   }
+  async findByName(name: string): Promise<PatientDTO[]> {
+    return this.retryOperation(async () => {
+      const startTime = new Date();
+      try {
+        const query = `
+          SELECT id, cpf, name, dob, gender, email, phone
+          FROM patients
+          WHERE LOWER(name) LIKE LOWER($1)
+          ORDER BY name ASC
+        `;
+  
+        const result = await pool.query(query, [`%${name}%`]);
+  
+        logService.log(startTime, "success");
+        return result.rows.map((p: any) => this.mapPatient(p));
+      } catch (error) {
+        logService.log(startTime, "failure");
+        throw new Error("Failed to retrieve patients by name: " + error);
+      }
+    });
+  }
 
   /** 📌 Retrieve an appointment by ID */
   async findById(id: string): Promise<AppointmentDTO | null> {
@@ -170,6 +192,17 @@ export class AppointmentService implements AppointmentServiceContract {
       notes: a.notes,
       createdAt: new Date(a.created_at),
       updatedAt: new Date(a.updated_at),
+    };
+  }
+  private mapPatient(p: any): PatientDTO {
+    return {
+      id: p.id,
+      cpf: p.cpf,
+      name: p.name,
+      dob: new Date(p.dob),
+      gender: p.gender,
+      email: p.email,
+      phone: p.phone,
     };
   }
 

@@ -8,8 +8,8 @@ import { Montserrat } from "next/font/google";
 const montserrat = Montserrat({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Lucas Tecnologia Services",
-  description: "Escalando seus sonhos",
+  title: "Hedical App",
+  description: "Hedical App: Gestão Inteligente para Clínicas e Hospitais. Simplifique processos, otimize atendimentos e impulsione sua eficiência",
 };
 
 export default function RootLayout({

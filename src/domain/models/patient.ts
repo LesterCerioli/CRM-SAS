@@ -8,7 +8,7 @@ export class Patient {
   dob: Date;
   gender: string;
   address: string;
-  contact: string;
+  telephone: string;
   createdAt: Date;
   updatedAt: Date;
 
@@ -17,6 +17,7 @@ export class Patient {
     cpf: string,
     name: string,
     dob: Date,
+    telephone: string,
     gender: string,
     address: string,
     contact: string
@@ -28,7 +29,7 @@ export class Patient {
     this.dob = dob;
     this.gender = gender;
     this.address = address;
-    this.contact = contact;
+    this.telephone = telephone;
     this.createdAt = new Date();
     this.updatedAt = new Date();
   }

@@ -1,8 +1,10 @@
 module.exports = {
-    setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
-    testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/'],
-    moduleNameMapper: {
-        '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
+    preset: "ts-jest",
+    testEnvironment: "node", // Use "jsdom" if testing frontend components
+    setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"], // ✅ Ensures Jest loads setup
+    transform: {
+      "^.+\\.tsx?$": "ts-jest",
     },
-    testEnvironment: 'jsdom',
-};
+    moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
+  };
+  

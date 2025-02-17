@@ -1,22 +1,22 @@
 import { Pool } from "pg";
 import { v4 as uuidv4 } from "uuid";
-import { logService } from "@/application/services/api/implementations/log_service";
+import { logService } from "@/application/services/implementations/log_service";
 import dotenv from "dotenv";
 
 dotenv.config();
 
-interface UserDTO {
+interface SubscriptionDTO {
     id?: string;
-    name: string;
-    email: string;
-    role: string;
+    startDate: Date;
+    endDate?: Date;
+    status: string;
     createdAt?: Date;
     updatedAt?: Date;
 }
 
-export class UserService {
+export class SubscriptionService {
     private readonly pool: Pool;
-    private readonly serviceName = "UserService";
+    private readonly serviceName = "SubscriptionService";
     private readonly MAX_RETRIES = 5;
 
     constructor() {
@@ -29,146 +29,139 @@ export class UserService {
         });
     }
 
-    /** Creates a new user */
-    async create(user: UserDTO): Promise<string> {
+    /** Creates a new subscription */
+    async create(subscription: SubscriptionDTO): Promise<string> {
         return this.retryOperation(async () => {
             const startTime = new Date();
             try {
-                console.log(`[${this.serviceName}] Creating a new user`);
+                console.log(`[${this.serviceName}] Creating a new subscription`);
 
-                if (!user.name || !user.email || !user.role) {
-                    throw new Error("Missing required fields: name, email, or role");
-                }
-
-                // Check if email already exists
-                const checkQuery = `SELECT id FROM users WHERE email = $1`;
-                const checkResult = await this.pool.query(checkQuery, [user.email]);
-
-                if (checkResult.rows.length > 0) {
-                    throw new Error("Email already exists");
-                }
-
-                const userId = uuidv4();
+                const subscriptionId = uuidv4();
                 const query = `
-                    INSERT INTO users (id, name, email, role, created_at, updated_at)
+                    INSERT INTO subscriptions (id, start_date, end_date, status, created_at, updated_at)
                     VALUES ($1, $2, $3, $4, NOW(), NOW())
                     RETURNING id
                 `;
 
-                const values = [userId, user.name, user.email, user.role];
+                const values = [
+                    subscriptionId,
+                    subscription.startDate,
+                    subscription.endDate || null,
+                    subscription.status,
+                ];
 
                 const result = await this.pool.query(query, values);
 
-                console.log(`[${this.serviceName}] User created with ID: ${userId}`);
+                console.log(`[${this.serviceName}] Subscription created with ID: ${subscriptionId}`);
                 logService.log(startTime, "success");
                 return result.rows[0].id;
             } catch (error) {
-                console.error(`[${this.serviceName}] Failed to create user`, error);
+                console.error(`[${this.serviceName}] Failed to create subscription`, error);
                 logService.log(startTime, "failure");
                 throw error;
             }
         });
     }
 
-    /** Gets users by email */
-    async getByEmail(email: string): Promise<UserDTO[]> {
+    /** Gets subscriptions by start date */
+    async getByStartDate(startDate: Date): Promise<SubscriptionDTO[]> {
         return this.retryOperation(async () => {
             const startTime = new Date();
             try {
-                console.log(`[${this.serviceName}] Fetching users by email: ${email}`);
+                console.log(`[${this.serviceName}] Fetching subscriptions by start date: ${startDate}`);
 
-                const query = `SELECT * FROM users WHERE email = $1`;
-                const result = await this.pool.query(query, [email]);
+                const query = `SELECT * FROM subscriptions WHERE DATE(start_date) = $1`;
+                const result = await this.pool.query(query, [startDate.toISOString().split("T")[0]]);
 
-                console.log(`[${this.serviceName}] Fetched users successfully`);
+                console.log(`[${this.serviceName}] Fetched subscriptions successfully`);
                 logService.log(startTime, "success");
                 return result.rows;
             } catch (error) {
-                console.error(`[${this.serviceName}] Failed to fetch users by email`, error);
+                console.error(`[${this.serviceName}] Failed to fetch subscriptions by start date`, error);
                 logService.log(startTime, "failure");
                 throw error;
             }
         });
     }
 
-    /** Gets users by name */
-    async getByName(name: string): Promise<UserDTO[]> {
+    /** Gets subscriptions by end date */
+    async getByEndDate(endDate: Date): Promise<SubscriptionDTO[]> {
         return this.retryOperation(async () => {
             const startTime = new Date();
             try {
-                console.log(`[${this.serviceName}] Fetching users by name: ${name}`);
+                console.log(`[${this.serviceName}] Fetching subscriptions by end date: ${endDate}`);
 
-                const query = `SELECT * FROM users WHERE LOWER(name) = LOWER($1)`;
-                const result = await this.pool.query(query, [name]);
+                const query = `SELECT * FROM subscriptions WHERE end_date = $1`;
+                const result = await this.pool.query(query, [endDate]);
 
-                console.log(`[${this.serviceName}] Fetched users successfully`);
+                console.log(`[${this.serviceName}] Fetched subscriptions successfully`);
                 logService.log(startTime, "success");
                 return result.rows;
             } catch (error) {
-                console.error(`[${this.serviceName}] Failed to fetch users by name`, error);
+                console.error(`[${this.serviceName}] Failed to fetch subscriptions by end date`, error);
                 logService.log(startTime, "failure");
                 throw error;
             }
         });
     }
 
-    /** Gets users by role */
-    async getByRole(role: string): Promise<UserDTO[]> {
+    /** Gets subscriptions by status */
+    async getByStatus(status: string): Promise<SubscriptionDTO[]> {
         return this.retryOperation(async () => {
             const startTime = new Date();
             try {
-                console.log(`[${this.serviceName}] Fetching users by role: ${role}`);
+                console.log(`[${this.serviceName}] Fetching subscriptions by status: ${status}`);
 
-                const query = `SELECT * FROM users WHERE role = $1`;
-                const result = await this.pool.query(query, [role]);
+                const query = `SELECT * FROM subscriptions WHERE status = $1`;
+                const result = await this.pool.query(query, [status]);
 
-                console.log(`[${this.serviceName}] Fetched users successfully`);
+                console.log(`[${this.serviceName}] Fetched subscriptions successfully`);
                 logService.log(startTime, "success");
                 return result.rows;
             } catch (error) {
-                console.error(`[${this.serviceName}] Failed to fetch users by role`, error);
+                console.error(`[${this.serviceName}] Failed to fetch subscriptions by status`, error);
                 logService.log(startTime, "failure");
                 throw error;
             }
         });
     }
 
-    /** Gets users by creation date */
-    async getByCreatedAt(createdAt: Date): Promise<UserDTO[]> {
+    /** Gets subscriptions by creation date */
+    async getByCreatedAt(createdAt: Date): Promise<SubscriptionDTO[]> {
         return this.retryOperation(async () => {
             const startTime = new Date();
             try {
-                console.log(`[${this.serviceName}] Fetching users created at: ${createdAt}`);
+                console.log(`[${this.serviceName}] Fetching subscriptions created at: ${createdAt}`);
 
-                const query = `SELECT * FROM users WHERE DATE(created_at) = $1`;
+                const query = `SELECT * FROM subscriptions WHERE DATE(created_at) = $1`;
                 const result = await this.pool.query(query, [createdAt.toISOString().split("T")[0]]);
 
-                console.log(`[${this.serviceName}] Fetched users successfully`);
+                console.log(`[${this.serviceName}] Fetched subscriptions successfully`);
                 logService.log(startTime, "success");
                 return result.rows;
             } catch (error) {
-                console.error(`[${this.serviceName}] Failed to fetch users by createdAt`, error);
+                console.error(`[${this.serviceName}] Failed to fetch subscriptions by createdAt`, error);
                 logService.log(startTime, "failure");
                 throw error;
             }
         });
     }
 
-    /** Gets users by update date */
-    async getByUpdatedAt(updatedAt: Date): Promise<UserDTO[]> {
+    /** Gets subscriptions by update date */
+    async getByUpdatedAt(updatedAt: Date): Promise<SubscriptionDTO[]> {
         return this.retryOperation(async () => {
             const startTime = new Date();
             try {
-                console.log(`[${this.serviceName}] Fetching users updated at: ${updatedAt}`);
+                console.log(`[${this.serviceName}] Fetching subscriptions updated at: ${updatedAt}`);
 
-                const query = `SELECT * FROM users WHERE DATE(updated_at) = $1`;
+                const query = `SELECT * FROM subscriptions WHERE DATE(updated_at) = $1`;
                 const result = await this.pool.query(query, [updatedAt.toISOString().split("T")[0]]);
 
-                console.log(`[${this.serviceName}] Fetched users successfully`);
+                console.log(`[${this.serviceName}] Fetched subscriptions successfully`);
                 logService.log(startTime, "success");
                 return result.rows;
             } catch (error) {
-                console.error(`[${this.serviceName}] Failed to fetch users by updatedAt`, error);
+                console.error(`[${this.serviceName}] Failed to fetch subscriptions by updatedAt`, error);
                 logService.log(startTime, "failure");
                 throw error;
             }
@@ -207,4 +200,4 @@ export class UserService {
     }
 }
 
-export default new UserService();
+export default new SubscriptionService();
