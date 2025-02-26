@@ -9,8 +9,7 @@ import { PatientDTO } from "@/domain/dtos/patientDTO";
 
 export class AppointmentService implements AppointmentServiceContract {
   private readonly MAX_RETRIES = 5;
-
-  /** 📌 Create a new appointment */
+  
   async create(appointment: AppointmentDTO, acceptLanguage: string): Promise<string> {
     return this.retryOperation(async () => {
       const startTime = new Date();
@@ -43,8 +42,7 @@ export class AppointmentService implements AppointmentServiceContract {
       }
     });
   }
-
-  /** 📌 Update an appointment */
+  
   async update(id: string, appointmentUpdates: Partial<AppointmentDTO>): Promise<boolean> {
     return this.retryOperation(async () => {
       const startTime = new Date();
@@ -80,8 +78,7 @@ export class AppointmentService implements AppointmentServiceContract {
       }
     });
   }
-
-  /** 📌 Find appointments by date */
+  
   async findByDateTime(dateTime: Date, acceptLanguage: string): Promise<AppointmentDTO[]> {
     return this.retryOperation(async () => {
       const startTime = new Date();
@@ -99,8 +96,7 @@ export class AppointmentService implements AppointmentServiceContract {
       }
     });
   }
-
-  /** 📌 Delete an appointment */
+  
   async delete(id: string): Promise<boolean> {
     return this.retryOperation(async () => {
       const startTime = new Date();
@@ -121,8 +117,7 @@ export class AppointmentService implements AppointmentServiceContract {
       }
     });
   }
-
-  /** 📌 Retrieve all appointments */
+ 
   async getAll(): Promise<AppointmentDTO[]> {
     return this.retryOperation(async () => {
       const startTime = new Date();
@@ -159,8 +154,7 @@ export class AppointmentService implements AppointmentServiceContract {
       }
     });
   }
-
-  /** 📌 Retrieve an appointment by ID */
+  
   async findById(id: string): Promise<AppointmentDTO | null> {
     const startTime = new Date();
     try {
@@ -179,8 +173,7 @@ export class AppointmentService implements AppointmentServiceContract {
       throw new Error("Failed to retrieve appointment: " + error);
     }
   }
-
-  /** 📌 Map raw DB results to AppointmentDTO */
+  
   private mapAppointment(a: any): AppointmentDTO {
     return {
       id: a.id,
@@ -196,25 +189,29 @@ export class AppointmentService implements AppointmentServiceContract {
   }
   private mapPatient(p: any): PatientDTO {
     return {
-      id: p.id,
-      cpf: p.cpf,
-      name: p.name,
-      dob: new Date(p.dob),
-      gender: p.gender,
-      email: p.email,
-      phone: p.phone,
+    id: p.id,
+    cpf: p.cpf,
+    name: p.name,
+    dob: new Date(p.dob),
+    gender: p.gender,
+    email: p.email,
+    phone: p.phone,
+    organizationId: p.organization_id || "", 
+    address: p.address || "", 
+    contact: p.contact || "", 
+    createdAt: new Date(p.created_at || Date.now()), 
+    updatedAt: new Date(p.updated_at || Date.now()), 
+      
     };
   }
-
-  /** 📌 Format dates for different locales */
+  
   private formatDateForLocale(date: Date, acceptLanguage: string): string {
     const locale = acceptLanguage?.toLowerCase().includes("pt-br") ? "pt-BR" : "en-US";
     return locale === "pt-BR"
       ? format(date, "dd/MM/yyyy", { locale: ptBR })
       : format(date, "yyyy-MM-dd");
   }
-
-  /** 📌 Retry operation with exponential backoff */
+ 
   private async retryOperation<T>(operation: () => Promise<T>): Promise<T> {
     let attempts = 0;
     while (attempts < this.MAX_RETRIES) {
@@ -233,8 +230,7 @@ export class AppointmentService implements AppointmentServiceContract {
     }
     throw new Error("Unexpected error in retry mechanism.");
   }
-
-  /** 📌 Helper function to delay execution */
+  
   private sleep(ms: number): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }

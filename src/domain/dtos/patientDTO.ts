@@ -3,6 +3,8 @@ export interface PatientDTO {
     organizationId: string;
     cpf: string;
     name: string;
+    email: string;
+    phone: string;
     dob: Date;
     gender: string;
     address: string;
