@@ -2,19 +2,12 @@
 Medical App FrontEnd
 
 # Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
-
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
-
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+Imposto	                        Descrição	                                                    Taxa Aproximada
+Federal Corporate Income Tax	Imposto de Renda Corporativo Federal	                            21% (padrão federal)
+State Corporate Income Tax	    Imposto de Renda Corporativo Estadual	                            Varia por estado (0% a 12%)
+Sales Tax	                    Imposto sobre vendas de bens e serviços	                            4% a 10% (depende do estado)
+Payroll Tax (FICA)	            Contribuição para Previdência Social e Medicare	                    15,3% (metade paga pelo empregador)
+Unemployment Tax (FUTA e SUTA)	Seguro-desemprego federal e estadual	                            FUTA: 6%, SUTA: varia por estado
+Property Tax	                Imposto sobre imóveis e ativos da empresa	                        Varia por cidade e estado
+Excise Tax	                    Imposto sobre produtos específicos (combustíveis, tabaco, álcool)	Varia conforme o produto

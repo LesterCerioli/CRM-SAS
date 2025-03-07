@@ -1,0 +1,3666 @@
+{
+	"info": {
+		"_postman_id": "da62aee9-0da3-4f68-9083-1e10118bc2dd",
+		"name": "Salesforce CRM Analytics Connect API",
+		"description": "This collection lets you access CRM Analytics features such as datasets, dashboards, and lenses programmatically using the [CRM Analytics REST API](https://developer.salesforce.com/docs/atlas.en-us.bi_dev_guide_rest.meta/bi_dev_guide_rest/bi_dev_guide_rest_resources.htm).\n\nUsing the CRM Analytics REST API, you can:\n\n- Send queries directly to the CRM Analytics Platform.\n- Access datasets that have been imported into the CRM Analytics Platform.\n- Validate templates for CRM Analytics apps.\n- Run CRM Analytics dataflows, recipes, and connections. See [Run, Schedule, and Sync CRM Analytics Data with REST APIs](https://developer.salesforce.com/docs/atlas.en-us.bi_dev_guide_rest.meta/bi_dev_guide_rest/bi_run_schedule_sync_data.htm)\n- Retrieve a list of dataflow job nodes and details for each individual node.\n- Access XMD information.\n- Retrieve standard datasets.\n- Retrieve a list of dataset versions.\n- Manipulate synced datasets, also known as connected objects.\n- Work with data connectors.\n- Retrieve recipe metadata.\n- Retrieve collections of CRM Analytics resources.\n\n\n## Get Started\n\nClick the button below and follow the instructions from the following sections:  \n[<img src=\"https://run.pstmn.io/button.svg\" alt=\"Run In Postman\" style=\"width: 128px; height: 32px;\">](https://god.gw.postman.com/run-collection/12721794-da62aee9-0da3-4f68-9083-1e10118bc2dd?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D12721794-da62aee9-0da3-4f68-9083-1e10118bc2dd%26entityType%3Dcollection%26workspaceId%3D23726644-d41e-4b33-8e61-5da39d151606)\n\n1. Assign a value to the `loginUrl` collection variable based on your Salesforce Org type:\n    \n    | Login URL | Org Type |\n    | --- | --- |\n    | `https://test.salesforce.com` | Sandboxes or Scratch orgs. |\n    | `https://login.salesforce.com` | Production, Trailhead Playground and Developer Edition orgs. |\n    | Custom My Domain base URL | Org with a custom domain. |\n    \n1. Click **Get New Access Token** from the collection's **Authorization** tab.\n1. When prompted to do so, log in to your Salesforce org and allow access to \"Salesforce APIs Collection for Postman\".\n1. Copy the value of the `instance_url` field from the token details view.\n1. Click **Use Token**.\n1. Save the value that you copied in the `_endpoint` variable.\n1. Click **Save** and you're good to go!\n",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8857105",
+		"_collection_link": "https://www.postman.com/salesforce-developers/salesforce-developers/collection/z5vnma1/salesforce-crm-analytics-connect-api?action=share&source=collection_link&creator=8857105"
+	},
+	"item": [
+		{
+			"name": "Actions",
+			"item": [
+				{
+					"name": "getActionCollection",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/wave/actions/:entityId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"wave",
+								"actions",
+								":entityId"
+							],
+							"variable": [
+								{
+									"key": "entityId",
+									"value": "<string>",
+									"description": "(Required) The ID of the CRM Analytics user."
+								}
+							]
+						},
+						"description": "Retrieve a collection of Salesforce actions available to a CRM Analytics user.\n\nFor additional information, see the [Actions Resource](https://developer.salesforce.com/docs/atlas.en-us.bi_dev_guide_rest.meta/bi_dev_guide_rest/bi_resources_actions.htm)."
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"auth": {
+									"type": "oauth2"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/wave/actions/:entityId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wave",
+										"actions",
+										":entityId"
+									],
+									"variable": [
+										{
+											"key": "entityId",
+											"value": "<string>"
+										}
+									]
+								},
+								"description": "Get a collection of Salesforce actions available to a CRM Analytics user."
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"actions\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+						}
+					]
+				}
+			],
+			"description": "A collection of Salesforce actions available to a CRM Analytics user."
+		},
+		{
+			"name": "Asset",
+			"item": [
+				{
+					"name": "getSchedule",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/wave/asset/:assetId/schedule",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"wave",
+								"asset",
+								":assetId",
+								"schedule"
+							],
+							"variable": [
+								{
+									"key": "assetId",
+									"value": "<string>",
+									"description": "(Required) The ID of the CRM Analytics asset."
+								}
+							]
+						},
+						"description": "Retrieves the schedule for an asset.\n\nFor additional information, see the [Schedule Resource.](https://developer.salesforce.com/docs/atlas.en-us.bi_dev_guide_rest.meta/bi_dev_guide_rest/bi_resources_schedule.htm)"
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"auth": {
+									"type": "oauth2"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/wave/asset/:assetId/schedule",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wave",
+										"asset",
+										":assetId",
+										"schedule"
+									],
+									"variable": [
+										{
+											"key": "assetId",
+											"value": "<string>"
+										}
+									]
+								},
+								"description": "Retrieves the schedule for an asset."
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"assetId\": \"<string>\",\n  \"events\": {\n    \"events\": [\n      {\n        \"createdBy\": {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"profilePhotoUrl\": \"<string>\"\n        },\n        \"createdDate\": \"<string>\",\n        \"eventType\": \"<string>\"\n      },\n      {\n        \"createdBy\": {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"profilePhotoUrl\": \"<string>\"\n        },\n        \"createdDate\": \"<string>\",\n        \"eventType\": \"<string>\"\n      }\n    ]\n  },\n  \"frequency\": \"<string>\",\n  \"nextScheduledDate\": \"<string>\",\n  \"notificationLevel\": \"<string>\",\n  \"time\": {\n    \"hour\": \"<integer>\",\n    \"minute\": \"<integer>\",\n    \"timeZone\": {\n      \"gmtOffset\": \"<double>\",\n      \"name\": \"<string>\",\n      \"zoneId\": \"<string>\"\n    }\n  }\n}"
+						}
+					]
+				},
+				{
+					"name": "getDependency",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/wave/dependencies/:assetId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"wave",
+								"dependencies",
+								":assetId"
+							],
+							"variable": [
+								{
+									"key": "assetId",
+									"value": "<string>",
+									"description": "(Required) The ID of the CRM Analytics asset."
+								}
+							]
+						},
+						"description": "Get a Dependencies resource representation.\n\nFor additional information, see the [Dependencies Resource.](https://developer.salesforce.com/docs/atlas.en-us.bi_dev_guide_rest.meta/bi_dev_guide_rest/bi_resources_dependencies_id.htm)"
+					},
+					"response": []
+				}
+			],
+			"description": "A collection of CRM Analytics Asset information."
+		},
+		{
+			"name": "Dashboards",
+			"item": [
+				{
+					"name": "getDashboardCollection",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/wave/dashboards",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"wave",
+								"dashboards"
+							],
+							"query": [
+								{
+									"key": "folderId",
+									"value": "<string>",
+									"description": "Filters the results to include only the contents of a specific folder. The id can be the requesting user’s ID for items in the user’s private folder.",
+									"disabled": true
+								},
+								{
+									"key": "ids",
+									"value": "<string>",
+									"description": "Filters the results to include only the dashboards with the specified ids.",
+									"disabled": true
+								},
+								{
+									"key": "mobileOnly",
+									"value": "<boolean>",
+									"description": "Filters the results for mobile enabled dashboards only.",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "<string>",
+									"description": "A generated token that indicates the view of dashboard to be returned.",
+									"disabled": true
+								},
+								{
+									"key": "pageSize",
+									"value": "<integer>",
+									"description": "The number of items to be returned in a single page. Minimum is 1, maximum is 200, and default is 25.",
+									"disabled": true
+								},
+								{
+									"key": "q",
+									"value": "<string>",
+									"description": "Search terms. Individual terms are separated by spaces. A wildcard is automatically appended to the last token in the query string.",
+									"disabled": true
+								},
+								{
+									"key": "scope",
+									"value": "<string>",
+									"description": "The type of scope to be applied to the returned collection.",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "<string>",
+									"description": "The type of sort order to be applied to the returned collection.",
+									"disabled": true
+								},
+								{
+									"key": "templateApiName",
+									"value": "<string>",
+									"description": "Filters the results to include only a collection of dashboards created from a specific application template.",
+									"disabled": true
+								},
+								{
+									"key": "type",
+									"value": "<string>",
+									"description": "The asset type. The default type is Dashboard.",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Get all available dashboards."
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"auth": {
+									"type": "oauth2"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/wave/dashboards?folderId=<string>&ids=<string>&mobileOnly=<boolean>&page=<string>&pageSize=<integer>&q=<string>&scope=<string>&sort=<string>&templateApiName=<string>&type=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wave",
+										"dashboards"
+									],
+									"query": [
+										{
+											"key": "folderId",
+											"value": "<string>",
+											"description": "Filters the results to include only the contents of a specific folder. The id can be the requesting user’s ID for items in the user’s private folder."
+										},
+										{
+											"key": "ids",
+											"value": "<string>",
+											"description": "Filters the results to include only the dashboards with the specified ids."
+										},
+										{
+											"key": "mobileOnly",
+											"value": "<boolean>",
+											"description": "Filters the results for mobile enabled dashboards only."
+										},
+										{
+											"key": "page",
+											"value": "<string>",
+											"description": "A generated token that indicates the view of dashboard to be returned."
+										},
+										{
+											"key": "pageSize",
+											"value": "<integer>",
+											"description": "The number of items to be returned in a single page. Minimum is 1, maximum is 200, and default is 25."
+										},
+										{
+											"key": "q",
+											"value": "<string>",
+											"description": "Search terms. Individual terms are separated by spaces. A wildcard is automatically appended to the last token in the query string."
+										},
+										{
+											"key": "scope",
+											"value": "<string>",
+											"description": "The type of scope to be applied to the returned collection."
+										},
+										{
+											"key": "sort",
+											"value": "<string>",
+											"description": "The type of sort order to be applied to the returned collection."
+										},
+										{
+											"key": "templateApiName",
+											"value": "<string>",
+											"description": "Filters the results to include only a collection of dashboards created from a specific application template."
+										},
+										{
+											"key": "type",
+											"value": "<string>",
+											"description": "The asset type. The default type is Dashboard."
+										}
+									]
+								},
+								"description": "Get all available dashboards."
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"nextPageUrl\": \"<string>\",\n  \"totalSize\": \"<integer>\",\n  \"url\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "getDashboard",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/wave/dashboards/:dashboardIdOrApiName",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"wave",
+								"dashboards",
+								":dashboardIdOrApiName"
+							],
+							"variable": [
+								{
+									"key": "dashboardIdOrApiName",
+									"value": "<string>",
+									"description": "The dashboard's specified ID or API name"
+								}
+							]
+						},
+						"description": "Get a Dashboard resource representation."
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"auth": {
+									"type": "oauth2"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/wave/dashboards/:dashboardIdOrApiName",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wave",
+										"dashboards",
+										":dashboardIdOrApiName"
+									],
+									"variable": [
+										{
+											"key": "dashboardIdOrApiName",
+											"value": "<string>"
+										}
+									]
+								},
+								"description": "Get a Dashboard resource representation."
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"assetSharingUrl\": \"<string>\",\n  \"createdBy\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"profilePhotoUrl\": \"<string>\"\n  },\n  \"createdDate\": \"<string>\",\n  \"description\": \"<string>\",\n  \"id\": \"<string>\",\n  \"label\": \"<string>\",\n  \"lastAccessedDate\": \"<string>\",\n  \"lastModifiedBy\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"profilePhotoUrl\": \"<string>\"\n  },\n  \"lastModifiedDate\": \"<string>\",\n  \"name\": \"<string>\",\n  \"namespace\": \"<string>\",\n  \"permissions\": {\n    \"create\": \"<boolean>\",\n    \"manage\": \"<boolean>\",\n    \"modify\": \"<boolean>\",\n    \"view\": \"<boolean>\"\n  },\n  \"type\": \"<string>\",\n  \"url\": \"<string>\"\n}"
+						}
+					]
+				}
+			],
+			"description": "Analytics dashboards allow users to continuously monitor key metrics of their business."
+		},
+		{
+			"name": "Data Connectors",
+			"item": [
+				{
+					"name": "getDataConnectorStatus",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/wave/dataConnectors/:connectorIdOrApiName/status",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"wave",
+								"dataConnectors",
+								":connectorIdOrApiName",
+								"status"
+							],
+							"variable": [
+								{
+									"key": "connectorIdOrApiName",
+									"value": "<string>",
+									"description": "(Required) The ID or developer name of the data connector."
+								}
+							]
+						},
+						"description": "Retrieves the status for a specific CRM Analytics data connector by ID or developer name.\n\nFor additional information, see the [Data Connector Status Resource.](https://developer.salesforce.com/docs/atlas.en-us.bi_dev_guide_rest.meta/bi_dev_guide_rest/bi_resources_dataconnectors_connectorid_status.htm)"
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"auth": {
+									"type": "oauth2"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/wave/dataConnectors/dataConnectors/:connectorIdOrApiName/status",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wave",
+										"dataConnectors",
+										"dataConnectors",
+										":connectorIdOrApiName",
+										"status"
+									],
+									"variable": [
+										{
+											"key": "connectorIdOrApiName",
+											"value": "<string>"
+										},
+										{
+											"key": "connectorIdOrApiName",
+											"value": "<string>",
+											"description": "(Required) The ID or developer name of the data connector."
+										}
+									]
+								},
+								"description": "Retrieves the status for a specific CRM Analytics data connector by ID or developer name."
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"message\": \"<string>\",\n  \"status\": \"<string>\",\n  \"url\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "getDataConnector",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/wave/dataConnectors/:connectorIdOrApiName?userId=<string>",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"wave",
+								"dataConnectors",
+								":connectorIdOrApiName"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "<string>",
+									"description": "(Required) The ID or developer name of the data connector."
+								}
+							],
+							"variable": [
+								{
+									"key": "connectorIdOrApiName",
+									"value": "<string>",
+									"description": "(Required) The ID or developer name of the data connector."
+								}
+							]
+						},
+						"description": "Retrieve a specific CRM Analytics data connector by ID or developer name.\n\nFor additional information, see the [Data Connector Resource.](https://developer.salesforce.com/docs/atlas.en-us.bi_dev_guide_rest.meta/bi_dev_guide_rest/bi_resources_dataconnectors_connectorid.htm)"
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"auth": {
+									"type": "oauth2"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/wave/dataConnectors/dataConnectors/:connectorIdOrApiName?userId=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wave",
+										"dataConnectors",
+										"dataConnectors",
+										":connectorIdOrApiName"
+									],
+									"query": [
+										{
+											"key": "userId",
+											"value": "<string>",
+											"description": "(Required) The ID or developer name of the data connector."
+										}
+									],
+									"variable": [
+										{
+											"key": "connectorIdOrApiName",
+											"value": "<string>"
+										}
+									]
+								},
+								"description": "Retrieve a specific CRM Analytics data connector by ID or developer name."
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"assetSharingUrl\": \"<string>\",\n  \"createdBy\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"profilePhotoUrl\": \"<string>\"\n  },\n  \"createdDate\": \"<string>\",\n  \"description\": \"<string>\",\n  \"id\": \"<string>\",\n  \"label\": \"<string>\",\n  \"lastAccessedDate\": \"<string>\",\n  \"lastModifiedBy\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"profilePhotoUrl\": \"<string>\"\n  },\n  \"lastModifiedDate\": \"<string>\",\n  \"name\": \"<string>\",\n  \"namespace\": \"<string>\",\n  \"permissions\": {\n    \"create\": \"<boolean>\",\n    \"manage\": \"<boolean>\",\n    \"modify\": \"<boolean>\",\n    \"view\": \"<boolean>\"\n  },\n  \"type\": \"<string>\",\n  \"url\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "getDataConnectorCollection",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/wave/dataConnectors",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"wave",
+								"dataConnectors"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "<string>",
+									"description": "(Optional) Filters the collection to include only data connectors belonging to the specified category.",
+									"disabled": true
+								},
+								{
+									"key": "connectorType",
+									"value": "<string>",
+									"description": "(Optional) Filters the collection to include only data connectors belonging to the specified connector type.",
+									"disabled": true
+								},
+								{
+									"key": "folderId",
+									"value": "<string>",
+									"description": "(Optional) Filters the collection to only contain data connectors for the specified folder. The ID can be the requesting user's ID for data connectors in the user's private folder.",
+									"disabled": true
+								},
+								{
+									"key": "scope",
+									"value": "<string>",
+									"description": "(Optional) Scope type to apply to the collection results.",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Retrieve a collection of CRM Analytics data connectors.\n\nFor more information, see the [Data Connectors List Resource.](https://developer.salesforce.com/docs/atlas.en-us.bi_dev_guide_rest.meta/bi_dev_guide_rest/bi_resources_dataconnectors.htm)"
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"auth": {
+									"type": "oauth2"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/wave/dataConnectors?category=<string>&connectorType=<string>&folderId=<string>&scope=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wave",
+										"dataConnectors"
+									],
+									"query": [
+										{
+											"key": "category",
+											"value": "<string>",
+											"description": "(Optional) Filters the collection to include only data connectors belonging to the specified category."
+										},
+										{
+											"key": "connectorType",
+											"value": "<string>",
+											"description": "(Optional) Filters the collection to include only data connectors belonging to the specified connector type."
+										},
+										{
+											"key": "folderId",
+											"value": "<string>",
+											"description": "(Optional) Filters the collection to only contain data connectors for the specified folder. The ID can be the requesting user's ID for data connectors in the user's private folder."
+										},
+										{
+											"key": "scope",
+											"value": "<string>",
+											"description": "(Optional) Scope type to apply to the collection results."
+										}
+									]
+								},
+								"description": "Retrieve a collection of CRM Analytics data connectors."
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"dataConnectors\": [\n    {\n      \"assetSharingUrl\": \"<string>\",\n      \"createdBy\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"profilePhotoUrl\": \"<string>\"\n      },\n      \"createdDate\": \"<string>\",\n      \"description\": \"<string>\",\n      \"id\": \"<string>\",\n      \"label\": \"<string>\",\n      \"lastAccessedDate\": \"<string>\",\n      \"lastModifiedBy\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"profilePhotoUrl\": \"<string>\"\n      },\n      \"lastModifiedDate\": \"<string>\",\n      \"name\": \"<string>\",\n      \"namespace\": \"<string>\",\n      \"permissions\": {\n        \"create\": \"<boolean>\",\n        \"manage\": \"<boolean>\",\n        \"modify\": \"<boolean>\",\n        \"view\": \"<boolean>\"\n      },\n      \"type\": \"<string>\",\n      \"url\": \"<string>\"\n    },\n    {\n      \"assetSharingUrl\": \"<string>\",\n      \"createdBy\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"profilePhotoUrl\": \"<string>\"\n      },\n      \"createdDate\": \"<string>\",\n      \"description\": \"<string>\",\n      \"id\": \"<string>\",\n      \"label\": \"<string>\",\n      \"lastAccessedDate\": \"<string>\",\n      \"lastModifiedBy\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"profilePhotoUrl\": \"<string>\"\n      },\n      \"lastModifiedDate\": \"<string>\",\n      \"name\": \"<string>\",\n      \"namespace\": \"<string>\",\n      \"permissions\": {\n        \"create\": \"<boolean>\",\n        \"manage\": \"<boolean>\",\n        \"modify\": \"<boolean>\",\n        \"view\": \"<boolean>\"\n      },\n      \"type\": \"<string>\",\n      \"url\": \"<string>\"\n    }\n  ],\n  \"url\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "getDataConnectorTypeCollection",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/wave/dataConnectorTypes",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"wave",
+								"dataConnectorTypes"
+							]
+						},
+						"description": "Retrieve a collection of CRM Analytics data connector Types.\n\nFor additional information, see the [Data Connector Types Resource.](https://developer.salesforce.com/docs/atlas.en-us.bi_dev_guide_rest.meta/bi_dev_guide_rest/bi_resources_dataconnectortypes.htm)"
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"auth": {
+									"type": "oauth2"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/wave/dataConnectorTypes",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wave",
+										"dataConnectorTypes"
+									]
+								},
+								"description": "Retrieve a collection of CRM Analytics data connector Types."
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"types\": [\n    {\n      \"advancedProperties\": [\n        {\n          \"dataType\": \"<string>\",\n          \"defaultValue\": \"<object>\",\n          \"description\": \"<string>\",\n          \"isRequired\": \"<boolean>\",\n          \"label\": \"<string>\",\n          \"name\": \"<string>\"\n        },\n        {\n          \"dataType\": \"<string>\",\n          \"defaultValue\": \"<object>\",\n          \"description\": \"<string>\",\n          \"isRequired\": \"<boolean>\",\n          \"label\": \"<string>\",\n          \"name\": \"<string>\"\n        }\n      ],\n      \"associatedCategories\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"bundle\": \"<string>\",\n      \"connectionProperties\": [\n        {\n          \"dataType\": \"<string>\",\n          \"defaultValue\": \"<object>\",\n          \"isEncrypted\": \"<boolean>\",\n          \"isRequired\": \"<boolean>\",\n          \"label\": \"<string>\",\n          \"maxLength\": \"<integer>\",\n          \"name\": \"<string>\"\n        },\n        {\n          \"dataType\": \"<string>\",\n          \"defaultValue\": \"<object>\",\n          \"isEncrypted\": \"<boolean>\",\n          \"isRequired\": \"<boolean>\",\n          \"label\": \"<string>\",\n          \"maxLength\": \"<integer>\",\n          \"name\": \"<string>\"\n        }\n      ],\n      \"isExternal\": \"<boolean>\",\n      \"label\": \"<string>\",\n      \"name\": \"<string>\",\n      \"supportedConnectorHandlers\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"type\": \"<string>\"\n    },\n    {\n      \"advancedProperties\": [\n        {\n          \"dataType\": \"<string>\",\n          \"defaultValue\": \"<object>\",\n          \"description\": \"<string>\",\n          \"isRequired\": \"<boolean>\",\n          \"label\": \"<string>\",\n          \"name\": \"<string>\"\n        },\n        {\n          \"dataType\": \"<string>\",\n          \"defaultValue\": \"<object>\",\n          \"description\": \"<string>\",\n          \"isRequired\": \"<boolean>\",\n          \"label\": \"<string>\",\n          \"name\": \"<string>\"\n        }\n      ],\n      \"associatedCategories\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"bundle\": \"<string>\",\n      \"connectionProperties\": [\n        {\n          \"dataType\": \"<string>\",\n          \"defaultValue\": \"<object>\",\n          \"isEncrypted\": \"<boolean>\",\n          \"isRequired\": \"<boolean>\",\n          \"label\": \"<string>\",\n          \"maxLength\": \"<integer>\",\n          \"name\": \"<string>\"\n        },\n        {\n          \"dataType\": \"<string>\",\n          \"defaultValue\": \"<object>\",\n          \"isEncrypted\": \"<boolean>\",\n          \"isRequired\": \"<boolean>\",\n          \"label\": \"<string>\",\n          \"maxLength\": \"<integer>\",\n          \"name\": \"<string>\"\n        }\n      ],\n      \"isExternal\": \"<boolean>\",\n      \"label\": \"<string>\",\n      \"name\": \"<string>\",\n      \"supportedConnectorHandlers\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"type\": \"<string>\"\n    }\n  ],\n  \"url\": \"<string>\"\n}"
+						}
+					]
+				}
+			],
+			"description": "A collection of CRM Analytics data connectors."
+		},
+		{
+			"name": "Dataflows",
+			"item": [
+				{
+					"name": "getDataflowCollection",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/wave/dataflows",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"wave",
+								"dataflows"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "<string>",
+									"description": "(Optional) Search terms. Individual terms are separated by spaces. A wildcard is automatically appended to the last token in the query string. If the user’s search query contains quotation marks or wildcards, those symbols are automatically removed from the query string in the URL along with any other special characters.",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Retrieve a collection of dataflow resource representations.\n\nFor additional information, see the [Dataflows List Resource.](https://developer.salesforce.com/docs/atlas.en-us.bi_dev_guide_rest.meta/bi_dev_guide_rest/bi_resources_dataflows.htm)"
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"auth": {
+									"type": "oauth2"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/wave/dataflows?q=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wave",
+										"dataflows"
+									],
+									"query": [
+										{
+											"key": "q",
+											"value": "<string>",
+											"description": "(Optional) Search terms. Individual terms are separated by spaces. A wildcard is automatically appended to the last token in the query string. If the user’s search query contains quotation marks or wildcards, those symbols are automatically removed from the query string in the URL along with any other special characters."
+										}
+									]
+								},
+								"description": "Get a collection of dataflow resource representations."
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"dataflows\": [\n    {\n      \"assetSharingUrl\": \"<string>\",\n      \"createdBy\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"profilePhotoUrl\": \"<string>\"\n      },\n      \"createdDate\": \"<string>\",\n      \"description\": \"<string>\",\n      \"id\": \"<string>\",\n      \"label\": \"<string>\",\n      \"lastAccessedDate\": \"<string>\",\n      \"lastModifiedBy\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"profilePhotoUrl\": \"<string>\"\n      },\n      \"lastModifiedDate\": \"<string>\",\n      \"name\": \"<string>\",\n      \"namespace\": \"<string>\",\n      \"permissions\": {\n        \"create\": \"<boolean>\",\n        \"manage\": \"<boolean>\",\n        \"modify\": \"<boolean>\",\n        \"view\": \"<boolean>\"\n      },\n      \"type\": \"<string>\",\n      \"url\": \"<string>\"\n    },\n    {\n      \"assetSharingUrl\": \"<string>\",\n      \"createdBy\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"profilePhotoUrl\": \"<string>\"\n      },\n      \"createdDate\": \"<string>\",\n      \"description\": \"<string>\",\n      \"id\": \"<string>\",\n      \"label\": \"<string>\",\n      \"lastAccessedDate\": \"<string>\",\n      \"lastModifiedBy\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"profilePhotoUrl\": \"<string>\"\n      },\n      \"lastModifiedDate\": \"<string>\",\n      \"name\": \"<string>\",\n      \"namespace\": \"<string>\",\n      \"permissions\": {\n        \"create\": \"<boolean>\",\n        \"manage\": \"<boolean>\",\n        \"modify\": \"<boolean>\",\n        \"view\": \"<boolean>\"\n      },\n      \"type\": \"<string>\",\n      \"url\": \"<string>\"\n    }\n  ]\n}"
+						}
+					]
+				},
+				{
+					"name": "getDataflow",
+					"request": {
+						"auth": {
+							"type": "oauth2"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/wave/dataflows/:dataflowId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"wave",
+								"dataflows",
+								":dataflowId"
+							],
+							"query": [
+								{
+									"key": "historyId",
+									"value": "<string>",
+									"description": "(Optional) Request a specific dataflow version.",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "dataflowId",
+									"value": "<string>"
+								}
+							]
+						},
+						"description": "Retrieve a Dataflow resource representation.\n\nFor additional information, see the [Dataflow Resource.](https://developer.salesforce.com/docs/atlas.en-us.bi_dev_guide_rest.meta/bi_dev_guide_rest/bi_resources_dataflows_id.htm)"
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"auth": {
+									"type": "oauth2"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/wave/dataflows/dataflows/:dataflowId?historyId=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wave",
+										"dataflows",
+										"dataflows",
+										":dataflowId"
+									],
+									"query": [
+										{
+											"key": "historyId",
+											"value": "<string>",
+											"description": "(Optional) Request a specific dataflow version."
+										}
+									],
+									"variable": [
+										{
+											"key": "dataflowId",
+											"value": "<string>"
+										}
+									]
+								},
+								"description": "Get a Dataflow resource representation."
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"assetSharingUrl\": \"<string>\",\n  \"createdBy\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"profilePhotoUrl\": \"<string>\"\n  },\n  \"createdDate\": \"<string>\",\n  \"description\": \"<string>\",\n  \"id\": \"<string>\",\n  \"label\": \"<string>\",\n  \"lastAccessedDate\": \"<string>\",\n  \"lastModifiedBy\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"profilePhotoUrl\": \"<string>\"\n  },\n  \"lastModifiedDate\": \"<string>\",\n  \"name\": \"<string>\",\n  \"namespace\": \"<string>\",\n  \"permissions\": {\n    \"create\": \"<boolean>\",\n    \"manage\": \"<boolean>\",\n    \"modify\": \"<boolean>\",\n    \"view\": \"<boolean>\"\n  },\n  \"type\": \"<string>\",\n  \"url\": \"<string>\"\n}"
+						}
+					]
+				}
+			],
+			"description": "A collection of CRM Analytics dataflows."
+		},
+		{
+			"name": "Dataflow Jobs",
+			"item": [
+				{
+					"name": "getDataflowJobNode",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/wave/dataflowjobs/:dataflowjobId/nodes/:nodeId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"wave",
+								"dataflowjobs",
+								":dataflowjobId",
+								"nodes",
+								":nodeId"
+							],
+							"variable": [
+								{
+									"key": "dataflowjobId",
+									"value": "<string>",
+									"description": "(Required) The ID of the dataflow job."
+								},
+								{
+									"key": "nodeId",
+									"value": "<string>",
+									"description": "(Required) The ID of the node."
+								}
+							]
+						},
+						"description": "Retrieve a Dataflow Job Node resource representation.\n\nFor more information, see the Dataflow Job Nodes Resource."
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"auth": {
+									"type": "oauth2"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/wave/dataflowjobs/dataflowjobs/:dataflowjobId/dataflowjobs/:dataflowjobId/nodes/dataflowjobs/:dataflowjobId/nodes/:nodeId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wave",
+										"dataflowjobs",
+										"dataflowjobs",
+										":dataflowjobId",
+										"dataflowjobs",
+										":dataflowjobId",
+										"nodes",
+										"dataflowjobs",
+										":dataflowjobId",
+										"nodes",
+										":nodeId"
+									],
+									"variable": [
+										{
+											"key": "dataflowjobId",
+											"value": "<string>"
+										},
+										{
+											"key": "dataflowjobId",
+											"value": "<string>",
+											"description": "(Required) The ID of the dataflow job."
+										},
+										{
+											"key": "dataflowjobId",
+											"value": "<string>",
+											"description": "(Required) The ID of the dataflow job."
+										},
+										{
+											"key": "nodeId",
+											"value": "<string>",
+											"description": "(Required) The ID of the node."
+										}
+									]
+								},
+								"description": "Get a Dataflow Job Node resource representation."
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"assetSharingUrl\": \"<string>\",\n  \"createdBy\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"profilePhotoUrl\": \"<string>\"\n  },\n  \"createdDate\": \"<string>\",\n  \"description\": \"<string>\",\n  \"id\": \"<string>\",\n  \"label\": \"<string>\",\n  \"lastAccessedDate\": \"<string>\",\n  \"lastModifiedBy\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"profilePhotoUrl\": \"<string>\"\n  },\n  \"lastModifiedDate\": \"<string>\",\n  \"name\": \"<string>\",\n  \"namespace\": \"<string>\",\n  \"permissions\": {\n    \"create\": \"<boolean>\",\n    \"manage\": \"<boolean>\",\n    \"modify\": \"<boolean>\",\n    \"view\": \"<boolean>\"\n  },\n  \"type\": \"<string>\",\n  \"url\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "getDataflowJobNodeCollection",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/wave/dataflowjobs/:dataflowjobId/nodes",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"wave",
+								"dataflowjobs",
+								":dataflowjobId",
+								"nodes"
+							],
+							"variable": [
+								{
+									"key": "dataflowjobId",
+									"value": "<string>",
+									"description": "(Required) The ID of the dataflow job."
+								}
+							]
+						},
+						"description": "Retrieve a Dataflow Job Node Collection resource representation.\n\nFor more information, see the [Dataflow Job Nodes List Resource.](https://developer.salesforce.com/docs/atlas.en-us.bi_dev_guide_rest.meta/bi_dev_guide_rest/bi_resources_dataflowjobs_nodes.htm)"
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"auth": {
+									"type": "oauth2"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/wave/dataflowjobs/dataflowjobs/:dataflowjobId/dataflowjobs/:dataflowjobId/nodes",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wave",
+										"dataflowjobs",
+										"dataflowjobs",
+										":dataflowjobId",
+										"dataflowjobs",
+										":dataflowjobId",
+										"nodes"
+									],
+									"variable": [
+										{
+											"key": "dataflowjobId",
+											"value": "<string>"
+										},
+										{
+											"key": "dataflowjobId",
+											"value": "<string>",
+											"description": "(Required) The ID of the dataflow job."
+										}
+									]
+								},
+								"description": "Get a Dataflow Job Node Collection resource representation."
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"nodes\": [\n    {\n      \"assetSharingUrl\": \"<string>\",\n      \"createdBy\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"profilePhotoUrl\": \"<string>\"\n      },\n      \"createdDate\": \"<string>\",\n      \"description\": \"<string>\",\n      \"id\": \"<string>\",\n      \"label\": \"<string>\",\n      \"lastAccessedDate\": \"<string>\",\n      \"lastModifiedBy\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"profilePhotoUrl\": \"<string>\"\n      },\n      \"lastModifiedDate\": \"<string>\",\n      \"name\": \"<string>\",\n      \"namespace\": \"<string>\",\n      \"permissions\": {\n        \"create\": \"<boolean>\",\n        \"manage\": \"<boolean>\",\n        \"modify\": \"<boolean>\",\n        \"view\": \"<boolean>\"\n      },\n      \"type\": \"<string>\",\n      \"url\": \"<string>\"\n    },\n    {\n      \"assetSharingUrl\": \"<string>\",\n      \"createdBy\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"profilePhotoUrl\": \"<string>\"\n      },\n      \"createdDate\": \"<string>\",\n      \"description\": \"<string>\",\n      \"id\": \"<string>\",\n      \"label\": \"<string>\",\n      \"lastAccessedDate\": \"<string>\",\n      \"lastModifiedBy\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"profilePhotoUrl\": \"<string>\"\n      },\n      \"lastModifiedDate\": \"<string>\",\n      \"name\": \"<string>\",\n      \"namespace\": \"<string>\",\n      \"permissions\": {\n        \"create\": \"<boolean>\",\n        \"manage\": \"<boolean>\",\n        \"modify\": \"<boolean>\",\n        \"view\": \"<boolean>\"\n      },\n      \"type\": \"<string>\",\n      \"url\": \"<string>\"\n    }\n  ],\n  \"url\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "getDataflowJobCollection",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/wave/dataflowjobs",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"wave",
+								"dataflowjobs"
+							],
+							"query": [
+								{
+									"key": "dataflowId",
+									"value": "<string>",
+									"description": "(Optional) Filters the collection to only contain dataflow jobs tied to this specific dataflow. The ID must start with '02K'.",
+									"disabled": true
+								},
+								{
+									"key": "jobTypes",
+									"value": "[\"<string>\",\"<string>\"]",
+									"description": "(Optional) Filters the collection to only contain dataflow jobs with a specific job type.",
+									"disabled": true
+								},
+								{
+									"key": "licenseType",
+									"value": "<string>",
+									"description": "(Optional) The response includes CRM Analytics assets with this license type. The default is EinsteinAnalytics.",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "<string>",
+									"description": "(Optional) Generated token that indicates the view of dataflow jobs to be returned.",
+									"disabled": true
+								},
+								{
+									"key": "pageSize",
+									"value": "<integer>",
+									"description": "(Optional) Number of items to be returned in a single page. Minimum is 1, maximum is 200, and the default is 25.",
+									"disabled": true
+								},
+								{
+									"key": "q",
+									"value": "<string>",
+									"description": "(Optional) Search terms. Individual terms are separated by spaces. A wildcard is automatically appended to the last token in the query string. If the user’s search query contains quotation marks or wildcards, those symbols are automatically removed from the query string in the URL along with any other special characters.",
+									"disabled": true
+								},
+								{
+									"key": "startedAfter",
+									"value": "<string>",
+									"description": "(Optional) Filters the collection to only contain dataflow jobs started after the specified date and time.",
+									"disabled": true
+								},
+								{
+									"key": "startedBefore",
+									"value": "<string>",
+									"description": "(Optional) Filters the collection to only contain dataflow jobs started before the specified date and time.",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "<string>",
+									"description": "(Optional) Filters the collection to only contain dataflow jobs with a specific runtime status.",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Retrieve a collection of all dataflow jobs representation\n\nFor additional information, see the [Dataflow Jobs List Resource.](https://developer.salesforce.com/docs/atlas.en-us.bi_dev_guide_rest.meta/bi_dev_guide_rest/bi_resources_dataflowjobs.htm)"
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"auth": {
+									"type": "oauth2"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/wave/dataflowjobs?dataflowId=<string>&jobTypes=[\"<string>\",\"<string>\"]&licenseType=<string>&page=<string>&pageSize=<integer>&q=<string>&startedAfter=<string>&startedBefore=<string>&status=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wave",
+										"dataflowjobs"
+									],
+									"query": [
+										{
+											"key": "dataflowId",
+											"value": "<string>",
+											"description": "(Optional) Filters the collection to only contain dataflow jobs tied to this specific dataflow. The ID must start with '02K'."
+										},
+										{
+											"key": "jobTypes",
+											"value": "[\"<string>\",\"<string>\"]",
+											"description": "(Optional) Filters the collection to only contain dataflow jobs with a specific job type."
+										},
+										{
+											"key": "licenseType",
+											"value": "<string>",
+											"description": "(Optional) The response includes CRM Analytics assets with this license type. The default is EinsteinAnalytics."
+										},
+										{
+											"key": "page",
+											"value": "<string>",
+											"description": "(Optional) Generated token that indicates the view of dataflow jobs to be returned."
+										},
+										{
+											"key": "pageSize",
+											"value": "<integer>",
+											"description": "(Optional) Number of items to be returned in a single page. Minimum is 1, maximum is 200, and the default is 25."
+										},
+										{
+											"key": "q",
+											"value": "<string>",
+											"description": "(Optional) Search terms. Individual terms are separated by spaces. A wildcard is automatically appended to the last token in the query string. If the user’s search query contains quotation marks or wildcards, those symbols are automatically removed from the query string in the URL along with any other special characters."
+										},
+										{
+											"key": "startedAfter",
+											"value": "<string>",
+											"description": "(Optional) Filters the collection to only contain dataflow jobs started after the specified date and time."
+										},
+										{
+											"key": "startedBefore",
+											"value": "<string>",
+											"description": "(Optional) Filters the collection to only contain dataflow jobs started before the specified date and time."
+										},
+										{
+											"key": "status",
+											"value": "<string>",
+											"description": "(Optional) Filters the collection to only contain dataflow jobs with a specific runtime status."
+										}
+									]
+								},
+								"description": "Get a collection  of all dataflow jobs representation"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"dataflowJobs\": [\n    {\n      \"assetSharingUrl\": \"<string>\",\n      \"createdBy\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"profilePhotoUrl\": \"<string>\"\n      },\n      \"createdDate\": \"<string>\",\n      \"description\": \"<string>\",\n      \"id\": \"<string>\",\n      \"label\": \"<string>\",\n      \"lastAccessedDate\": \"<string>\",\n      \"lastModifiedBy\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"profilePhotoUrl\": \"<string>\"\n      },\n      \"lastModifiedDate\": \"<string>\",\n      \"name\": \"<string>\",\n      \"namespace\": \"<string>\",\n      \"permissions\": {\n        \"create\": \"<boolean>\",\n        \"manage\": \"<boolean>\",\n        \"modify\": \"<boolean>\",\n        \"view\": \"<boolean>\"\n      },\n      \"type\": \"<string>\",\n      \"url\": \"<string>\"\n    },\n    {\n      \"assetSharingUrl\": \"<string>\",\n      \"createdBy\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"profilePhotoUrl\": \"<string>\"\n      },\n      \"createdDate\": \"<string>\",\n      \"description\": \"<string>\",\n      \"id\": \"<string>\",\n      \"label\": \"<string>\",\n      \"lastAccessedDate\": \"<string>\",\n      \"lastModifiedBy\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"profilePhotoUrl\": \"<string>\"\n      },\n      \"lastModifiedDate\": \"<string>\",\n      \"name\": \"<string>\",\n      \"namespace\": \"<string>\",\n      \"permissions\": {\n        \"create\": \"<boolean>\",\n        \"manage\": \"<boolean>\",\n        \"modify\": \"<boolean>\",\n        \"view\": \"<boolean>\"\n      },\n      \"type\": \"<string>\",\n      \"url\": \"<string>\"\n    }\n  ],\n  \"nextPageUrl\": \"<string>\",\n  \"url\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "getDataflowJob",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/wave/dataflowjobs/:dataflowjobId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"wave",
+								"dataflowjobs",
+								":dataflowjobId"
+							],
+							"variable": [
+								{
+									"key": "dataflowjobId",
+									"value": "<string>",
+									"description": "(Required) The ID of the dataflow job."
+								}
+							]
+						},
+						"description": "Retrieve a Dataflow Job resource representation.\n\nFor additional information, see the [Dataflow Job Resource.](https://developer.salesforce.com/docs/atlas.en-us.bi_dev_guide_rest.meta/bi_dev_guide_rest/bi_resources_dataflowjobs_id.htm)"
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"auth": {
+									"type": "oauth2"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/wave/dataflowjobs/dataflowjobs/:dataflowjobId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wave",
+										"dataflowjobs",
+										"dataflowjobs",
+										":dataflowjobId"
+									],
+									"variable": [
+										{
+											"key": "dataflowjobId",
+											"value": "<string>"
+										}
+									]
+								},
+								"description": "Get a Dataflow Job resource representation."
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"assetSharingUrl\": \"<string>\",\n  \"createdBy\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"profilePhotoUrl\": \"<string>\"\n  },\n  \"createdDate\": \"<string>\",\n  \"description\": \"<string>\",\n  \"id\": \"<string>\",\n  \"label\": \"<string>\",\n  \"lastAccessedDate\": \"<string>\",\n  \"lastModifiedBy\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"profilePhotoUrl\": \"<string>\"\n  },\n  \"lastModifiedDate\": \"<string>\",\n  \"name\": \"<string>\",\n  \"namespace\": \"<string>\",\n  \"permissions\": {\n    \"create\": \"<boolean>\",\n    \"manage\": \"<boolean>\",\n    \"modify\": \"<boolean>\",\n    \"view\": \"<boolean>\"\n  },\n  \"type\": \"<string>\",\n  \"url\": \"<string>\"\n}"
+						}
+					]
+				}
+			],
+			"description": "A collection of CRM Analytics Dataflow Jobs."
+		},
+		{
+			"name": "Datasets",
+			"item": [
+				{
+					"name": "Versions",
+					"item": [
+						{
+							"name": "getDatasetVersion",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/wave/datasets/:datasetIdOrApiName/versions/:versionId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wave",
+										"datasets",
+										":datasetIdOrApiName",
+										"versions",
+										":versionId"
+									],
+									"variable": [
+										{
+											"key": "datasetIdOrApiName",
+											"value": "<string>",
+											"description": "(Required) The ID or developer name of the dataset."
+										},
+										{
+											"key": "versionId",
+											"value": "<string>",
+											"description": "(Required) The ID of the dataset version."
+										}
+									]
+								},
+								"description": "Retrieve a dataset version resource representation.\n\nFor additional information, see the [Dataset Version Resource.](https://developer.salesforce.com/docs/atlas.en-us.bi_dev_guide_rest.meta/bi_dev_guide_rest/bi_resources_datasets_id_versions_id.htm)"
+							},
+							"response": [
+								{
+									"name": "200",
+									"originalRequest": {
+										"auth": {
+											"type": "oauth2"
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/wave/datasets/datasets/:datasetIdOrApiName/versions/versions/:versionId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"wave",
+												"datasets",
+												"datasets",
+												":datasetIdOrApiName",
+												"versions",
+												"versions",
+												":versionId"
+											],
+											"variable": [
+												{
+													"key": "datasetIdOrApiName",
+													"value": "<string>"
+												},
+												{
+													"key": "versionId",
+													"value": "<string>"
+												}
+											]
+										},
+										"description": "Get a dataset version resource representation."
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"assetSharingUrl\": \"<string>\",\n  \"createdBy\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"profilePhotoUrl\": \"<string>\"\n  },\n  \"createdDate\": \"<string>\",\n  \"description\": \"<string>\",\n  \"id\": \"<string>\",\n  \"label\": \"<string>\",\n  \"lastAccessedDate\": \"<string>\",\n  \"lastModifiedBy\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"profilePhotoUrl\": \"<string>\"\n  },\n  \"lastModifiedDate\": \"<string>\",\n  \"name\": \"<string>\",\n  \"namespace\": \"<string>\",\n  \"permissions\": {\n    \"create\": \"<boolean>\",\n    \"manage\": \"<boolean>\",\n    \"modify\": \"<boolean>\",\n    \"view\": \"<boolean>\"\n  },\n  \"type\": \"<string>\",\n  \"url\": \"<string>\"\n}"
+								}
+							]
+						},
+						{
+							"name": "getDatasetVersionCollection",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/wave/datasets/:datasetIdOrApiName/versions",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wave",
+										"datasets",
+										":datasetIdOrApiName",
+										"versions"
+									],
+									"variable": [
+										{
+											"key": "datasetIdOrApiName",
+											"value": "<string>",
+											"description": "(Required) The ID or developer name of the dataset."
+										}
+									]
+								},
+								"description": "Get the dataset versions for a particular dataset.\n\nFor additional information, see the [Dataset Versions List Resource.](https://developer.salesforce.com/docs/atlas.en-us.bi_dev_guide_rest.meta/bi_dev_guide_rest/bi_resources_datasets_id_versions.htm)"
+							},
+							"response": [
+								{
+									"name": "200",
+									"originalRequest": {
+										"auth": {
+											"type": "oauth2"
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/wave/datasets/datasets/:datasetIdOrApiName/versions",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"wave",
+												"datasets",
+												"datasets",
+												":datasetIdOrApiName",
+												"versions"
+											],
+											"variable": [
+												{
+													"key": "datasetIdOrApiName",
+													"value": "<string>"
+												}
+											]
+										},
+										"description": "Get the dataset versions for a particular dataset."
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"url\": \"<string>\",\n  \"versions\": [\n    {\n      \"assetSharingUrl\": \"<string>\",\n      \"createdBy\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"profilePhotoUrl\": \"<string>\"\n      },\n      \"createdDate\": \"<string>\",\n      \"description\": \"<string>\",\n      \"id\": \"<string>\",\n      \"label\": \"<string>\",\n      \"lastAccessedDate\": \"<string>\",\n      \"lastModifiedBy\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"profilePhotoUrl\": \"<string>\"\n      },\n      \"lastModifiedDate\": \"<string>\",\n      \"name\": \"<string>\",\n      \"namespace\": \"<string>\",\n      \"permissions\": {\n        \"create\": \"<boolean>\",\n        \"manage\": \"<boolean>\",\n        \"modify\": \"<boolean>\",\n        \"view\": \"<boolean>\"\n      },\n      \"type\": \"<string>\",\n      \"url\": \"<string>\"\n    },\n    {\n      \"assetSharingUrl\": \"<string>\",\n      \"createdBy\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"profilePhotoUrl\": \"<string>\"\n      },\n      \"createdDate\": \"<string>\",\n      \"description\": \"<string>\",\n      \"id\": \"<string>\",\n      \"label\": \"<string>\",\n      \"lastAccessedDate\": \"<string>\",\n      \"lastModifiedBy\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"profilePhotoUrl\": \"<string>\"\n      },\n      \"lastModifiedDate\": \"<string>\",\n      \"name\": \"<string>\",\n      \"namespace\": \"<string>\",\n      \"permissions\": {\n        \"create\": \"<boolean>\",\n        \"manage\": \"<boolean>\",\n        \"modify\": \"<boolean>\",\n        \"view\": \"<boolean>\"\n      },\n      \"type\": \"<string>\",\n      \"url\": \"<string>\"\n    }\n  ]\n}"
+								}
+							]
+						}
+					],
+					"description": "A collection of CRM Analytics dataset versions.\n\n- [getDatasetVersion](https://dark-water-210884.postman.co/workspace/CRMA-Wave-APIs~4f026408-68bd-403f-92c4-31b531ca144d/request/26106753-1a8b5264-e8a3-4aab-89ed-2be8fae81a98?action=share&source=copy-link&creator=26106753)\n    \n- [getDatasetVersions](https://dark-water-210884.postman.co/workspace/CRMA-Wave-APIs~4f026408-68bd-403f-92c4-31b531ca144d/request/26106753-748e8dfd-b3a2-4ac0-940a-374dbd5ef754?action=share&source=copy-link&creator=26106753)"
+				},
+				{
+					"name": "xmds",
+					"item": [
+						{
+							"name": "getXmd",
+							"request": {
+								"auth": {
+									"type": "oauth2"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/wave/datasets/:datasetIdOrApiName/versions/:versionId/xmds/:xmdType",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wave",
+										"datasets",
+										":datasetIdOrApiName",
+										"versions",
+										":versionId",
+										"xmds",
+										":xmdType"
+									],
+									"variable": [
+										{
+											"key": "datasetIdOrApiName",
+											"value": "<string>",
+											"description": "(Required) The ID or developer name of the dataset."
+										},
+										{
+											"key": "versionId",
+											"value": "<string>",
+											"description": "(Required) The ID of the dataset version."
+										},
+										{
+											"key": "xmdType",
+											"value": "<string>",
+											"description": "(Required) The xmd type."
+										}
+									]
+								},
+								"description": "Retrieve the extended metadata of the given type for the given dataset version.\n\nFor additional information, see the [Xmd Resource.](https://developer.salesforce.com/docs/atlas.en-us.bi_dev_guide_rest.meta/bi_dev_guide_rest/bi_resources_xmd_main.htm)"
+							},
+							"response": [
+								{
+									"name": "200",
+									"originalRequest": {
+										"auth": {
+											"type": "oauth2"
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/wave/datasets/datasets/:datasetIdOrApiName/versions/versions/:versionId/xmds/:xmdType",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"wave",
+												"datasets",
+												"datasets",
+												":datasetIdOrApiName",
+												"versions",
+												"versions",
+												":versionId",
+												"xmds",
+												":xmdType"
+											],
+											"variable": [
+												{
+													"key": "datasetIdOrApiName",
+													"value": "<string>"
+												},
+												{
+													"key": "versionId",
+													"value": "<string>"
+												},
+												{
+													"key": "xmdType",
+													"value": "<string>"
+												}
+											]
+										},
+										"description": "Get the extended metadata of the given type for the given dataset version."
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"createdBy\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"profilePhotoUrl\": \"<string>\"\n  },\n  \"createdDate\": \"<string>\",\n  \"dataset\": {\n    \"baseCurrency\": \"<string>\",\n    \"connector\": \"<string>\",\n    \"description\": \"<string>\",\n    \"fullyQualifiedName\": \"<string>\",\n    \"origin\": \"<string>\"\n  },\n  \"dates\": [\n    {\n      \"alias\": \"<string>\",\n      \"compact\": \"<boolean>\",\n      \"description\": \"<string>\",\n      \"fields\": {\n        \"day\": \"<string>\",\n        \"epochDay\": \"<string>\",\n        \"epochSecond\": \"<string>\",\n        \"fiscalMonth\": \"<string>\",\n        \"fiscalQuarter\": \"<string>\",\n        \"fiscalWeek\": \"<string>\",\n        \"fiscalYear\": \"<string>\",\n        \"fullField\": \"<string>\",\n        \"hour\": \"<string>\",\n        \"minute\": \"<string>\",\n        \"month\": \"<string>\",\n        \"quarter\": \"<string>\",\n        \"second\": \"<string>\",\n        \"week\": \"<string>\",\n        \"year\": \"<string>\"\n      },\n      \"firstDayOfWeek\": \"<integer>\",\n      \"fiscalMonthOffset\": \"<integer>\",\n      \"format\": \"<string>\",\n      \"fullyQualifiedName\": \"<string>\",\n      \"isConvertedDateTime\": \"<boolean>\",\n      \"isYearEndFiscalYear\": \"<boolean>\",\n      \"label\": \"<string>\",\n      \"showInExplorer\": \"<boolean>\",\n      \"type\": \"<string>\"\n    },\n    {\n      \"alias\": \"<string>\",\n      \"compact\": \"<boolean>\",\n      \"description\": \"<string>\",\n      \"fields\": {\n        \"day\": \"<string>\",\n        \"epochDay\": \"<string>\",\n        \"epochSecond\": \"<string>\",\n        \"fiscalMonth\": \"<string>\",\n        \"fiscalQuarter\": \"<string>\",\n        \"fiscalWeek\": \"<string>\",\n        \"fiscalYear\": \"<string>\",\n        \"fullField\": \"<string>\",\n        \"hour\": \"<string>\",\n        \"minute\": \"<string>\",\n        \"month\": \"<string>\",\n        \"quarter\": \"<string>\",\n        \"second\": \"<string>\",\n        \"week\": \"<string>\",\n        \"year\": \"<string>\"\n      },\n      \"firstDayOfWeek\": \"<integer>\",\n      \"fiscalMonthOffset\": \"<integer>\",\n      \"format\": \"<string>\",\n      \"fullyQualifiedName\": \"<string>\",\n      \"isConvertedDateTime\": \"<boolean>\",\n      \"isYearEndFiscalYear\": \"<boolean>\",\n      \"label\": \"<string>\",\n      \"showInExplorer\": \"<boolean>\",\n      \"type\": \"<string>\"\n    }\n  ]\n}"
+								}
+							]
+						}
+					],
+					"description": "A specific CRM Analytics extended metadata type (Xmd) for a version of a dataset.\n\n- [getXmd](https://dark-water-210884.postman.co/workspace/CRMA-Wave-APIs~4f026408-68bd-403f-92c4-31b531ca144d/request/26106753-1f7a8179-d58a-4bb1-b4db-636f90dbd928?action=share&source=copy-link&creator=26106753)"
+				},
+				{
+					"name": "getDatasetCollection",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/wave/datasets",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"wave",
+								"datasets"
+							],
+							"query": [
+								{
+									"key": "createdAfter",
+									"value": "<string>",
+									"description": "(Optional) Filter the collection to include only datasets created after a specific timestamp.",
+									"disabled": true
+								},
+								{
+									"key": "createdBefore",
+									"value": "<string>",
+									"description": "(Optional) Filter the collection to include only datasets created before a specific timestamp.",
+									"disabled": true
+								},
+								{
+									"key": "datasetTypes",
+									"value": "[\"<string>\",\"<string>\"]",
+									"description": "(Optional) Filters the collection to include only datasets of one or more of the specified types.",
+									"disabled": true
+								},
+								{
+									"key": "folderId",
+									"value": "<string>",
+									"description": "(Optional) Filters the collection to only contain datasets for the specified folder. The ID can be the requesting user's ID for datasets in the user's private folder.",
+									"disabled": true
+								},
+								{
+									"key": "hasCurrentOnly",
+									"value": "<boolean>",
+									"description": "(Optional) Filters the collection of datasets to include only those datasets that have a current version. The default is false.",
+									"disabled": true
+								},
+								{
+									"key": "ids",
+									"value": "[]",
+									"description": "(Optional) Filter the collection to include only datasets with the specified IDs.",
+									"disabled": true
+								},
+								{
+									"key": "includeCurrentVersion",
+									"value": "<boolean>",
+									"description": "(Optional) Includes the current dataset version metadata in the collection. The default is false.",
+									"disabled": true
+								},
+								{
+									"key": "lastQueriedAfter",
+									"value": "<string>",
+									"description": "(Optional) Filter the collection to include only datasets last queired after a specific timestamp.",
+									"disabled": true
+								},
+								{
+									"key": "lastQueriedBefore",
+									"value": "<string>",
+									"description": "(Optional) Filter the collection to include only datasets last queried before a specific timestamp.",
+									"disabled": true
+								},
+								{
+									"key": "licenseType",
+									"value": "<string>",
+									"description": "(Optional) The response includes datasets with this license type. The default is EinsteinAnalytics.",
+									"disabled": true
+								},
+								{
+									"key": "order",
+									"value": "<string>",
+									"description": "(Optional) Ordering to apply to the collection results.",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "<string>",
+									"description": "(Optional) Generated token that indicates the view of datasets to be returned.",
+									"disabled": true
+								},
+								{
+									"key": "pageSize",
+									"value": "<integer>",
+									"description": "(Optional) Number of items to be returned in a single page. Minimum is 1, maximum is 200, and the default is 25.",
+									"disabled": true
+								},
+								{
+									"key": "q",
+									"value": "<string>",
+									"description": "(Optional) Search terms. Individual terms are separated by spaces. A wildcard is automatically appended to the last token in the query string. If the user’s search query contains quotation marks or wildcards, those symbols are automatically removed from the query string in the URL along with any other special characters.",
+									"disabled": true
+								},
+								{
+									"key": "scope",
+									"value": "<string>",
+									"description": "(Optional) Scope type to apply to the collection results.",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "<string>",
+									"description": "(Optional) Sort order to apply to the collection results.",
+									"disabled": true
+								},
+								{
+									"key": "supportsNewDates",
+									"value": "<boolean>",
+									"description": "(Optional) Indicates whether to include only datasets that support new dates in the collection (true) or not (false). The default is false.",
+									"disabled": true
+								},
+								{
+									"key": "typeOfDataflow",
+									"value": "<string>",
+									"description": "(Optional) Filter the collection to include only datasets with the specified type of dataflow.",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Retrieve a collection of dataset resource representations.\n\nFor additional information, see the [Datasets List Resource.](https://developer.salesforce.com/docs/atlas.en-us.bi_dev_guide_rest.meta/bi_dev_guide_rest/bi_resources_datasets.htm)"
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"auth": {
+									"type": "oauth2"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/wave/datasets?createdAfter=<string>&createdBefore=<string>&datasetTypes=[\"<string>\",\"<string>\"]&folderId=<string>&hasCurrentOnly=<boolean>&ids=[]&includeCurrentVersion=<boolean>&lastQueriedAfter=<string>&lastQueriedBefore=<string>&licenseType=<string>&order=<string>&page=<string>&pageSize=<integer>&q=<string>&scope=<string>&sort=<string>&supportsNewDates=<boolean>&typeOfDataflow=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wave",
+										"datasets"
+									],
+									"query": [
+										{
+											"key": "createdAfter",
+											"value": "<string>",
+											"description": "(Optional) Filter the collection to include only datasets created after a specific timestamp."
+										},
+										{
+											"key": "createdBefore",
+											"value": "<string>",
+											"description": "(Optional) Filter the collection to include only datasets created before a specific timestamp."
+										},
+										{
+											"key": "datasetTypes",
+											"value": "[\"<string>\",\"<string>\"]",
+											"description": "(Optional) Filters the collection to include only datasets of one or more of the specified types."
+										},
+										{
+											"key": "folderId",
+											"value": "<string>",
+											"description": "(Optional) Filters the collection to only contain datasets for the specified folder. The ID can be the requesting user's ID for datasets in the user's private folder."
+										},
+										{
+											"key": "hasCurrentOnly",
+											"value": "<boolean>",
+											"description": "(Optional) Filters the collection of datasets to include only those datasets that have a current version. The default is false."
+										},
+										{
+											"key": "ids",
+											"value": "[]",
+											"description": "(Optional) Filter the collection to include only datasets with the specified IDs."
+										},
+										{
+											"key": "includeCurrentVersion",
+											"value": "<boolean>",
+											"description": "(Optional) Includes the current dataset version metadata in the collection. The default is false."
+										},
+										{
+											"key": "lastQueriedAfter",
+											"value": "<string>",
+											"description": "(Optional) Filter the collection to include only datasets last queired after a specific timestamp."
+										},
+										{
+											"key": "lastQueriedBefore",
+											"value": "<string>",
+											"description": "(Optional) Filter the collection to include only datasets last queried before a specific timestamp."
+										},
+										{
+											"key": "licenseType",
+											"value": "<string>",
+											"description": "(Optional) The response includes datasets with this license type. The default is EinsteinAnalytics."
+										},
+										{
+											"key": "order",
+											"value": "<string>",
+											"description": "(Optional) Ordering to apply to the collection results."
+										},
+										{
+											"key": "page",
+											"value": "<string>",
+											"description": "(Optional) Generated token that indicates the view of datasets to be returned."
+										},
+										{
+											"key": "pageSize",
+											"value": "<integer>",
+											"description": "(Optional) Number of items to be returned in a single page. Minimum is 1, maximum is 200, and the default is 25."
+										},
+										{
+											"key": "q",
+											"value": "<string>",
+											"description": "(Optional) Search terms. Individual terms are separated by spaces. A wildcard is automatically appended to the last token in the query string. If the user’s search query contains quotation marks or wildcards, those symbols are automatically removed from the query string in the URL along with any other special characters."
+										},
+										{
+											"key": "scope",
+											"value": "<string>",
+											"description": "(Optional) Scope type to apply to the collection results."
+										},
+										{
+											"key": "sort",
+											"value": "<string>",
+											"description": "(Optional) Sort order to apply to the collection results."
+										},
+										{
+											"key": "supportsNewDates",
+											"value": "<boolean>",
+											"description": "(Optional) Indicates whether to include only datasets that support new dates in the collection (true) or not (false). The default is false."
+										},
+										{
+											"key": "typeOfDataflow",
+											"value": "<string>",
+											"description": "(Optional) Filter the collection to include only datasets with the specified type of dataflow."
+										}
+									]
+								},
+								"description": "Get a collection of dataset resource representations."
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"datasets\": [\n    {\n      \"assetSharingUrl\": \"<string>\",\n      \"createdBy\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"profilePhotoUrl\": \"<string>\"\n      },\n      \"createdDate\": \"<string>\",\n      \"description\": \"<string>\",\n      \"id\": \"<string>\",\n      \"label\": \"<string>\",\n      \"lastAccessedDate\": \"<string>\",\n      \"lastModifiedBy\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"profilePhotoUrl\": \"<string>\"\n      },\n      \"lastModifiedDate\": \"<string>\",\n      \"name\": \"<string>\",\n      \"namespace\": \"<string>\",\n      \"permissions\": {\n        \"create\": \"<boolean>\",\n        \"manage\": \"<boolean>\",\n        \"modify\": \"<boolean>\",\n        \"view\": \"<boolean>\"\n      },\n      \"type\": \"<string>\",\n      \"url\": \"<string>\"\n    },\n    {\n      \"assetSharingUrl\": \"<string>\",\n      \"createdBy\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"profilePhotoUrl\": \"<string>\"\n      },\n      \"createdDate\": \"<string>\",\n      \"description\": \"<string>\",\n      \"id\": \"<string>\",\n      \"label\": \"<string>\",\n      \"lastAccessedDate\": \"<string>\",\n      \"lastModifiedBy\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"profilePhotoUrl\": \"<string>\"\n      },\n      \"lastModifiedDate\": \"<string>\",\n      \"name\": \"<string>\",\n      \"namespace\": \"<string>\",\n      \"permissions\": {\n        \"create\": \"<boolean>\",\n        \"manage\": \"<boolean>\",\n        \"modify\": \"<boolean>\",\n        \"view\": \"<boolean>\"\n      },\n      \"type\": \"<string>\",\n      \"url\": \"<string>\"\n    }\n  ],\n  \"nextPageUrl\": \"<string>\",\n  \"totalSize\": \"<integer>\",\n  \"url\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "getDataset",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/wave/datasets/:datasetIdOrApiName",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"wave",
+								"datasets",
+								":datasetIdOrApiName"
+							],
+							"variable": [
+								{
+									"key": "datasetIdOrApiName",
+									"value": "<string>",
+									"description": "(Required) The ID or developer name of the dataset."
+								}
+							]
+						},
+						"description": "Get a dataset resource representation.\n\nFor additional information, see the [Dataset Resource.](https://developer.salesforce.com/docs/atlas.en-us.bi_dev_guide_rest.meta/bi_dev_guide_rest/bi_resources_dataset_id.htm)"
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"auth": {
+									"type": "oauth2"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/wave/datasets/datasets/:datasetIdOrApiName",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wave",
+										"datasets",
+										"datasets",
+										":datasetIdOrApiName"
+									],
+									"variable": [
+										{
+											"key": "datasetIdOrApiName",
+											"value": "<string>"
+										}
+									]
+								},
+								"description": "Get a dataset resource representation."
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"assetSharingUrl\": \"<string>\",\n  \"createdBy\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"profilePhotoUrl\": \"<string>\"\n  },\n  \"createdDate\": \"<string>\",\n  \"description\": \"<string>\",\n  \"id\": \"<string>\",\n  \"label\": \"<string>\",\n  \"lastAccessedDate\": \"<string>\",\n  \"lastModifiedBy\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"profilePhotoUrl\": \"<string>\"\n  },\n  \"lastModifiedDate\": \"<string>\",\n  \"name\": \"<string>\",\n  \"namespace\": \"<string>\",\n  \"permissions\": {\n    \"create\": \"<boolean>\",\n    \"manage\": \"<boolean>\",\n    \"modify\": \"<boolean>\",\n    \"view\": \"<boolean>\"\n  },\n  \"type\": \"<string>\",\n  \"url\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "getDatasetCoverage",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/wave/security/coverage/datasets/:datasetIdOrApiName/versions/:versionId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"wave",
+								"security",
+								"coverage",
+								"datasets",
+								":datasetIdOrApiName",
+								"versions",
+								":versionId"
+							],
+							"variable": [
+								{
+									"key": "datasetIdOrApiName",
+									"value": "<string>",
+									"description": "(Required) The ID or developer name of the dataset."
+								},
+								{
+									"key": "versionId",
+									"value": "<string>",
+									"description": "(Required) The ID of the dataset version."
+								}
+							]
+						},
+						"description": "Retrieve the security coverage for a particular dataset version.\n\nFor additional information, see the [Security Coverage Dataset Version Resource.](https://developer.salesforce.com/docs/atlas.en-us.bi_dev_guide_rest.meta/bi_dev_guide_rest/bi_resources_security_coverage_dataset_version.htm)"
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"auth": {
+									"type": "oauth2"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/wave/security/coverage/datasets/:datasetIdOrApiName/versions/:versionId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wave",
+										"security",
+										"coverage",
+										"datasets",
+										":datasetIdOrApiName",
+										"versions",
+										":versionId"
+									],
+									"variable": [
+										{
+											"key": "datasetIdOrApiName",
+											"value": "<string>"
+										},
+										{
+											"key": "versionId",
+											"value": "<string>"
+										}
+									]
+								},
+								"description": "The security coverage for a particular dataset version."
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"datasetVersion\": {\n    \"dataset\": {\n      \"id\": \"<string>\",\n      \"label\": \"<string>\",\n      \"name\": \"<string>\",\n      \"namespace\": \"<string>\",\n      \"url\": \"<string>\"\n    },\n    \"id\": \"<string>\",\n    \"url\": \"<string>\"\n  },\n  \"sources\": [\n    {\n      \"object\": {\n        \"eligibleSharingSource\": \"<boolean>\",\n        \"label\": \"<string>\",\n        \"name\": \"<string>\",\n        \"namespace\": \"<string>\",\n        \"unsupportedRecords\": {\n          \"count\": \"<integer>\",\n          \"values\": [\n            {\n              \"descriptorCount\": \"<integer>\",\n              \"id\": \"<string>\"\n            },\n            {\n              \"descriptorCount\": \"<integer>\",\n              \"id\": \"<string>\"\n            }\n          ]\n        },\n        \"url\": \"<string>\"\n      }\n    },\n    {\n      \"object\": {\n        \"eligibleSharingSource\": \"<boolean>\",\n        \"label\": \"<string>\",\n        \"name\": \"<string>\",\n        \"namespace\": \"<string>\",\n        \"unsupportedRecords\": {\n          \"count\": \"<integer>\",\n          \"values\": [\n            {\n              \"descriptorCount\": \"<integer>\",\n              \"id\": \"<string>\"\n            },\n            {\n              \"descriptorCount\": \"<integer>\",\n              \"id\": \"<string>\"\n            }\n          ]\n        },\n        \"url\": \"<string>\"\n      }\n    }\n  ],\n  \"url\": \"<string>\"\n}"
+						}
+					]
+				}
+			],
+			"description": "A collection of CRM Analytics datasets."
+		},
+		{
+			"name": "Folders",
+			"item": [
+				{
+					"name": "getWaveFolderCollection",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/wave/folders",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"wave",
+								"folders"
+							],
+							"query": [
+								{
+									"key": "isPinned",
+									"value": "<boolean>",
+									"description": "(Optional) Filters the collection to include only folders which are pinned (true) or not (false). The default is false.",
+									"disabled": true
+								},
+								{
+									"key": "mobileOnlyFeaturedAssets",
+									"value": "<boolean>",
+									"description": "(Optional) Filters the collection to only contain folders which contain dashboards that are enabled for the CRM Analytics mobile app. The default is false.",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "<string>",
+									"description": "(Optional) Generated token that indicates the view of folders to be returned.",
+									"disabled": true
+								},
+								{
+									"key": "pageSize",
+									"value": "<integer>",
+									"description": "(Optional) Number of items to be returned in a single page. Minimum is 1, maximum is 200, and the default is 25.",
+									"disabled": true
+								},
+								{
+									"key": "q",
+									"value": "<string>",
+									"description": "(Optional) Search terms. Individual terms are separated by spaces. A wildcard is automatically appended to the last token in the query string. If the user’s search query contains quotation marks or wildcards, those symbols are automatically removed from the query string in the URL along with any other special characters.",
+									"disabled": true
+								},
+								{
+									"key": "scope",
+									"value": "<string>",
+									"description": "(Optional) Scope type to apply to the collection results.",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "<string>",
+									"description": "(Optional) Sort order to apply to the collection results.",
+									"disabled": true
+								},
+								{
+									"key": "templateFilters",
+									"value": "[\"<string>\",\"<string>\"]",
+									"description": "(Optional) Filters the collection to include only folders that match the filter value.",
+									"disabled": true
+								},
+								{
+									"key": "templateSourceId",
+									"value": "<string>",
+									"description": "(Optional) Filters the collection to include only folders that are created from a specific template source.",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Retrieve a collection of CRM Analytics folders.\n\nFor additional information, see the [Folders List Resource](https://developer.salesforce.com/docs/atlas.en-us.bi_dev_guide_rest.meta/bi_dev_guide_rest/bi_resources_folders.htm)."
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"auth": {
+									"type": "oauth2"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/wave/folders?isPinned=<boolean>&mobileOnlyFeaturedAssets=<boolean>&page=<string>&pageSize=<integer>&q=<string>&scope=<string>&sort=<string>&templateFilters=[\"<string>\",\"<string>\"]&templateSourceId=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wave",
+										"folders"
+									],
+									"query": [
+										{
+											"key": "isPinned",
+											"value": "<boolean>",
+											"description": "(Optional) Filters the collection to include only folders which are pinned (true) or not (false). The default is false."
+										},
+										{
+											"key": "mobileOnlyFeaturedAssets",
+											"value": "<boolean>",
+											"description": "(Optional) Filters the collection to only contain folders which contain dashboards that are enabled for the CRM Analytics mobile app. The default is false."
+										},
+										{
+											"key": "page",
+											"value": "<string>",
+											"description": "(Optional) Generated token that indicates the view of folders to be returned."
+										},
+										{
+											"key": "pageSize",
+											"value": "<integer>",
+											"description": "(Optional) Number of items to be returned in a single page. Minimum is 1, maximum is 200, and the default is 25."
+										},
+										{
+											"key": "q",
+											"value": "<string>",
+											"description": "(Optional) Search terms. Individual terms are separated by spaces. A wildcard is automatically appended to the last token in the query string. If the user’s search query contains quotation marks or wildcards, those symbols are automatically removed from the query string in the URL along with any other special characters."
+										},
+										{
+											"key": "scope",
+											"value": "<string>",
+											"description": "(Optional) Scope type to apply to the collection results."
+										},
+										{
+											"key": "sort",
+											"value": "<string>",
+											"description": "(Optional) Sort order to apply to the collection results."
+										},
+										{
+											"key": "templateFilters",
+											"value": "[\"<string>\",\"<string>\"]",
+											"description": "(Optional) Filters the collection to include only folders that match the filter value."
+										},
+										{
+											"key": "templateSourceId",
+											"value": "<string>",
+											"description": "(Optional) Filters the collection to include only folders that are created from a specific template source."
+										}
+									]
+								},
+								"description": "Get a collection of CRM Analytics folders."
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"folders\": [\n    {\n      \"assetSharingUrl\": \"<string>\",\n      \"createdBy\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"profilePhotoUrl\": \"<string>\"\n      },\n      \"createdDate\": \"<string>\",\n      \"description\": \"<string>\",\n      \"id\": \"<string>\",\n      \"label\": \"<string>\",\n      \"lastAccessedDate\": \"<string>\",\n      \"lastModifiedBy\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"profilePhotoUrl\": \"<string>\"\n      },\n      \"lastModifiedDate\": \"<string>\",\n      \"name\": \"<string>\",\n      \"namespace\": \"<string>\",\n      \"permissions\": {\n        \"create\": \"<boolean>\",\n        \"manage\": \"<boolean>\",\n        \"modify\": \"<boolean>\",\n        \"view\": \"<boolean>\"\n      },\n      \"type\": \"<string>\",\n      \"url\": \"<string>\"\n    },\n    {\n      \"assetSharingUrl\": \"<string>\",\n      \"createdBy\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"profilePhotoUrl\": \"<string>\"\n      },\n      \"createdDate\": \"<string>\",\n      \"description\": \"<string>\",\n      \"id\": \"<string>\",\n      \"label\": \"<string>\",\n      \"lastAccessedDate\": \"<string>\",\n      \"lastModifiedBy\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"profilePhotoUrl\": \"<string>\"\n      },\n      \"lastModifiedDate\": \"<string>\",\n      \"name\": \"<string>\",\n      \"namespace\": \"<string>\",\n      \"permissions\": {\n        \"create\": \"<boolean>\",\n        \"manage\": \"<boolean>\",\n        \"modify\": \"<boolean>\",\n        \"view\": \"<boolean>\"\n      },\n      \"type\": \"<string>\",\n      \"url\": \"<string>\"\n    }\n  ],\n  \"nextPageUrl\": \"<string>\",\n  \"totalSize\": \"<integer>\",\n  \"url\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "getWaveFolder",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/wave/folders/:folderId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"wave",
+								"folders",
+								":folderId"
+							],
+							"query": [
+								{
+									"key": "disableMru",
+									"value": "<boolean>",
+									"description": "Indicates whether to display the last viewed date of the returned folder.",
+									"disabled": true
+								},
+								{
+									"key": "mobileOnlyFeaturedAssets",
+									"value": "<boolean>",
+									"description": "Indicates whether to filter the collection of folders to show only dashboards that are enabled for the Analytics mobile app (true) or not (false).",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "folderId",
+									"value": "<string>",
+									"description": "The ID of the folder to retrieve."
+								}
+							]
+						},
+						"description": "Retrieve a CRM Analytics app folder resource representation.\n\nFor additional information, see the [Folder Resource.](https://developer.salesforce.com/docs/atlas.en-us.bi_dev_guide_rest.meta/bi_dev_guide_rest/bi_resources_folders_id.htm)"
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"auth": {
+									"type": "oauth2"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/wave/folders/folders/:folderId?disableMru=<boolean>&mobileOnlyFeaturedAssets=<boolean>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wave",
+										"folders",
+										"folders",
+										":folderId"
+									],
+									"query": [
+										{
+											"key": "disableMru",
+											"value": "<boolean>",
+											"description": "Indicates whether to display the last viewed date of the returned folder."
+										},
+										{
+											"key": "mobileOnlyFeaturedAssets",
+											"value": "<boolean>",
+											"description": "Indicates whether to filter the collection of folders to show only dashboards that are enabled for the Analytics mobile app (true) or not (false)."
+										}
+									],
+									"variable": [
+										{
+											"key": "folderId",
+											"value": "<string>"
+										}
+									]
+								},
+								"description": "Retrieve a CRM Analytics app folder resource representation."
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"assetSharingUrl\": \"<string>\",\n  \"createdBy\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"profilePhotoUrl\": \"<string>\"\n  },\n  \"createdDate\": \"<string>\",\n  \"description\": \"<string>\",\n  \"id\": \"<string>\",\n  \"label\": \"<string>\",\n  \"lastAccessedDate\": \"<string>\",\n  \"lastModifiedBy\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"profilePhotoUrl\": \"<string>\"\n  },\n  \"lastModifiedDate\": \"<string>\",\n  \"name\": \"<string>\",\n  \"namespace\": \"<string>\",\n  \"permissions\": {\n    \"create\": \"<boolean>\",\n    \"manage\": \"<boolean>\",\n    \"modify\": \"<boolean>\",\n    \"view\": \"<boolean>\"\n  },\n  \"type\": \"<string>\",\n  \"url\": \"<string>\"\n}"
+						}
+					]
+				}
+			],
+			"description": "A collection of CRM Analytics folders."
+		},
+		{
+			"name": "Lenses",
+			"item": [
+				{
+					"name": "getLensCollection",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/wave/lenses",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"wave",
+								"lenses"
+							],
+							"query": [
+								{
+									"key": "folderId",
+									"value": "<string>",
+									"description": "Filters the results to include only the contents of a specific folder.",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "<string>",
+									"description": "A generated token that indicates the view of the lenses to be returned.",
+									"disabled": true
+								},
+								{
+									"key": "pageSize",
+									"value": "<integer>",
+									"description": "The number of items to be returned in a single page. Minimum is 1, maximum is 200, and default is 25",
+									"disabled": true
+								},
+								{
+									"key": "q",
+									"value": "<string>",
+									"description": "Search terms. Individual terms are separated by spaces. A wildcard is automatically appended to the last token in the query string.",
+									"disabled": true
+								},
+								{
+									"key": "scope",
+									"value": "<string>",
+									"description": "The type of scope to be applied to the returned collection.",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "<string>",
+									"description": "The type of sort order to be applied to the returned collection.",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Get a collection of lens resource representations."
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"auth": {
+									"type": "oauth2"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/wave/lenses?folderId=<string>&page=<string>&pageSize=<integer>&q=<string>&scope=<string>&sort=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wave",
+										"lenses"
+									],
+									"query": [
+										{
+											"key": "folderId",
+											"value": "<string>"
+										},
+										{
+											"key": "page",
+											"value": "<string>"
+										},
+										{
+											"key": "pageSize",
+											"value": "<integer>"
+										},
+										{
+											"key": "q",
+											"value": "<string>"
+										},
+										{
+											"key": "scope",
+											"value": "<string>"
+										},
+										{
+											"key": "sort",
+											"value": "<string>"
+										}
+									]
+								},
+								"description": "Get a collection of lens resource representations."
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"nextPageUrl\": \"<string>\",\n  \"totalSize\": \"<integer>\",\n  \"url\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "getLens",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/wave/lenses/lenses/:lensIdOrApiName",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"wave",
+								"lenses",
+								"lenses",
+								":lensIdOrApiName"
+							],
+							"variable": [
+								{
+									"key": "lensIdOrApiName",
+									"value": "<string>",
+									"description": "The lens' specified ID or API name."
+								}
+							]
+						},
+						"description": "Get a Lens resource representation."
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"auth": {
+									"type": "oauth2"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/wave/lenses/lenses/:lensIdOrApiName",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wave",
+										"lenses",
+										"lenses",
+										":lensIdOrApiName"
+									],
+									"variable": [
+										{
+											"key": "lensIdOrApiName",
+											"value": "<string>"
+										}
+									]
+								},
+								"description": "Get a Lens resource representation."
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"assetSharingUrl\": \"<string>\",\n  \"createdBy\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"profilePhotoUrl\": \"<string>\"\n  },\n  \"createdDate\": \"<string>\",\n  \"description\": \"<string>\",\n  \"id\": \"<string>\",\n  \"label\": \"<string>\",\n  \"lastAccessedDate\": \"<string>\",\n  \"lastModifiedBy\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"profilePhotoUrl\": \"<string>\"\n  },\n  \"lastModifiedDate\": \"<string>\",\n  \"name\": \"<string>\",\n  \"namespace\": \"<string>\",\n  \"permissions\": {\n    \"create\": \"<boolean>\",\n    \"manage\": \"<boolean>\",\n    \"modify\": \"<boolean>\",\n    \"view\": \"<boolean>\"\n  },\n  \"type\": \"<string>\",\n  \"url\": \"<string>\"\n}"
+						}
+					]
+				}
+			],
+			"description": "Analytics lenses are how users view data in a dataset and are the basis for building any dashboard."
+		},
+		{
+			"name": "Recipes",
+			"item": [
+				{
+					"name": "getRecipeNotification",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/wave/recipes/:id/notification",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"wave",
+								"recipes",
+								":id",
+								"notification"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "<string>",
+									"description": "(Required) The ID of the recipe."
+								}
+							]
+						},
+						"description": "Retrieve notification condition on a recipe for the current user.\n\nFor additional information, see the [Recipe Notification Resource.](https://developer.salesforce.com/docs/atlas.en-us.248.0.salesforce_recipes_api.meta/salesforce_recipes_api/sforce_recipes_api_resources_recipes_id_notification.htm)"
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"auth": {
+									"type": "oauth2"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/wave/recipes/recipes/:id/notification",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wave",
+										"recipes",
+										"recipes",
+										":id",
+										"notification"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "<string>"
+										}
+									]
+								},
+								"description": "Retrieve notification condition on a recipe for the current user."
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"longRunningAlertInMins\": \"<integer>\",\n  \"notificationLevel\": \"<string>\",\n  \"recipe\": {\n    \"id\": \"<string>\",\n    \"label\": \"<string>\",\n    \"name\": \"<string>\",\n    \"namespace\": \"<string>\",\n    \"url\": \"<string>\"\n  }\n}"
+						}
+					]
+				},
+				{
+					"name": "getRecipe",
+					"request": {
+						"auth": {
+							"type": "oauth2"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/wave/recipes/recipes/:id?format=<string>&Id=<string>",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"wave",
+								"recipes",
+								"recipes",
+								":id"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": "<string>",
+									"description": "(Required) Specifies the format of the returned recipe."
+								},
+								{
+									"key": "Id",
+									"value": "<string>",
+									"description": "(Required) The ID of the recipe."
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "<string>"
+								}
+							]
+						},
+						"description": "Get a recipe by ID."
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"auth": {
+									"type": "oauth2"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/wave/recipes/recipes/:id?format=<string>&Id=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wave",
+										"recipes",
+										"recipes",
+										":id"
+									],
+									"query": [
+										{
+											"key": "format",
+											"value": "<string>",
+											"description": "(Required) Specifies the format of the returned recipe."
+										},
+										{
+											"key": "Id",
+											"value": "<string>",
+											"description": "(Required) The ID of the recipe."
+										}
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "<string>"
+										}
+									]
+								},
+								"description": "Get a recipe by ID."
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"assetSharingUrl\": \"<string>\",\n  \"createdBy\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"profilePhotoUrl\": \"<string>\"\n  },\n  \"createdDate\": \"<string>\",\n  \"description\": \"<string>\",\n  \"id\": \"<string>\",\n  \"label\": \"<string>\",\n  \"lastAccessedDate\": \"<string>\",\n  \"lastModifiedBy\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"profilePhotoUrl\": \"<string>\"\n  },\n  \"lastModifiedDate\": \"<string>\",\n  \"name\": \"<string>\",\n  \"namespace\": \"<string>\",\n  \"permissions\": {\n    \"create\": \"<boolean>\",\n    \"manage\": \"<boolean>\",\n    \"modify\": \"<boolean>\",\n    \"view\": \"<boolean>\"\n  },\n  \"type\": \"<string>\",\n  \"url\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "getRecipeCollection",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/wave/recipes",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"wave",
+								"recipes"
+							],
+							"query": [
+								{
+									"key": "folderId",
+									"value": "<string>",
+									"description": "(Optional) Filters the collection to include only recipes associated with the specified folder ID.",
+									"disabled": true
+								},
+								{
+									"key": "format",
+									"value": "<string>",
+									"description": "(Optional) Filters the collection to include only recipes of the specified format.",
+									"disabled": true
+								},
+								{
+									"key": "lastModifiedAfter",
+									"value": "<string>",
+									"description": "(Optional) Filters the collection to include only recipes with a last modified data after the given value.",
+									"disabled": true
+								},
+								{
+									"key": "lastModifiedBefore",
+									"value": "<string>",
+									"description": "(Optional) Filters the collection to include only recipes with a last modified data before the given value.",
+									"disabled": true
+								},
+								{
+									"key": "licenseType",
+									"value": "<string>",
+									"description": "(Optional) The response includes assets with this license type. The default is EinsteinAnalytics.",
+									"disabled": true
+								},
+								{
+									"key": "nextScheduledAfter",
+									"value": "<string>",
+									"description": "(Optional) Filters the collection to include only recipes with a scheduled run after the given value.",
+									"disabled": true
+								},
+								{
+									"key": "nextScheduledBefore",
+									"value": "<string>",
+									"description": "(Optional) Filters the collection to include only recipes with a scheduled run before the given value.",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "<string>",
+									"description": "(Optional) Generated token that indicates the view of recipes to be returned.",
+									"disabled": true
+								},
+								{
+									"key": "pageSize",
+									"value": "<integer>",
+									"description": "(Optional) Number of items to be returned in a single page. Minimum is 1, maximum is 200, and the default is 25.",
+									"disabled": true
+								},
+								{
+									"key": "q",
+									"value": "<string>",
+									"description": "(Optional) Search terms. Individual terms are separated by spaces. A wildcard is automatically appended to the last token in the query string. If the user’s search query contains quotation marks or wildcards, those symbols are automatically removed from the query string in the URL along with any other special characters.",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "<string>",
+									"description": "(Optional) Sort order to apply to the collection results.",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "[\"<string>\",\"<string>\"]",
+									"description": "(Optional) Filters the collection to include only recipes with the specified statuses.",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Retrieve a listing of all recipes.\n\nFor additional information, see the [Recipes List Resource.](https://developer.salesforce.com/docs/atlas.en-us.248.0.salesforce_recipes_api.meta/salesforce_recipes_api/sforce_recipes_api_resources_recipes.htm)"
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"auth": {
+									"type": "oauth2"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/wave/recipes?folderId=<string>&format=<string>&lastModifiedAfter=<string>&lastModifiedBefore=<string>&licenseType=<string>&nextScheduledAfter=<string>&nextScheduledBefore=<string>&page=<string>&pageSize=<integer>&q=<string>&sort=<string>&status=[\"<string>\",\"<string>\"]",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wave",
+										"recipes"
+									],
+									"query": [
+										{
+											"key": "folderId",
+											"value": "<string>",
+											"description": "(Optional) Filters the collection to include only recipes associated with the specified folder ID."
+										},
+										{
+											"key": "format",
+											"value": "<string>",
+											"description": "(Optional) Filters the collection to include only recipes of the specified format."
+										},
+										{
+											"key": "lastModifiedAfter",
+											"value": "<string>",
+											"description": "(Optional) Filters the collection to include only recipes with a last modified data after the given value."
+										},
+										{
+											"key": "lastModifiedBefore",
+											"value": "<string>",
+											"description": "(Optional) Filters the collection to include only recipes with a last modified data before the given value."
+										},
+										{
+											"key": "licenseType",
+											"value": "<string>",
+											"description": "(Optional) The response includes assets with this license type. The default is EinsteinAnalytics."
+										},
+										{
+											"key": "nextScheduledAfter",
+											"value": "<string>",
+											"description": "(Optional) Filters the collection to include only recipes with a scheduled run after the given value."
+										},
+										{
+											"key": "nextScheduledBefore",
+											"value": "<string>",
+											"description": "(Optional) Filters the collection to include only recipes with a scheduled run before the given value."
+										},
+										{
+											"key": "page",
+											"value": "<string>",
+											"description": "(Optional) Generated token that indicates the view of recipes to be returned."
+										},
+										{
+											"key": "pageSize",
+											"value": "<integer>",
+											"description": "(Optional) Number of items to be returned in a single page. Minimum is 1, maximum is 200, and the default is 25."
+										},
+										{
+											"key": "q",
+											"value": "<string>",
+											"description": "(Optional) Search terms. Individual terms are separated by spaces. A wildcard is automatically appended to the last token in the query string. If the user’s search query contains quotation marks or wildcards, those symbols are automatically removed from the query string in the URL along with any other special characters."
+										},
+										{
+											"key": "sort",
+											"value": "<string>",
+											"description": "(Optional) Sort order to apply to the collection results."
+										},
+										{
+											"key": "status",
+											"value": "[\"<string>\",\"<string>\"]",
+											"description": "(Optional) Filters the collection to include only recipes with the specified statuses."
+										}
+									]
+								},
+								"description": "Get a listing of all recipes."
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"nextPageUrl\": \"<string>\",\n  \"recipes\": [\n    {\n      \"assetSharingUrl\": \"<string>\",\n      \"createdBy\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"profilePhotoUrl\": \"<string>\"\n      },\n      \"createdDate\": \"<string>\",\n      \"description\": \"<string>\",\n      \"id\": \"<string>\",\n      \"label\": \"<string>\",\n      \"lastAccessedDate\": \"<string>\",\n      \"lastModifiedBy\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"profilePhotoUrl\": \"<string>\"\n      },\n      \"lastModifiedDate\": \"<string>\",\n      \"name\": \"<string>\",\n      \"namespace\": \"<string>\",\n      \"permissions\": {\n        \"create\": \"<boolean>\",\n        \"manage\": \"<boolean>\",\n        \"modify\": \"<boolean>\",\n        \"view\": \"<boolean>\"\n      },\n      \"type\": \"<string>\",\n      \"url\": \"<string>\"\n    },\n    {\n      \"assetSharingUrl\": \"<string>\",\n      \"createdBy\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"profilePhotoUrl\": \"<string>\"\n      },\n      \"createdDate\": \"<string>\",\n      \"description\": \"<string>\",\n      \"id\": \"<string>\",\n      \"label\": \"<string>\",\n      \"lastAccessedDate\": \"<string>\",\n      \"lastModifiedBy\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"profilePhotoUrl\": \"<string>\"\n      },\n      \"lastModifiedDate\": \"<string>\",\n      \"name\": \"<string>\",\n      \"namespace\": \"<string>\",\n      \"permissions\": {\n        \"create\": \"<boolean>\",\n        \"manage\": \"<boolean>\",\n        \"modify\": \"<boolean>\",\n        \"view\": \"<boolean>\"\n      },\n      \"type\": \"<string>\",\n      \"url\": \"<string>\"\n    }\n  ],\n  \"totalSize\": \"<integer>\",\n  \"url\": \"<string>\"\n}"
+						}
+					]
+				}
+			],
+			"description": "A collection of data prep recipes."
+		},
+		{
+			"name": "Replicated Datasets",
+			"item": [
+				{
+					"name": "getReplicatedFieldCollection",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/wave/replicatedDatasets/:id/fields",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"wave",
+								"replicatedDatasets",
+								":id",
+								"fields"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "<string>",
+									"description": "(Required) The ID of the replicated dataset."
+								}
+							]
+						},
+						"description": "Retrieve a list of a Replicated Dataset's fields.\n\nFor additional information, see the [Replicated Dataset Fields Resource.](https://developer.salesforce.com/docs/atlas.en-us.bi_dev_guide_rest.meta/bi_dev_guide_rest/bi_resources_replicateddatasets_id_fields.htm)"
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"auth": {
+									"type": "oauth2"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/wave/replicatedDatasets/replicatedDatasets/:id/replicatedDatasets/:id/fields",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wave",
+										"replicatedDatasets",
+										"replicatedDatasets",
+										":id",
+										"replicatedDatasets",
+										":id",
+										"fields"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "<string>"
+										},
+										{
+											"key": "id",
+											"value": "<string>"
+										}
+									]
+								},
+								"description": "Get a list of a Replicated Dataset's fields."
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"fields\": [\n    {\n      \"defaultValue\": \"<object>\",\n      \"description\": \"<string>\",\n      \"fieldType\": \"<string>\",\n      \"format\": \"<string>\",\n      \"label\": \"<string>\",\n      \"multiValue\": \"<boolean>\",\n      \"multiValueSeparator\": \"<string>\",\n      \"name\": \"<string>\",\n      \"precision\": \"<integer>\",\n      \"scale\": \"<integer>\",\n      \"systemField\": \"<boolean>\",\n      \"uniqueId\": \"<boolean>\"\n    },\n    {\n      \"defaultValue\": \"<object>\",\n      \"description\": \"<string>\",\n      \"fieldType\": \"<string>\",\n      \"format\": \"<string>\",\n      \"label\": \"<string>\",\n      \"multiValue\": \"<boolean>\",\n      \"multiValueSeparator\": \"<string>\",\n      \"name\": \"<string>\",\n      \"precision\": \"<integer>\",\n      \"scale\": \"<integer>\",\n      \"systemField\": \"<boolean>\",\n      \"uniqueId\": \"<boolean>\"\n    }\n  ],\n  \"replicatedDataset\": {\n    \"id\": \"<string>\",\n    \"label\": \"<string>\",\n    \"name\": \"<string>\",\n    \"namespace\": \"<string>\",\n    \"url\": \"<string>\"\n  },\n  \"url\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "getReplicatedDataset",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/wave/replicatedDatasets/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"wave",
+								"replicatedDatasets",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "<string>",
+									"description": "(Required) The ID of the replicated dataset."
+								}
+							]
+						},
+						"description": "Retrieve a single Replicated Dataset by ID.\n\nFor additional information, see the [Replicated Dataset Resource.](https://developer.salesforce.com/docs/atlas.en-us.bi_dev_guide_rest.meta/bi_dev_guide_rest/bi_resources_replicateddatasets_id.htm)"
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"auth": {
+									"type": "oauth2"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/wave/replicatedDatasets/replicatedDatasets/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wave",
+										"replicatedDatasets",
+										"replicatedDatasets",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "<string>"
+										}
+									]
+								},
+								"description": "Get a single Replicated Dataset by ID."
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"assetSharingUrl\": \"<string>\",\n  \"createdBy\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"profilePhotoUrl\": \"<string>\"\n  },\n  \"createdDate\": \"<string>\",\n  \"description\": \"<string>\",\n  \"id\": \"<string>\",\n  \"label\": \"<string>\",\n  \"lastAccessedDate\": \"<string>\",\n  \"lastModifiedBy\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"profilePhotoUrl\": \"<string>\"\n  },\n  \"lastModifiedDate\": \"<string>\",\n  \"name\": \"<string>\",\n  \"namespace\": \"<string>\",\n  \"permissions\": {\n    \"create\": \"<boolean>\",\n    \"manage\": \"<boolean>\",\n    \"modify\": \"<boolean>\",\n    \"view\": \"<boolean>\"\n  },\n  \"type\": \"<string>\",\n  \"url\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "getReplicatedDatasetCollection",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/wave/replicatedDatasets",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"wave",
+								"replicatedDatasets"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "<string>",
+									"description": "(Optional) Filters the collection to include only connected objects of the specified category.",
+									"disabled": true
+								},
+								{
+									"key": "connector",
+									"value": "<string>",
+									"description": "(Optional) Filters the collection to include only connected objects belonging to the specified CRM Analytics connector.",
+									"disabled": true
+								},
+								{
+									"key": "includeLive",
+									"value": "<boolean>",
+									"description": "(Optional) Filters the collection to include live datasets. The default is false.",
+									"disabled": true
+								},
+								{
+									"key": "q",
+									"value": "<string>",
+									"description": "(Optional) Search terms. Individual terms are separated by spaces. A wildcard is automatically appended to the last token in the query string. If the user’s search query contains quotation marks or wildcards, those symbols are automatically removed from the query string in the URL along with any other special characters.",
+									"disabled": true
+								},
+								{
+									"key": "sourceObject",
+									"value": "<string>",
+									"description": "(Optional) Filters the collection to include only connected objects belonging to the specified source object.",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Retrieve a list of all Replicated Datasets.\n\nFor additional information, see the [Replicated Datasets List Resource.](https://developer.salesforce.com/docs/atlas.en-us.bi_dev_guide_rest.meta/bi_dev_guide_rest/bi_resources_replicateddatasets.htm)"
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"auth": {
+									"type": "oauth2"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/wave/replicatedDatasets?category=<string>&connector=<string>&includeLive=<boolean>&q=<string>&sourceObject=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wave",
+										"replicatedDatasets"
+									],
+									"query": [
+										{
+											"key": "category",
+											"value": "<string>",
+											"description": "(Optional) Filters the collection to include only connected objects of the specified category."
+										},
+										{
+											"key": "connector",
+											"value": "<string>",
+											"description": "(Optional) Filters the collection to include only connected objects belonging to the specified CRM Analytics connector."
+										},
+										{
+											"key": "includeLive",
+											"value": "<boolean>",
+											"description": "(Optional) Filters the collection to include live datasets. The default is false."
+										},
+										{
+											"key": "q",
+											"value": "<string>",
+											"description": "(Optional) Search terms. Individual terms are separated by spaces. A wildcard is automatically appended to the last token in the query string. If the user’s search query contains quotation marks or wildcards, those symbols are automatically removed from the query string in the URL along with any other special characters."
+										},
+										{
+											"key": "sourceObject",
+											"value": "<string>",
+											"description": "(Optional) Filters the collection to include only connected objects belonging to the specified source object."
+										}
+									]
+								},
+								"description": "Get a list of all Replicated Datasets."
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"replicatedDatasets\": [\n    {\n      \"assetSharingUrl\": \"<string>\",\n      \"createdBy\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"profilePhotoUrl\": \"<string>\"\n      },\n      \"createdDate\": \"<string>\",\n      \"description\": \"<string>\",\n      \"id\": \"<string>\",\n      \"label\": \"<string>\",\n      \"lastAccessedDate\": \"<string>\",\n      \"lastModifiedBy\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"profilePhotoUrl\": \"<string>\"\n      },\n      \"lastModifiedDate\": \"<string>\",\n      \"name\": \"<string>\",\n      \"namespace\": \"<string>\",\n      \"permissions\": {\n        \"create\": \"<boolean>\",\n        \"manage\": \"<boolean>\",\n        \"modify\": \"<boolean>\",\n        \"view\": \"<boolean>\"\n      },\n      \"type\": \"<string>\",\n      \"url\": \"<string>\"\n    },\n    {\n      \"assetSharingUrl\": \"<string>\",\n      \"createdBy\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"profilePhotoUrl\": \"<string>\"\n      },\n      \"createdDate\": \"<string>\",\n      \"description\": \"<string>\",\n      \"id\": \"<string>\",\n      \"label\": \"<string>\",\n      \"lastAccessedDate\": \"<string>\",\n      \"lastModifiedBy\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"profilePhotoUrl\": \"<string>\"\n      },\n      \"lastModifiedDate\": \"<string>\",\n      \"name\": \"<string>\",\n      \"namespace\": \"<string>\",\n      \"permissions\": {\n        \"create\": \"<boolean>\",\n        \"manage\": \"<boolean>\",\n        \"modify\": \"<boolean>\",\n        \"view\": \"<boolean>\"\n      },\n      \"type\": \"<string>\",\n      \"url\": \"<string>\"\n    }\n  ],\n  \"url\": \"<string>\"\n}"
+						}
+					]
+				}
+			],
+			"description": "A collection of CRM Analytics replicated datasets, also known as connected objects."
+		},
+		{
+			"name": "Templates",
+			"item": [
+				{
+					"name": "getWaveTemplateReleaseNotes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/wave/templates/:templateIdOrApiName/releasenotes",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"wave",
+								"templates",
+								":templateIdOrApiName",
+								"releasenotes"
+							],
+							"variable": [
+								{
+									"key": "templateIdOrApiName",
+									"value": "<string>",
+									"description": "(Required) The ID or developer name of the template."
+								}
+							]
+						},
+						"description": "Retrieve the release notes for the template.\n\nFor additional information, see [Template Release Notes Resource.](https://developer.salesforce.com/docs/atlas.en-us.bi_dev_guide_rest.meta/bi_dev_guide_rest/bi_resources_templates_id_releasenotes.htm)"
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"auth": {
+									"type": "oauth2"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/wave/templates/:templateIdOrApiName/releasenotes",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wave",
+										"templates",
+										":templateIdOrApiName",
+										"releasenotes"
+									],
+									"variable": [
+										{
+											"key": "templateIdOrApiName",
+											"value": "<string>"
+										},
+										{
+											"key": "templateIdOrApiName",
+											"value": "<string>",
+											"description": "(Required) The ID or developer name of the template."
+										}
+									]
+								},
+								"description": "Returns the release notes for the template."
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"namespace\": \"<string>\",\n  \"notes\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "getWaveTemplateConfig",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/wave/templates/:templateIdOrApiName/configuration",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"wave",
+								"templates",
+								":templateIdOrApiName",
+								"configuration"
+							],
+							"query": [
+								{
+									"key": "disableApex",
+									"value": "<boolean>",
+									"description": "(Optional) Indicates whether Apex integration hooks are disabled (true) or not (false).",
+									"disabled": true
+								},
+								{
+									"key": "options",
+									"value": "<string>",
+									"description": "(Optional) Filters the configuration by template visibility options.",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "templateIdOrApiName",
+									"value": "<string>",
+									"description": "(Required) The ID or developer name of the template."
+								}
+							]
+						},
+						"description": "Retrieve the configuration for a specific template.\n\nFor additional information, see the [Template Configuration Resource.](https://developer.salesforce.com/docs/atlas.en-us.bi_dev_guide_rest.meta/bi_dev_guide_rest/bi_resources_templates_configuration.htm)"
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"auth": {
+									"type": "oauth2"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/wave/templates/:templateIdOrApiName/configuration?disableApex=<boolean>&options=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wave",
+										"templates",
+										":templateIdOrApiName",
+										"configuration"
+									],
+									"query": [
+										{
+											"key": "disableApex",
+											"value": "<boolean>",
+											"description": "(Optional) Indicates whether Apex integration hooks are disabled (true) or not (false)."
+										},
+										{
+											"key": "options",
+											"value": "<string>",
+											"description": "(Optional) Filters the configuration by template visibility options."
+										}
+									],
+									"variable": [
+										{
+											"key": "templateIdOrApiName",
+											"value": "<string>"
+										},
+										{
+											"key": "templateIdOrApiName",
+											"value": "<string>",
+											"description": "(Required) The ID or developer name of the template."
+										}
+									]
+								},
+								"description": "Returns the configuration for a specific template."
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": \"<string>\",\n  \"layout\": {\n    \"appDetails\": {\n      \"guidancePanel\": {\n        \"backgroundImage\": {\n          \"id\": \"<string>\",\n          \"label\": \"<string>\",\n          \"name\": \"<string>\",\n          \"namespace\": \"<string>\",\n          \"url\": \"<string>\"\n        },\n        \"items\": [\n          {\n            \"type\": \"<string>\",\n            \"visibility\": \"<string>\"\n          },\n          {\n            \"type\": \"<string>\",\n            \"visibility\": \"<string>\"\n          }\n        ],\n        \"title\": \"<string>\"\n      },\n      \"navigation\": {\n        \"label\": \"<string>\",\n        \"parentLabel\": \"<string>\"\n      }\n    },\n    \"displayMessages\": [\n      {\n        \"location\": \"<string>\",\n        \"text\": \"<string>\"\n      },\n      {\n        \"location\": \"<string>\",\n        \"text\": \"<string>\"\n      }\n    ],\n    \"navigationPanel\": {\n      \"title\": \"<string>\"\n    },\n    \"pages\": [\n      {\n        \"backgroundImage\": {\n          \"id\": \"<string>\",\n          \"label\": \"<string>\",\n          \"name\": \"<string>\",\n          \"namespace\": \"<string>\",\n          \"url\": \"<string>\"\n        },\n        \"condition\": \"<string>\",\n        \"guidancePanel\": {\n          \"backgroundImage\": {\n            \"id\": \"<string>\",\n            \"label\": \"<string>\",\n            \"name\": \"<string>\",\n            \"namespace\": \"<string>\",\n            \"url\": \"<string>\"\n          },\n          \"items\": [\n            {\n              \"type\": \"<string>\",\n              \"visibility\": \"<string>\"\n            },\n            {\n              \"type\": \"<string>\",\n              \"visibility\": \"<string>\"\n            }\n          ],\n          \"title\": \"<string>\"\n        },\n        \"helpUrl\": \"<string>\",\n        \"navigation\": {\n          \"label\": \"<string>\",\n          \"parentLabel\": \"<string>\"\n        },\n        \"title\": \"<string>\",\n        \"type\": \"<string>\"\n      },\n      {\n        \"backgroundImage\": {\n          \"id\": \"<string>\",\n          \"label\": \"<string>\",\n          \"name\": \"<string>\",\n          \"namespace\": \"<string>\",\n          \"url\": \"<string>\"\n        },\n        \"condition\": \"<string>\",\n        \"guidancePanel\": {\n          \"backgroundImage\": {\n            \"id\": \"<string>\",\n            \"label\": \"<string>\",\n            \"name\": \"<string>\",\n            \"namespace\": \"<string>\",\n            \"url\": \"<string>\"\n          },\n          \"items\": [\n            {\n              \"type\": \"<string>\",\n              \"visibility\": \"<string>\"\n            },\n            {\n              \"type\": \"<string>\",\n              \"visibility\": \"<string>\"\n            }\n          ],\n          \"title\": \"<string>\"\n        },\n        \"helpUrl\": \"<string>\",\n        \"navigation\": {\n          \"label\": \"<string>\",\n          \"parentLabel\": \"<string>\"\n        },\n        \"title\": \"<string>\",\n        \"type\": \"<string>\"\n      }\n    ]\n  },\n  \"name\": \"<string>\",\n  \"namespace\": \"<string>\",\n  \"ui\": {\n    \"displayMessages\": [\n      {\n        \"location\": \"<string>\",\n        \"text\": \"<string>\"\n      },\n      {\n        \"location\": \"<string>\",\n        \"text\": \"<string>\"\n      }\n    ],\n    \"pages\": [\n      {\n        \"condition\": \"<string>\",\n        \"helpUrl\": \"<string>\",\n        \"title\": \"<string>\",\n        \"variables\": [\n          {\n            \"name\": \"<string>\",\n            \"visibility\": \"<string>\"\n          },\n          {\n            \"name\": \"<string>\",\n            \"visibility\": \"<string>\"\n          }\n        ],\n        \"vfPage\": {\n          \"id\": \"<string>\",\n          \"label\": \"<string>\",\n          \"name\": \"<string>\",\n          \"namespace\": \"<string>\",\n          \"url\": \"<string>\"\n        }\n      },\n      {\n        \"condition\": \"<string>\",\n        \"helpUrl\": \"<string>\",\n        \"title\": \"<string>\",\n        \"variables\": [\n          {\n            \"name\": \"<string>\",\n            \"visibility\": \"<string>\"\n          },\n          {\n            \"name\": \"<string>\",\n            \"visibility\": \"<string>\"\n          }\n        ],\n        \"vfPage\": {\n          \"id\": \"<string>\",\n          \"label\": \"<string>\",\n          \"name\": \"<string>\",\n          \"namespace\": \"<string>\",\n          \"url\": \"<string>\"\n        }\n      }\n    ]\n  },\n  \"variables\": {\n    \"//\": {\n      \"computedValue\": \"<object>\",\n      \"defaultValue\": \"<object>\",\n      \"description\": \"<string>\",\n      \"excludeSelected\": \"<boolean>\",\n      \"label\": \"<string>\",\n      \"mostRecentValue\": \"<object>\",\n      \"required\": \"<boolean>\",\n      \"variableType\": {\n        \"type\": \"<string>\"\n      }\n    }\n  }\n}"
+						}
+					]
+				},
+				{
+					"name": "getWaveTemplate",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/wave/templates/:templateIdOrApiName",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"wave",
+								"templates",
+								":templateIdOrApiName"
+							],
+							"query": [
+								{
+									"key": "options",
+									"value": "<string>",
+									"description": "(Optional) Template visibility options to apply to the collection results.",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "templateIdOrApiName",
+									"value": "<string>",
+									"description": "(Required) The ID or developer name of the template."
+								}
+							]
+						},
+						"description": "Retrieve the details for a specific CRM Analytics template.\n\nFor additional information, see the [Template Resource.](https://developer.salesforce.com/docs/atlas.en-us.bi_dev_guide_rest.meta/bi_dev_guide_rest/bi_resources_templates_id.htm)"
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"auth": {
+									"type": "oauth2"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/wave/templates/:templateIdOrApiName?options=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wave",
+										"templates",
+										":templateIdOrApiName"
+									],
+									"query": [
+										{
+											"key": "options",
+											"value": "<string>",
+											"description": "(Optional) Template visibility options to apply to the collection results."
+										}
+									],
+									"variable": [
+										{
+											"key": "templateIdOrApiName",
+											"value": "<string>"
+										}
+									]
+								},
+								"description": "Retrieve the details for a specific CRM Analytics template."
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"assetVersion\": \"<double>\",\n  \"configurationUrl\": \"<string>\",\n  \"createdBy\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"profilePhotoUrl\": \"<string>\"\n  },\n  \"createdDate\": \"<string>\",\n  \"customAttributes\": [\n    {\n      \"label\": \"<string>\"\n    },\n    {\n      \"label\": \"<string>\"\n    }\n  ],\n  \"description\": \"<string>\",\n  \"folderSource\": {\n    \"id\": \"<string>\",\n    \"label\": \"<string>\",\n    \"name\": \"<string>\",\n    \"namespace\": \"<string>\",\n    \"url\": \"<string>\"\n  },\n  \"icons\": {\n    \"appBadge\": {\n      \"id\": \"<string>\",\n      \"label\": \"<string>\",\n      \"name\": \"<string>\",\n      \"namespace\": \"<string>\",\n      \"url\": \"<string>\"\n    },\n    \"templateBadge\": {\n      \"id\": \"<string>\",\n      \"label\": \"<string>\",\n      \"name\": \"<string>\",\n      \"namespace\": \"<string>\",\n      \"url\": \"<string>\"\n    },\n    \"templatePreviews\": [\n      {\n        \"id\": \"<string>\",\n        \"label\": \"<string>\",\n        \"name\": \"<string>\",\n        \"namespace\": \"<string>\",\n        \"url\": \"<string>\"\n      },\n      {\n        \"id\": \"<string>\",\n        \"label\": \"<string>\",\n        \"name\": \"<string>\",\n        \"namespace\": \"<string>\",\n        \"url\": \"<string>\"\n      }\n    ]\n  },\n  \"id\": \"<string>\",\n  \"label\": \"<string>\",\n  \"lastModifiedBy\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"profilePhotoUrl\": \"<string>\"\n  },\n  \"lastModifiedDate\": \"<string>\",\n  \"name\": \"<string>\",\n  \"namespace\": \"<string>\",\n  \"releaseInfo\": {\n    \"notesUrl\": \"<string>\",\n    \"templateVersion\": \"<string>\"\n  },\n  \"templateType\": \"<string>\",\n  \"url\": \"<string>\",\n  \"videos\": [\n    {\n      \"id\": \"<string>\",\n      \"label\": \"<string>\",\n      \"linkType\": \"<string>\",\n      \"purpose\": \"<string>\",\n      \"showPlaylist\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"label\": \"<string>\",\n      \"linkType\": \"<string>\",\n      \"purpose\": \"<string>\",\n      \"showPlaylist\": \"<boolean>\"\n    }\n  ]\n}"
+						}
+					]
+				},
+				{
+					"name": "getWaveTemplateCollection",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/wave/templates",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"wave",
+								"templates"
+							],
+							"query": [
+								{
+									"key": "options",
+									"value": "<string>",
+									"description": "(Optional) Template visibility options to apply to the collection results.",
+									"disabled": true
+								},
+								{
+									"key": "type",
+									"value": "<string>",
+									"description": "(Optional) Template type to apply to the collection results.",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Retrieve a collection of CRM Analytics templates within the current organization.\n\nFor additional information, see the [Templates List Resource.](https://developer.salesforce.com/docs/atlas.en-us.bi_dev_guide_rest.meta/bi_dev_guide_rest/bi_resources_templates.htm)"
+					},
+					"response": [
+						{
+							"name": "200",
+							"originalRequest": {
+								"auth": {
+									"type": "oauth2"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/wave/templates?options=<string>&type=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"wave",
+										"templates"
+									],
+									"query": [
+										{
+											"key": "options",
+											"value": "<string>",
+											"description": "(Optional) Template visibility options to apply to the collection results."
+										},
+										{
+											"key": "type",
+											"value": "<string>",
+											"description": "(Optional) Template type to apply to the collection results."
+										}
+									]
+								},
+								"description": "Retrieve a collection of CRM Analyitcs templates within the current organization."
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"templates\": [\n    {\n      \"assetVersion\": \"<double>\",\n      \"configurationUrl\": \"<string>\",\n      \"createdBy\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"profilePhotoUrl\": \"<string>\"\n      },\n      \"createdDate\": \"<string>\",\n      \"customAttributes\": [\n        {\n          \"label\": \"<string>\"\n        },\n        {\n          \"label\": \"<string>\"\n        }\n      ],\n      \"description\": \"<string>\",\n      \"folderSource\": {\n        \"id\": \"<string>\",\n        \"label\": \"<string>\",\n        \"name\": \"<string>\",\n        \"namespace\": \"<string>\",\n        \"url\": \"<string>\"\n      },\n      \"icons\": {\n        \"appBadge\": {\n          \"id\": \"<string>\",\n          \"label\": \"<string>\",\n          \"name\": \"<string>\",\n          \"namespace\": \"<string>\",\n          \"url\": \"<string>\"\n        },\n        \"templateBadge\": {\n          \"id\": \"<string>\",\n          \"label\": \"<string>\",\n          \"name\": \"<string>\",\n          \"namespace\": \"<string>\",\n          \"url\": \"<string>\"\n        },\n        \"templatePreviews\": [\n          {\n            \"id\": \"<string>\",\n            \"label\": \"<string>\",\n            \"name\": \"<string>\",\n            \"namespace\": \"<string>\",\n            \"url\": \"<string>\"\n          },\n          {\n            \"id\": \"<string>\",\n            \"label\": \"<string>\",\n            \"name\": \"<string>\",\n            \"namespace\": \"<string>\",\n            \"url\": \"<string>\"\n          }\n        ]\n      },\n      \"id\": \"<string>\",\n      \"label\": \"<string>\",\n      \"lastModifiedBy\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"profilePhotoUrl\": \"<string>\"\n      },\n      \"lastModifiedDate\": \"<string>\",\n      \"name\": \"<string>\",\n      \"namespace\": \"<string>\",\n      \"releaseInfo\": {\n        \"notesUrl\": \"<string>\",\n        \"templateVersion\": \"<string>\"\n      },\n      \"templateType\": \"<string>\",\n      \"url\": \"<string>\",\n      \"videos\": [\n        {\n          \"id\": \"<string>\",\n          \"label\": \"<string>\",\n          \"linkType\": \"<string>\",\n          \"purpose\": \"<string>\",\n          \"showPlaylist\": \"<boolean>\"\n        },\n        {\n          \"id\": \"<string>\",\n          \"label\": \"<string>\",\n          \"linkType\": \"<string>\",\n          \"purpose\": \"<string>\",\n          \"showPlaylist\": \"<boolean>\"\n        }\n      ]\n    },\n    {\n      \"assetVersion\": \"<double>\",\n      \"configurationUrl\": \"<string>\",\n      \"createdBy\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"profilePhotoUrl\": \"<string>\"\n      },\n      \"createdDate\": \"<string>\",\n      \"customAttributes\": [\n        {\n          \"label\": \"<string>\"\n        },\n        {\n          \"label\": \"<string>\"\n        }\n      ],\n      \"description\": \"<string>\",\n      \"folderSource\": {\n        \"id\": \"<string>\",\n        \"label\": \"<string>\",\n        \"name\": \"<string>\",\n        \"namespace\": \"<string>\",\n        \"url\": \"<string>\"\n      },\n      \"icons\": {\n        \"appBadge\": {\n          \"id\": \"<string>\",\n          \"label\": \"<string>\",\n          \"name\": \"<string>\",\n          \"namespace\": \"<string>\",\n          \"url\": \"<string>\"\n        },\n        \"templateBadge\": {\n          \"id\": \"<string>\",\n          \"label\": \"<string>\",\n          \"name\": \"<string>\",\n          \"namespace\": \"<string>\",\n          \"url\": \"<string>\"\n        },\n        \"templatePreviews\": [\n          {\n            \"id\": \"<string>\",\n            \"label\": \"<string>\",\n            \"name\": \"<string>\",\n            \"namespace\": \"<string>\",\n            \"url\": \"<string>\"\n          },\n          {\n            \"id\": \"<string>\",\n            \"label\": \"<string>\",\n            \"name\": \"<string>\",\n            \"namespace\": \"<string>\",\n            \"url\": \"<string>\"\n          }\n        ]\n      },\n      \"id\": \"<string>\",\n      \"label\": \"<string>\",\n      \"lastModifiedBy\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"profilePhotoUrl\": \"<string>\"\n      },\n      \"lastModifiedDate\": \"<string>\",\n      \"name\": \"<string>\",\n      \"namespace\": \"<string>\",\n      \"releaseInfo\": {\n        \"notesUrl\": \"<string>\",\n        \"templateVersion\": \"<string>\"\n      },\n      \"templateType\": \"<string>\",\n      \"url\": \"<string>\",\n      \"videos\": [\n        {\n          \"id\": \"<string>\",\n          \"label\": \"<string>\",\n          \"linkType\": \"<string>\",\n          \"purpose\": \"<string>\",\n          \"showPlaylist\": \"<boolean>\"\n        },\n        {\n          \"id\": \"<string>\",\n          \"label\": \"<string>\",\n          \"linkType\": \"<string>\",\n          \"purpose\": \"<string>\",\n          \"showPlaylist\": \"<boolean>\"\n        }\n      ]\n    }\n  ]\n}"
+						}
+					]
+				}
+			],
+			"description": "A collection of CRM Analytics templates."
+		},
+		{
+			"name": "getWaveAnalyticsLimitCollection",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/wave/limits",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"wave",
+						"limits"
+					],
+					"query": [
+						{
+							"key": "licenseType",
+							"value": "<string>",
+							"description": "(Optional) The response includes CRM Analytics assets with this license type. The default is EinsteinAnalytics.",
+							"disabled": true
+						},
+						{
+							"key": "types",
+							"value": "[\"<string>\",\"<string>\"]",
+							"description": "(Optional) The types of limits used in CRM Analytics.",
+							"disabled": true
+						}
+					]
+				},
+				"description": "Retrieve limits in CRM Analytics.\n\nFor additional information, see the [Limits Resource.](https://developer.salesforce.com/docs/atlas.en-us.bi_dev_guide_rest.meta/bi_dev_guide_rest/bi_resources_limits.htm)"
+			},
+			"response": [
+				{
+					"name": "200",
+					"originalRequest": {
+						"auth": {
+							"type": "oauth2"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/wave/limits?licenseType=<string>&types=[\"<string>\",\"<string>\"]",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"wave",
+								"limits"
+							],
+							"query": [
+								{
+									"key": "licenseType",
+									"value": "<string>",
+									"description": "(Optional) The response includes CRM Analytics assets with this license type. The default is EinsteinAnalytics."
+								},
+								{
+									"key": "types",
+									"value": "[\"<string>\",\"<string>\"]",
+									"description": "(Optional) The types of limits used in CRM Analytics."
+								}
+							]
+						},
+						"description": "Retrieve limits in CRM Analytics."
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"limits\": [\n    {\n      \"current\": \"<double>\",\n      \"interval\": \"<string>\",\n      \"licenseAttributes\": {\n        \"type\": \"<string>\"\n      },\n      \"max\": \"<int64>\",\n      \"threshold\": \"<int64>\",\n      \"type\": \"<string>\"\n    },\n    {\n      \"current\": \"<double>\",\n      \"interval\": \"<string>\",\n      \"licenseAttributes\": {\n        \"type\": \"<string>\"\n      },\n      \"max\": \"<int64>\",\n      \"threshold\": \"<int64>\",\n      \"type\": \"<string>\"\n    }\n  ]\n}"
+				}
+			]
+		},
+		{
+			"name": "postQuery",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"query\" : \"q = load \\\"0Fb1Q000000oOPCSA2/0Fc1Q00000BSHfxSAH\\\"; q = filter q by 'StageName' in [\\\"Closed Won\\\"]; q = group q by ('Type'); q = foreach q generate q.'Type' as 'Type', sum(q.'Amount') as 'A'; q = limit q 2000;\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/wave/query",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"wave",
+						"query"
+					],
+					"query": [
+						{
+							"key": "queryLanguage",
+							"value": "<string>",
+							"description": "(Optional) The query language. The default is SAQL.",
+							"disabled": true
+						},
+						{
+							"key": "queryString",
+							"value": "<string>",
+							"description": "(Optional) The query string to execute. It is recommended to use the SAQL Query Input Representation to pass the query.",
+							"disabled": true
+						},
+						{
+							"key": "timezone",
+							"value": "<string>",
+							"description": "(Optional) The timezone for the query.",
+							"disabled": true
+						}
+					]
+				},
+				"description": "Execute a CRM Analytics query written in Salesforce Analytics Query Language (SAQL) or standard SQL.\n\nFor additional information, see the [Query Resource.](https://developer.salesforce.com/docs/atlas.en-us.bi_dev_guide_rest.meta/bi_dev_guide_rest/bi_resources_query.htm)"
+			},
+			"response": [
+				{
+					"name": "200",
+					"originalRequest": {
+						"auth": {
+							"type": "oauth2"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"licenseAttributes\": \"<object>\",\n  \"metadata\": \"<object>\",\n  \"name\": \"<string>\",\n  \"query\": \"<string>\",\n  \"queryLanguage\": \"<string>\",\n  \"timezone\": \"<string>\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/wave/query?queryLanguage=<string>&queryString=<string>&timezone=<string>",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"wave",
+								"query"
+							],
+							"query": [
+								{
+									"key": "queryLanguage",
+									"value": "<string>",
+									"description": "(Optional) The query language. The default is SAQL."
+								},
+								{
+									"key": "queryString",
+									"value": "<string>",
+									"description": "(Optional) The query string to execute. It is recommended to use the SAQL Query Input Representation to pass the query."
+								},
+								{
+									"key": "timezone",
+									"value": "<string>",
+									"description": "— (Optional) The timezone for the query."
+								}
+							]
+						},
+						"description": "Execute a CRM Analytics query written in Salesforce Analytics Query Language (SAQL) or standard SQL."
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"eTag\": \"<string>\",\n  \"json\": \"<string>\"\n}"
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "oauth2",
+		"oauth2": [
+			{
+				"key": "client_authentication",
+				"value": "body",
+				"type": "string"
+			},
+			{
+				"key": "scope",
+				"value": "api",
+				"type": "string"
+			},
+			{
+				"key": "authUrl",
+				"value": "{{loginUrl}}/services/oauth2/authorize",
+				"type": "string"
+			},
+			{
+				"key": "clientId",
+				"value": "{{clientId}}",
+				"type": "string"
+			},
+			{
+				"key": "grant_type",
+				"value": "implicit",
+				"type": "string"
+			},
+			{
+				"key": "tokenName",
+				"value": "access_token",
+				"type": "string"
+			},
+			{
+				"key": "addTokenTo",
+				"value": "header",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Specifying Postman as the client for Salesforce logs ",
+					"pm.request.headers.add({key: 'Sforce-Call-Options', value: 'client=postman' });",
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "loginUrl",
+			"value": "https://login.salesforce.com",
+			"type": "string"
+		},
+		{
+			"key": "version",
+			"value": "60.0",
+			"type": "string"
+		},
+		{
+			"key": "clientId",
+			"value": "3MVG98_Psg5cppyYCmk1gZNC25o00SXpgpodlS29IZ6pXiHkt3xuPa5qIjBTtEgdsiMuIWVN_8F0jnwEtbDh4",
+			"type": "string"
+		},
+		{
+			"key": "_endpoint",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "baseUrl",
+			"value": "{{_endpoint}}/services/data/v{{version}}",
+			"type": "string"
+		}
+	]
+}
