@@ -1,6 +1,6 @@
 export interface StageDTO {
-    id: string;
-    name: string,
-    order: number, 
-    description: string
+  id: string;
+  name: string;
+  description?: string | null;
+  order?: number | null;
 }

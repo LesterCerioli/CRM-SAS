@@ -1,14 +1,15 @@
 import { User } from "@/domain/models/user";
+import { UserDTO } from "../dtos/userDTO";
 
 export interface UserRepositoryContract {
-  create(user: User): Promise<User>;
-  update(user: User): Promise<User>;
+  create(user: UserDTO): Promise<UserDTO>;
+  update(user: User): Promise<void>;
   delete(userID: string): Promise<void>;
-  getByID(userID: string): Promise<User | null>;
-  getByEmail(email: string): Promise<User | null>;
-  getAll(organizationID: string): Promise<User[]>;
+  getByID(userID: string): Promise<UserDTO>;
+  getByEmail(email: string): Promise<UserDTO>;
+  getAll(organizationID: string): Promise<UserDTO[]>;
   getByRole(organizationID: string, role: string): Promise<User[]>;
-  getByDateRange(organizationID: string, startDate: Date, endDate: Date): Promise<User[]>;
-  getByCreatedAt(createdAt: Date): Promise<User[]>;
-  getByUpdatedAt(updatedAt: Date): Promise<User[]>;
+  getByDateRange(organizationID: string, startDate: Date, endDate: Date): Promise<UserDTO[]>;
+  getByCreatedAt(createdAt: Date): Promise<UserDTO[]>;
+  getByUpdatedAt(updatedAt: Date): Promise<UserDTO[]>;
 }

@@ -11,3 +11,7 @@ Payroll Tax (FICA)	            Contribuição para Previdência Social e Medicar
 Unemployment Tax (FUTA e SUTA)	Seguro-desemprego federal e estadual	                            FUTA: 6%, SUTA: varia por estado
 Property Tax	                Imposto sobre imóveis e ativos da empresa	                        Varia por cidade e estado
 Excise Tax	                    Imposto sobre produtos específicos (combustíveis, tabaco, álcool)	Varia conforme o produto
+
+
+### Migration
+use command npx prisma migrate dev --name init
