@@ -1,0 +1,557 @@
+{
+	"info": {
+		"_postman_id": "582bb775-b99d-46d8-88cf-df0d3a341040",
+		"name": "Models API",
+		"description": "The [Models REST API](https://developer.salesforce.com/docs/einstein/genai/guide/models-api.html) connects your application to Large Language Models (LLMs) through the Einstein Trust Layer. It let's you:\n- run AI prompts either as standalone or as part of conversations\n- create embeddings\n- provide feedback on the generated responses.\n\n📚 [Models REST API Reference](https://developer.salesforce.com/docs/einstein/genai/references/models-api?meta=Summary)\n\n⚠️ Disclaimers:\n\n- this collection is not covered by Salesforce support and SLAs.\n    \n- [rate limits](https://developer.salesforce.com/docs/einstein/genai/guide/rate-limits.html) apply when using the API.\n    \n\n## Setup\n\nThe Models API requires access to Einstein Generative AI on your Salesforce Org. If you don't have an Org with this feature, you can get an [Einstein AI Playground org](https://trailhead.salesforce.com/content/learn/projects/quick-start-prompt-builder/get-started-with-prompt-builder) from Trailhead to experiment.\n\n1. [Fork](https://god.gw.postman.com/run-collection/12721794-582bb775-b99d-46d8-88cf-df0d3a341040?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D12721794-582bb775-b99d-46d8-88cf-df0d3a341040%26entityType%3Dcollection%26workspaceId%3D34382471-0c97-40e5-a206-f947271665c4) this collection.\n    \n2. Follow **Step 1** (yes, only step 1!) of [these instructions](https://developer.salesforce.com/docs/einstein/genai/guide/access-models-api-with-rest.html#step-1-create-a-salesforce-app) to create a Connected App in your Salesforce Org.\n    \n3. Copy the **Consumer Key** and **Consumer Secret** values from your Connected App and paste them respectively in the `clientId` and `clientSecret` collection variables.\n    \n4. From Setup, go to `My Domain`, and then copy the value of **Current My Domain URL** into the `authDomain` collection variable.\n    \n5. Optional: pick a model from the [list of supported models](https://developer.salesforce.com/docs/einstein/genai/guide/supported-models.html), grab it's API name and save it in the `modelName` collection variable. If you don't enter a new value, `sfdc_ai__DefaultGPT35Turbo` (GPT 3.5 Turbo) is used by default.\n    \n6. Save your collection variables.\n    \n7. Open the **Authorization** tab of the Postman collection and click **Get New Access Token** at the bottom of the screen.\n    \n8. Click **Use Token**.\n    \n9. Select the **Generate text** request and click **Send** it to ensure that the collection is properly set up.\n    \n\n## Variables Reference\n\nThe collection relies on the following required variables:\n\n| Variable | Description |\n| --- | --- |\n| `authDomain` | Salesforce Org domain without `https://`. See **My Domain** in Salesforce Setup for value. |\n| `clientId` | Connected App Consumer Key. |\n| `clientSecret` | Connected App Consumer Secret. |\n| `modelName` | API name of one of the supported [Gen AI models](https://developer.salesforce.com/docs/einstein/genai/guide/supported-models.html). |\n| `_baseUrl` | The Models API base URL. Do not modify this value. |",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8857105",
+		"_collection_link": "https://www.postman.com/salesforce-developers/salesforce-developers/collection/onih7sc/models-api?action=share&source=collection_link&creator=8857105"
+	},
+	"item": [
+		{
+			"name": "Generate text (standalone prompt)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-sfdc-app-context",
+						"value": "EinsteinGPT",
+						"description": "(Required) This value is reserved for future use. For now, specify `EinsteinGPT`."
+					},
+					{
+						"key": "x-client-feature-id",
+						"value": "ai-platform-models-connected-app",
+						"description": "(Required) This value is reserved for future use. For now, specify `ai-platform-models-connected-app`."
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json;charset=utf-8"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"prompt\": \"What is a REST API?\"\n}",
+					"options": {
+						"raw": {
+							"headerFamily": "json",
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{_baseUrl}}/models/:modelName/generations",
+					"host": [
+						"{{_baseUrl}}"
+					],
+					"path": [
+						"models",
+						":modelName",
+						"generations"
+					],
+					"variable": [
+						{
+							"key": "modelName",
+							"value": "{{modelName}}",
+							"description": "(Required) Configured model name."
+						}
+					]
+				},
+				"description": "Generate a response based on the provided prompt."
+			},
+			"response": [
+				{
+					"name": "200 - Generate text",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-sfdc-app-context",
+								"value": "EinsteinGPT",
+								"description": "(Required) This value is reserved for future use. For now, specify `EinsteinGPT`."
+							},
+							{
+								"key": "x-client-feature-id",
+								"value": "ai-platform-models-connected-app",
+								"description": "(Required) This value is reserved for future use. For now, specify `ai-platform-models-connected-app`."
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json;charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"prompt\": \"What is a REST API?\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{_baseUrl}}/models/:modelName/generations",
+							"host": [
+								"{{_baseUrl}}"
+							],
+							"path": [
+								"models",
+								":modelName",
+								"generations"
+							],
+							"variable": [
+								{
+									"key": "modelName",
+									"value": "{{modelName}}",
+									"description": "(Required) Configured model name."
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "date",
+							"value": "Wed, 31 Jul 2024 13:47:45 GMT"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						},
+						{
+							"key": "x-request-id",
+							"value": "33971fe7-c492-4222-ba33-90cdde4a8448"
+						},
+						{
+							"key": "x-b3-traceid",
+							"value": "ee36aabc5e257b50bbf678d843b60920"
+						},
+						{
+							"key": "x-b3-spanid",
+							"value": "263481f253eb651b"
+						},
+						{
+							"key": "transfer-encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": \"chatcmpl-9r3y59N86UGz87Z4pEffY5ZgzHajm\",\n    \"generation\": {\n        \"id\": \"9570d969-3338-491f-869d-c3541b0913bb\",\n        \"generatedText\": \"A REST API (Representational State Transfer Application Programming Interface) is a software architectural style for designing networked applications. It is based on a set of principles and constraints that allow different systems to communicate over the internet using the HTTP protocol.\\n\\nIn a REST API, resources are exposed as URLs (Uniform Resource Locators), and different HTTP methods (such as GET, POST, PUT, DELETE) are used to perform operations on these resources. The API follows a stateless client-server communication model, where the server does not store any client state between requests.\\n\\nREST APIs are widely used for building web services and applications, as they provide a scalable, simple, and standardized way of exchanging data between different systems. They are often used in combination with JSON (JavaScript Object Notation) or XML (eXtensible Markup Language) to format the data being transferred.\",\n        \"contentQuality\": {\n            \"scanToxicity\": {\n                \"isDetected\": false,\n                \"categories\": [\n                    {\n                        \"categoryName\": \"identity\",\n                        \"score\": 0\n                    },\n                    {\n                        \"categoryName\": \"hate\",\n                        \"score\": 0\n                    },\n                    {\n                        \"categoryName\": \"profanity\",\n                        \"score\": 0\n                    },\n                    {\n                        \"categoryName\": \"violence\",\n                        \"score\": 0\n                    },\n                    {\n                        \"categoryName\": \"sexual\",\n                        \"score\": 0.0001\n                    },\n                    {\n                        \"categoryName\": \"physical\",\n                        \"score\": 0\n                    }\n                ]\n            }\n        },\n        \"parameters\": {\n            \"finish_reason\": \"stop\",\n            \"index\": 0,\n            \"logprobs\": null\n        }\n    },\n    \"moreGenerations\": null,\n    \"prompt\": null,\n    \"parameters\": {\n        \"created\": 1722433665,\n        \"usage\": {\n            \"completion_tokens\": 171,\n            \"prompt_tokens\": 13,\n            \"total_tokens\": 184\n        },\n        \"model\": \"gpt-35-turbo\",\n        \"system_fingerprint\": null,\n        \"object\": \"chat.completion\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Generate chat (conversation with context)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-sfdc-app-context",
+						"value": "EinsteinGPT",
+						"description": "(Required) This value is reserved for future use. For now, specify `EinsteinGPT`."
+					},
+					{
+						"key": "x-client-feature-id",
+						"value": "ai-platform-models-connected-app",
+						"description": "(Required) This value is reserved for future use. For now, specify `ai-platform-models-connected-app`."
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json;charset=utf-8"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"messages\": [\n        {\n            \"role\": \"user\",\n            \"content\": \"Can I use the Salesforce REST API to retrieve a record?\"\n        },\n        {\n            \"role\": \"assistant\",\n            \"content\": \"Yes, you can use the Salesforce REST API to retrieve a record. The REST API provides a simple and efficient way to interact with Salesforce data using standard HTTP methods like GET, POST, PUT, and DELETE. To retrieve a record, you can use the GET method on the specific record's endpoint URL. Here's an example of how to retrieve a record using the REST API:\\n\\n1. Authenticate and obtain an access token.\\n2. Construct the endpoint URL for the specific record you want to retrieve. The URL should follow the format: `https://instance.salesforce.com/services/data/vXX.X/sobjects/Object_Name/Record_Id`.\\n   - Replace `instance` with your Salesforce instance (e.g., `na1`).\\n   - Replace `XX.X` with the Salesforce API version you are using (e.g., `v52.0`).\\n   - Replace `Object_Name` with the API name of the object you want to retrieve a record from (e.g., `Account`).\\n   - Replace `Record_Id` with the ID of the specific record you want to retrieve.\\n3. Make a GET request to the constructed endpoint URL, including the access token in the request headers.\\n4. Parse the response to retrieve the record details.\\n\\nNote that you need to have the necessary permissions and access rights to retrieve records using the REST API.\"\n        },\n        {\n            \"role\": \"user\",\n            \"content\": \"Nice, show me an example with \\\"my-developer-edition\\\" as the domain, 61.0 as the API version and \\\"Contact\\\" as the object.\"\n        }\n    ],\n    \"localization\": {\n        \"defaultLocale\": \"en_US\",\n        \"inputLocales\": [\n            {\n                \"locale\": \"en_US\",\n                \"probability\": 0.8\n            }\n        ],\n        \"expectedLocales\": [\n            \"en_US\"\n        ]\n    },\n    \"tags\": {}\n}",
+					"options": {
+						"raw": {
+							"headerFamily": "json",
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{_baseUrl}}/models/:modelName/chat-generations",
+					"host": [
+						"{{_baseUrl}}"
+					],
+					"path": [
+						"models",
+						":modelName",
+						"chat-generations"
+					],
+					"variable": [
+						{
+							"key": "modelName",
+							"value": "{{modelName}}",
+							"description": "(Required) Configured model name."
+						}
+					]
+				},
+				"description": "Generate a response based on a list of messages representing a chat conversation."
+			},
+			"response": [
+				{
+					"name": "200 - Generate chat",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-sfdc-app-context",
+								"value": "EinsteinGPT",
+								"description": "(Required) This value is reserved for future use. For now, specify `EinsteinGPT`."
+							},
+							{
+								"key": "x-client-feature-id",
+								"value": "ai-platform-models-connected-app",
+								"description": "(Required) This value is reserved for future use. For now, specify `ai-platform-models-connected-app`."
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json;charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"messages\": [\n        {\n            \"role\": \"user\",\n            \"content\": \"Can I use the Salesforce REST API to retrieve a record?\"\n        },\n        {\n            \"role\": \"assistant\",\n            \"content\": \"Yes, you can use the Salesforce REST API to retrieve a record. The REST API provides a simple and efficient way to interact with Salesforce data using standard HTTP methods like GET, POST, PUT, and DELETE. To retrieve a record, you can use the GET method on the specific record's endpoint URL. Here's an example of how to retrieve a record using the REST API:\\n\\n1. Authenticate and obtain an access token.\\n2. Construct the endpoint URL for the specific record you want to retrieve. The URL should follow the format: `https://instance.salesforce.com/services/data/vXX.X/sobjects/Object_Name/Record_Id`.\\n   - Replace `instance` with your Salesforce instance (e.g., `na1`).\\n   - Replace `XX.X` with the Salesforce API version you are using (e.g., `v52.0`).\\n   - Replace `Object_Name` with the API name of the object you want to retrieve a record from (e.g., `Account`).\\n   - Replace `Record_Id` with the ID of the specific record you want to retrieve.\\n3. Make a GET request to the constructed endpoint URL, including the access token in the request headers.\\n4. Parse the response to retrieve the record details.\\n\\nNote that you need to have the necessary permissions and access rights to retrieve records using the REST API.\"\n        },\n        {\n            \"role\": \"user\",\n            \"content\": \"Nice, show me an example with \\\"my-developer-edition\\\" as the domain, 61.0 as the API version and \\\"Contact\\\" as the object.\"\n        }\n    ],\n    \"localization\": {\n        \"defaultLocale\": \"en_US\",\n        \"inputLocales\": [\n            {\n                \"locale\": \"en_US\",\n                \"probability\": 0.8\n            }\n        ],\n        \"expectedLocales\": [\n            \"en_US\"\n        ]\n    },\n    \"tags\": {}\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{_baseUrl}}/models/:modelName/chat-generations",
+							"host": [
+								"{{_baseUrl}}"
+							],
+							"path": [
+								"models",
+								":modelName",
+								"chat-generations"
+							],
+							"variable": [
+								{
+									"key": "modelName",
+									"value": "{{modelName}}",
+									"description": "(Required) Configured model name."
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "date",
+							"value": "Wed, 31 Jul 2024 14:06:50 GMT"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						},
+						{
+							"key": "x-request-id",
+							"value": "12aeed54-cbef-487a-ad1f-5384d796f743"
+						},
+						{
+							"key": "x-b3-traceid",
+							"value": "81faf07f08a2e4929f5539a876b91483"
+						},
+						{
+							"key": "x-b3-spanid",
+							"value": "c13712a5d4c8f574"
+						},
+						{
+							"key": "transfer-encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": \"chatcmpl-9r4GYuN1prQNl5Li2loPwlpgb6oUq\",\n    \"generationDetails\": {\n        \"generations\": [\n            {\n                \"id\": \"f4b18aba-953a-4880-9c10-3ecc7aee5a6f\",\n                \"role\": \"assistant\",\n                \"content\": \"Certainly! Here's an example of how you can retrieve a record using the Salesforce REST API with the provided details:\\n\\n1. Authenticate and obtain an access token.\\n2. Construct the endpoint URL for the specific record you want to retrieve. Assuming you want to retrieve a Contact record with the ID \\\"003XXXXXXXXXXXXXXX\\\", the URL would be: `https://my-developer-edition.salesforce.com/services/data/v61.0/sobjects/Contact/003XXXXXXXXXXXXXXX`.\\n3. Make a GET request to the constructed endpoint URL, including the access token in the request headers.\\n4. Parse the response to retrieve the record details.\\n\\nRemember to replace \\\"my-developer-edition\\\" with your actual Salesforce domain, \\\"61.0\\\" with the desired API version, and \\\"003XXXXXXXXXXXXXXX\\\" with the ID of the Contact record you want to retrieve.\\n\\nHere's an example using Python and the `requests` library:\\n\\n```python\\nimport requests\\n\\n# Replace with your Salesforce access token\\naccess_token = \\\"YOUR_ACCESS_TOKEN\\\"\\n\\n# Construct the endpoint URL\\nendpoint_url = \\\"https://my-developer-edition.salesforce.com/services/data/v61.0/sobjects/Contact/003XXXXXXXXXXXXXXX\\\"\\n\\n# Make a GET request with the access token in the headers\\nheaders = {\\n    \\\"Authorization\\\": f\\\"Bearer {access_token}\\\",\\n    \\\"Content-Type\\\": \\\"application/json\\\"\\n}\\nresponse = requests.get(endpoint_url, headers=headers)\\n\\n# Parse the response to retrieve the record details\\nif response.status_code == 200:\\n    contact_record = response.json()\\n    print(contact_record)\\nelse:\\n    print(f\\\"Error: {response.status_code} - {response.text}\\\")\\n```\\n\\nMake sure to replace \\\"YOUR_ACCESS_TOKEN\\\" with your actual Salesforce access token.\",\n                \"timestamp\": 1722434821784,\n                \"parameters\": {\n                    \"finish_reason\": \"stop\",\n                    \"index\": 0,\n                    \"logprobs\": null\n                },\n                \"contentQuality\": {\n                    \"scanToxicity\": {\n                        \"isDetected\": false,\n                        \"categories\": [\n                            {\n                                \"categoryName\": \"identity\",\n                                \"score\": 0.0002\n                            },\n                            {\n                                \"categoryName\": \"hate\",\n                                \"score\": 0\n                            },\n                            {\n                                \"categoryName\": \"profanity\",\n                                \"score\": 0\n                            },\n                            {\n                                \"categoryName\": \"violence\",\n                                \"score\": 0\n                            },\n                            {\n                                \"categoryName\": \"sexual\",\n                                \"score\": 0.0005\n                            },\n                            {\n                                \"categoryName\": \"physical\",\n                                \"score\": 0\n                            }\n                        ]\n                    }\n                }\n            }\n        ],\n        \"parameters\": {\n            \"created\": 1722434810,\n            \"usage\": {\n                \"completion_tokens\": 358,\n                \"prompt_tokens\": 333,\n                \"total_tokens\": 691\n            },\n            \"model\": \"gpt-35-turbo\",\n            \"system_fingerprint\": null,\n            \"object\": \"chat.completion\"\n        }\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Generate embeddings",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-sfdc-app-context",
+						"value": "EinsteinGPT",
+						"description": "(Required) This value is reserved for future use. For now, specify `EinsteinGPT`."
+					},
+					{
+						"key": "x-client-feature-id",
+						"value": "ai-platform-models-connected-app",
+						"description": "(Required) This value is reserved for future use. For now, specify `ai-platform-models-connected-app`."
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json;charset=utf-8"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"input\": [\n        \"Salesforce users are called Trailblazers\",\n        \"The mascot for Salesforce users is named Astro\",\n        \"The mascot for Salesforce developers is a bear named Codey\",\n        \"The mascot for Salesforce admins is a goat named Cloudy\",\n        \"The mascot for Salesforce architects is an elephant named Ruth\"\n    ],\n    \"localization\": {\n        \"defaultLocale\": \"en_US\",\n        \"inputLocales\": [\n            {\n                \"locale\": \"en_US\",\n                \"probability\": 0.8\n            }\n        ],\n        \"expectedLocales\": [\n            \"en_US\"\n        ]\n    },\n    \"tags\": {}\n}",
+					"options": {
+						"raw": {
+							"headerFamily": "json",
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{_baseUrl}}/models/:modelName/embeddings",
+					"host": [
+						"{{_baseUrl}}"
+					],
+					"path": [
+						"models",
+						":modelName",
+						"embeddings"
+					],
+					"variable": [
+						{
+							"key": "modelName",
+							"value": "{{modelName}}",
+							"description": "(Required) Configured model name."
+						}
+					]
+				},
+				"description": "Create an embedding vector representing the input text."
+			},
+			"response": []
+		},
+		{
+			"name": "Submit feedback",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-sfdc-app-context",
+						"value": "EinsteinGPT",
+						"description": "(Required) This value is reserved for future use. For now, specify `EinsteinGPT`."
+					},
+					{
+						"key": "x-client-feature-id",
+						"value": "ai-platform-models-connected-app",
+						"description": "(Required) This value is reserved for future use. For now, specify `ai-platform-models-connected-app`."
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json;charset=utf-8"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"<string>\",\n    \"generationId\": \"<string>\",\n    \"feedback\": \"<GOOD | BAD>\",\n    \"feedbackText\": \"<string>\",\n    \"source\": \"<human | app>\",\n    \"appFeedback\": {},\n    \"appGenerationId\": \"<string>\",\n    \"appGeneration\": \"<string>\"\n}",
+					"options": {
+						"raw": {
+							"headerFamily": "json",
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{_baseUrl}}/feedback",
+					"host": [
+						"{{_baseUrl}}"
+					],
+					"path": [
+						"feedback"
+					]
+				},
+				"description": "Submit feedback for generated text."
+			},
+			"response": [
+				{
+					"name": "200 - Submit feedback",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-sfdc-app-context",
+								"value": "EinsteinGPT",
+								"description": "(Required) This value is reserved for future use. For now, specify `EinsteinGPT`."
+							},
+							{
+								"key": "x-client-feature-id",
+								"value": "ai-platform-models-connected-app",
+								"description": "(Required) This value is reserved for future use. For now, specify `ai-platform-models-connected-app`."
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json;charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"d123449d-afed-4abe-9a0e-19c90726d2ea\",\n    \"generationId\": \"9570d969-3338-491f-869d-c3541b0913bb\",\n    \"feedback\": \"GOOD\",\n    \"feedbackText\": \"This is an accurate description.\",\n    \"source\": \"human\",\n    \"appFeedback\": {},\n    \"appGenerationId\": \"<string>\",\n    \"appGeneration\": \"<string>\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{_baseUrl}}/feedback",
+							"host": [
+								"{{_baseUrl}}"
+							],
+							"path": [
+								"feedback"
+							]
+						}
+					},
+					"status": "Accepted",
+					"code": 202,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "date",
+							"value": "Wed, 31 Jul 2024 14:28:45 GMT"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						},
+						{
+							"key": "x-request-id",
+							"value": "4ba15342-e50e-4797-a6ab-d3904917320a"
+						},
+						{
+							"key": "x-b3-traceid",
+							"value": "4836fc95c5e57f7e04805e6d3f2f9476"
+						},
+						{
+							"key": "x-b3-spanid",
+							"value": "4bf6361248eaa126"
+						},
+						{
+							"key": "transfer-encoding",
+							"value": "chunked"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Feedback received, Thank you!\"\n}"
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "oauth2",
+		"oauth2": [
+			{
+				"key": "tokenRequestParams",
+				"value": [],
+				"type": "any"
+			},
+			{
+				"key": "clientSecret",
+				"value": "{{clientSecret}}",
+				"type": "string"
+			},
+			{
+				"key": "clientId",
+				"value": "{{clientId}}",
+				"type": "string"
+			},
+			{
+				"key": "client_authentication",
+				"value": "body",
+				"type": "string"
+			},
+			{
+				"key": "scope",
+				"value": "",
+				"type": "string"
+			},
+			{
+				"key": "addTokenTo",
+				"value": "header",
+				"type": "string"
+			},
+			{
+				"key": "accessTokenUrl",
+				"value": "https://{{authDomain}}/services/oauth2/token",
+				"type": "string"
+			},
+			{
+				"key": "grant_type",
+				"value": "client_credentials",
+				"type": "string"
+			},
+			{
+				"key": "authUrl",
+				"value": "https://{{auth_domain}}/services/oauth2/authorize",
+				"type": "string"
+			},
+			{
+				"key": "tokenName",
+				"value": "access_token",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"const context = pm.environment.name ? pm.environment : pm.collectionVariables;",
+					"",
+					"// Check for required variables",
+					"['authDomain', 'clientId', 'clientSecret'].forEach(key => {",
+					"    if (!context.get(key)) {",
+					"        throw new Error(`Missing mandatory configuration variable: ${key}`);",
+					"    }",
+					"});"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "authDomain",
+			"value": ""
+		},
+		{
+			"key": "clientId",
+			"value": ""
+		},
+		{
+			"key": "clientSecret",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "modelName",
+			"value": "sfdc_ai__DefaultGPT35Turbo",
+			"type": "string"
+		},
+		{
+			"key": "_baseUrl",
+			"value": "https://api.salesforce.com/einstein/platform/v1",
+			"type": "string"
+		}
+	]
+}

@@ -1,0 +1,2729 @@
+{
+	"info": {
+		"_postman_id": "2a380ab9-7ec2-4bb3-b78e-39e424ab7315",
+		"name": "MuleSoft Catalyst Knowledge Hub & Others",
+		"description": "Collection of Repositories from Github (MuleSoft Consulting, MuleSoft Examples or Others) that have been considered important for the MuleSoft focused Commmunity",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8857105",
+		"_collection_link": "https://www.postman.com/salesforce-developers/salesforce-developers/collection/ufbsxlw/mulesoft-catalyst-knowledge-hub-others?action=share&source=collection_link&creator=8857105"
+	},
+	"item": [
+		{
+			"name": "RTF Deployment - Steps",
+			"item": [
+				{
+					"name": "1. Binary",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"name": "Content-Type",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "User-Agenthost",
+								"value": "Apache-Maven/3.6.2 (Java 1.8.0_222; Mac OS X 10.14.6)",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Host",
+								"value": "maven.anypoint.mulesoft.com",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "file",
+							"file": {
+								"src": "{{fileLocation}}/{{applicationName}}.jar"
+							}
+						},
+						"url": {
+							"raw": "https://maven.anypoint.mulesoft.com/api/v1/organizations/{{orgId}}/maven/{{orgId}}/{{applicationName}}/{{applicationVersion}}/{{applicationName}}-{{applicationVersion}}-mule-application.jar",
+							"protocol": "https",
+							"host": [
+								"maven",
+								"anypoint",
+								"mulesoft",
+								"com"
+							],
+							"path": [
+								"api",
+								"v1",
+								"organizations",
+								"{{orgId}}",
+								"maven",
+								"{{orgId}}",
+								"{{applicationName}}",
+								"{{applicationVersion}}",
+								"{{applicationName}}-{{applicationVersion}}-mule-application.jar"
+							]
+						},
+						"description": "API To put pom in exchange "
+					},
+					"response": []
+				},
+				{
+					"name": "2. POM",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"name": "Content-Type",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "User-Agenthost",
+								"value": "Apache-Maven/3.6.2 (Java 1.8.0_222; Mac OS X 10.14.6)",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Host",
+								"value": "maven.anypoint.mulesoft.com",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "file",
+							"file": {
+								"src": "{{fileLocation}}/pom.xml"
+							}
+						},
+						"url": {
+							"raw": "https://maven.anypoint.mulesoft.com/api/v1/organizations/{{orgId}}/maven/{{orgId}}/{{applicationName}}/{{applicationVersion}}/{{applicationName}}-{{applicationVersion}}.pom",
+							"protocol": "https",
+							"host": [
+								"maven",
+								"anypoint",
+								"mulesoft",
+								"com"
+							],
+							"path": [
+								"api",
+								"v1",
+								"organizations",
+								"{{orgId}}",
+								"maven",
+								"{{orgId}}",
+								"{{applicationName}}",
+								"{{applicationVersion}}",
+								"{{applicationName}}-{{applicationVersion}}.pom"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3. All RTF Agents",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://anypoint.mulesoft.com/workercloud/api/organizations/{{orgId}}/agents",
+							"protocol": "https",
+							"host": [
+								"anypoint",
+								"mulesoft",
+								"com"
+							],
+							"path": [
+								"workercloud",
+								"api",
+								"organizations",
+								"{{orgId}}",
+								"agents"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4. Agent Details",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://anypoint.mulesoft.com/runtimefabric/api/organizations/{{orgId}}/targets/{{targetId}}",
+							"protocol": "https",
+							"host": [
+								"anypoint",
+								"mulesoft",
+								"com"
+							],
+							"path": [
+								"runtimefabric",
+								"api",
+								"organizations",
+								"{{orgId}}",
+								"targets",
+								"{{targetId}}"
+							]
+						},
+						"description": "API to get details on target id to check it is safe to deploy api to it"
+					},
+					"response": []
+				},
+				{
+					"name": "5. Deployment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "X-ANYPNT-ENV-ID",
+								"value": "{{envId}}",
+								"type": "text"
+							},
+							{
+								"key": "X-ANYPNT-ORG-ID",
+								"value": "{{orgId}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"name": "Content-Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"name\":\"{{applicationName}}\",\n   \"application\":{\n      \"ref\":{\n         \"groupId\":\"{{orgId}}\",\n         \"artifactId\":\"{{applicationName}}\",\n         \"version\":\"{{applicationVersion}}\",\n         \"packaging\":\"jar\"\n      },\n      \"desiredState\":\"STARTED\",\n      \"configuration\":{\n         \"mule.agent.application.properties.service\":{\n            \"properties\":{\n               \"mule.env\":\"development\",\n               \"name\":\"john\"\n            },\n            \"applicationName\":\"{{applicationName}}\"\n         }\n      }\n   },\n   \"target\":{\n      \"targetId\":\"{{targetId}}\",\n      \"provider\":\"MC\",\n      \"deploymentSettings\":{\n         \"runtimeVersion\":\"4.2.1:v1.2.19\",\n         \"replicationFactor\":2,\n         \"memoryReserved\":\"3000Mi\",\n         \"memoryMax\":\"3000Mi\",\n         \"cpuReserved\":\"500m\",\n         \"cpuMax\":\"500m\",\n         \"publicUrl\":\"https://{{RTFCNAME}}/{{applicationName}}\",\n         \"lastMileSecurity\":false,\n         \"clusteringEnabled\":false\n      }\n   }\n}"
+						},
+						"url": {
+							"raw": "https://anypoint.mulesoft.com/hybrid/api/v2/organizations/{{orgId}}/environments/{{envId}}/deployments",
+							"protocol": "https",
+							"host": [
+								"anypoint",
+								"mulesoft",
+								"com"
+							],
+							"path": [
+								"hybrid",
+								"api",
+								"v2",
+								"organizations",
+								"{{orgId}}",
+								"environments",
+								"{{envId}}",
+								"deployments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6. Get Deployments",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "X-ANYPNT-ORG-ID",
+								"value": "{{orgId}}",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "X-ANYPNT-ENV-ID",
+								"value": "{{envId}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "https://anypoint.mulesoft.com/hybrid/api/v2/organizations/{{orgId}}/environments/{{envId}}/deployments",
+							"protocol": "https",
+							"host": [
+								"anypoint",
+								"mulesoft",
+								"com"
+							],
+							"path": [
+								"hybrid",
+								"api",
+								"v2",
+								"organizations",
+								"{{orgId}}",
+								"environments",
+								"{{envId}}",
+								"deployments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "7. Deployment Details",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://anypoint.mulesoft.com/hybrid/api/v2/organizations/{{orgId}}/environments/{{envId}}/deployments/{{deploymentId}}",
+							"protocol": "https",
+							"host": [
+								"anypoint",
+								"mulesoft",
+								"com"
+							],
+							"path": [
+								"hybrid",
+								"api",
+								"v2",
+								"organizations",
+								"{{orgId}}",
+								"environments",
+								"{{envId}}",
+								"deployments",
+								"{{deploymentId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "8. Re-Deployment",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "X-ANYPNT-ENV-ID",
+								"value": "{{envId}}",
+								"type": "text"
+							},
+							{
+								"key": "X-ANYPNT-ORG-ID",
+								"value": "{{orgId}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"name": "Content-Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"name\":\"{{applicationName}}\",\n   \"application\":{\n      \"ref\":{\n         \"groupId\":\"{{orgId}}\",\n         \"artifactId\":\"{{applicationName}}\",\n         \"version\":\"{{applicationVersion}}\",\n         \"packaging\":\"jar\"\n      },\n      \"desiredState\":\"STARTED\",\n      \"configuration\":{\n         \"mule.agent.application.properties.service\":{\n            \"properties\":{\n               \"mule.env\":\"dev\",\n               \"name\":\"none\",\n               \"key\":\"12345\"\n            },\n            \"applicationName\":\"{{applicationName}}\"\n         }\n      }\n   },\n   \"target\":{\n      \"targetId\":\"{{targetId}}\",\n      \"provider\":\"MC\",\n      \"deploymentSettings\":{\n         \"runtimeVersion\":\"4.2.1:v1.2.19\",\n         \"replicationFactor\":2,\n         \"memoryReserved\":\"3000Mi\",\n         \"memoryMax\":\"3000Mi\",\n         \"cpuReserved\":\"500m\",\n         \"cpuMax\":\"500m\",\n         \"publicUrl\":\"https://{{RTFCNAME}}/{{applicationName}}\",\n         \"lastMileSecurity\":false,\n         \"clusteringEnabled\":false\n      }\n   }\n}"
+						},
+						"url": {
+							"raw": "https://anypoint.mulesoft.com/hybrid/api/v2/organizations/{{orgId}}/environments/{{envId}}/deployments/{{deploymentId}}",
+							"protocol": "https",
+							"host": [
+								"anypoint",
+								"mulesoft",
+								"com"
+							],
+							"path": [
+								"hybrid",
+								"api",
+								"v2",
+								"organizations",
+								"{{orgId}}",
+								"environments",
+								"{{envId}}",
+								"deployments",
+								"{{deploymentId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "9. Query Asset",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"query\":\"{assets(asset:{groupId: \\\"{{orgId}}\\\",assetId: \\\"{{applicationName}}\\\"}){groupId assetId version}}\"}"
+						},
+						"url": {
+							"raw": "https://anypoint.mulesoft.com/graph/api/v1/graphql",
+							"protocol": "https",
+							"host": [
+								"anypoint",
+								"mulesoft",
+								"com"
+							],
+							"path": [
+								"graph",
+								"api",
+								"v1",
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "10. Query Asset and Version",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"query\":\"{assets(asset:{groupId: \\\"{{orgId}}\\\",assetId: \\\"{{applicationName}}\\\", version: \\\"{{applicationVersion}}\\\"}){groupId assetId version}}\"}"
+						},
+						"url": {
+							"raw": "https://anypoint.mulesoft.com/graph/api/v1/graphql",
+							"protocol": "https",
+							"host": [
+								"anypoint",
+								"mulesoft",
+								"com"
+							],
+							"path": [
+								"graph",
+								"api",
+								"v1",
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "11. Exchange Asset",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "X-Delete-Type",
+								"value": "hard-delete",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://anypoint.mulesoft.com/exchange/api/v1/organizations/{{orgId}}/assets/{{orgId}}/{{applicationName}}/{{applicationVersion}}",
+							"protocol": "https",
+							"host": [
+								"anypoint",
+								"mulesoft",
+								"com"
+							],
+							"path": [
+								"exchange",
+								"api",
+								"v1",
+								"organizations",
+								"{{orgId}}",
+								"assets",
+								"{{orgId}}",
+								"{{applicationName}}",
+								"{{applicationVersion}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "# **RTF Deployment**\n\nPostman Collection for the deployment of Runtime Fabric application using the Anypoint Platform APIs.This is while RTF does not support AnypointCLI.\n\n## Github Repo: [https://github.com/mulesoft-consulting/rtf-deployment-scripts](https://github.com/mulesoft-consulting/rtf-deployment-scripts)\n\nExtract below from the Blog post ([https://blogs.mulesoft.com/dev-guides/how-to-tutorials/migrating-on-premises-standalone-apps-to-runtime-fabric/](https://blogs.mulesoft.com/dev-guides/how-to-tutorials/migrating-on-premises-standalone-apps-to-runtime-fabric/))\n\nCICD pipelines to support the Runtime Fabric deployments. Runtime Fabric has some additional steps to upload deployment jar in Exchange. Before a MuleSoft application can be deployed into Runtime Fabric, the deployable jar should be uploaded to Anypoint Exchange.\n\nAnypoint Exchange acts as an artifact repository for MuleSoft applications. You should make sure that no other artifact with the same artifact ID as the MuleSoft application name exists inside Anypoint Exchange with a different artifact type or else it will return an error.\n\nMultiple versions of the deployment jar in Exchange helps you with rollback and rolling updates. MuleSoft application jar can be published into Exchange using:\n\n- Anypoint Studio\n- Manually\n- Maven plugin\n- Anypoint Platform APIs\n    \n\n<img src=\"https://blogs.mulesoft.com/wp-content/uploads/image-18-1024x686.png\">\n\n# Authors\n\nAmit Jha and Sandeep Deshmukh\n\n<img src=\"https://blogs.mulesoft.com/wp-content/uploads/sandeep.jpg\">"
+		},
+		{
+			"name": "CI/CD Create Proxy API - Api Manager",
+			"item": [
+				{
+					"name": "0.1 - Get  Access Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"access_token\", jsonData.access_token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"name": "Content-Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "client_id",
+									"value": "{{connected_app_id}}",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "{{connected_app_secret}}",
+									"type": "text"
+								},
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{anypoint_host}}/accounts/api/v2/oauth2/token",
+							"host": [
+								"{{anypoint_host}}"
+							],
+							"path": [
+								"accounts",
+								"api",
+								"v2",
+								"oauth2",
+								"token"
+							]
+						},
+						"description": "This request :\n- gets acces_token for the connected app that I have created in Anypoint Platform.\n- sets the acces_token postman environment variable to use for the following requests\n\nclient credentials grant type"
+					},
+					"response": []
+				},
+				{
+					"name": "0.2 - Get Profile (org Id and Sandbox Env Id)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var envName = pm.environment.get(\"env_name\");",
+									"var orgName = pm.environment.get(\"org_name\");",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"var env = jsonData.organization[\"environments\"].filter(env => env.name == envName);",
+									"var org = jsonData[\"memberOfOrganizations\"].filter(org => org.name == orgName);",
+									"",
+									"postman.setEnvironmentVariable(\"env_id\", env[0].id);",
+									"postman.setEnvironmentVariable(\"org_id\", org[0].id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{anypoint_host}}/accounts/api/profile",
+							"host": [
+								"{{anypoint_host}}"
+							],
+							"path": [
+								"accounts",
+								"api",
+								"profile"
+							]
+						},
+						"description": "This request:\n- gets org information\n- parse the result and search org_id by org_name and env_id by env_name\n- sets the org_id and env_id in postman environment variables\n\nYou need to fill the org_name and env_name in postman environment variables\n- org_name: is the business org name to which you want to depoy ex: Ozgur Business Organisation\n- env_name: is the environement name to which you want to deplay ex: Sandbox"
+					},
+					"response": []
+				},
+				{
+					"name": "1 - Upload swagger to Exchange",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"name": "Content-Type",
+								"type": "text"
+							},
+							{
+								"key": "organisationId",
+								"value": "{{org_id}}",
+								"type": "text"
+							},
+							{
+								"key": "classifier",
+								"value": "oas",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "classifier",
+									"value": "oas",
+									"type": "text"
+								},
+								{
+									"key": "organizationId",
+									"value": "{{org_id}}",
+									"type": "text"
+								},
+								{
+									"key": "groupId",
+									"value": "{{org_id}}",
+									"type": "text"
+								},
+								{
+									"key": "assetId",
+									"value": "{{exchangeAssetId}}",
+									"type": "text"
+								},
+								{
+									"key": "version",
+									"value": "1.0.0",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "{{exchangeAssetId}}",
+									"type": "text"
+								},
+								{
+									"key": "classifier",
+									"value": "oas",
+									"type": "text"
+								},
+								{
+									"key": "apiVersion",
+									"value": "v1",
+									"type": "text"
+								},
+								{
+									"key": "main",
+									"value": "petstore_oas.json",
+									"type": "text"
+								},
+								{
+									"key": "asset",
+									"type": "file",
+									"src": "petstore_oas.json"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{anypoint_host}}/exchange/api/v1/assets",
+							"host": [
+								"{{anypoint_host}}"
+							],
+							"path": [
+								"exchange",
+								"api",
+								"v1",
+								"assets"
+							]
+						},
+						"description": "This request:\n- uploads your swagger file to echange\n\nyou need to set your swagger path and api metadata information in body of the request."
+					},
+					"response": []
+				},
+				{
+					"name": "2 - Create an Api From Exchange",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"apiId\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"name": "Content-Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"endpoint\": {\n        \"deploymentType\": \"CH\",\n        \"isCloudHub\": true,\n        \"muleVersion4OrAbove\": true,\n        \"proxyUri\": \"http://0.0.0.0:8081/\",\n        \"proxyTemplate\": {\n            \"assetVersion\": \"2.1.0\"\n        },\n        \"referencesUserDomain\": false,\n        \"responseTimeout\": null,\n        \"type\": \"rest\",\n        \"uri\": \"https://petstore.swagger.io/v2\",\n        \"validation\": \"ENABLED\"\n    },\n    \"providerId\": null,\n     \"tags\": [\n        \"internal\",\n        \"test\"\n    ],\n    \"instanceLabel\": \"Sandbox {{exchangeAssetId}}\",\n    \"spec\": {\n        \"assetId\": \"{{exchangeAssetId}}\",\n        \"groupId\": \"{{org_id}}\",\n        \"version\": \"1.0.0\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{anypoint_host}}/apimanager/api/v1/organizations/:organizationId/environments/:environmentId/apis/",
+							"host": [
+								"{{anypoint_host}}"
+							],
+							"path": [
+								"apimanager",
+								"api",
+								"v1",
+								"organizations",
+								":organizationId",
+								"environments",
+								":environmentId",
+								"apis",
+								""
+							],
+							"variable": [
+								{
+									"key": "organizationId",
+									"value": "{{org_id}}"
+								},
+								{
+									"key": "environmentId",
+									"value": "{{env_id}}"
+								}
+							]
+						},
+						"description": "This request:\n- creates an API in Api Manager from an existing Exchange API (check body of the request)\n\t\t\"spec\": {\n    \t\"assetId\": \"{{exchangeAssetId}}\",\n        \"groupId\": \"{{org_id}}\",\n        \"version\": \"1.0.0\"\n    \t}\n- sets the apiId postman environment variable (this is the id of the api in api manager)"
+					},
+					"response": []
+				},
+				{
+					"name": "3 - Deploy proxy for an existing api",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"proxyId\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"name": "Content-Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"applicationName\": \"{{domainName}}\",\n    \"gatewayVersion\": \"4.3.0\",\n    \"overwrite\": true,\n    \"type\": \"CH\",\n    \"environmentId\": \"{{env_id}}\",\n    \"environmentName\": \"{{env_name}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{anypoint_host}}/proxies/xapi/v1/organizations/:orgId/environments/:envId/apis/:apiId/deployments",
+							"host": [
+								"{{anypoint_host}}"
+							],
+							"path": [
+								"proxies",
+								"xapi",
+								"v1",
+								"organizations",
+								":orgId",
+								"environments",
+								":envId",
+								"apis",
+								":apiId",
+								"deployments"
+							],
+							"variable": [
+								{
+									"key": "orgId",
+									"value": "{{org_id}}"
+								},
+								{
+									"key": "envId",
+									"value": "{{env_id}}"
+								},
+								{
+									"key": "apiId",
+									"value": "{{apiId}}"
+								}
+							]
+						},
+						"description": "This request:\n- creates a proxy for the given apiId, domainName(must be unique, it is part of your api url), env_id and env_name"
+					},
+					"response": []
+				},
+				{
+					"name": "3.1 - Proxy from Runtime Manager",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"fullDomainName\", jsonData.fullDomain);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"name": "Content-Type",
+								"type": "text"
+							},
+							{
+								"key": "X-ANYPNT-ENV-ID",
+								"value": "{{env_id}}",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{anypoint_host}}/cloudhub/api/v2/applications/{{domainName}}",
+							"host": [
+								"{{anypoint_host}}"
+							],
+							"path": [
+								"cloudhub",
+								"api",
+								"v2",
+								"applications",
+								"{{domainName}}"
+							]
+						},
+						"description": "this request:\n- retreives the proxy API instance information from the runtime manager. \n- sets the fullDomainName postman environment variable"
+					},
+					"response": []
+				},
+				{
+					"name": "4 - Add premium SLA tiers to an existing api",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"ACTIVE\",\n    \"autoApprove\": false,\n    \"limits\": [\n      {\n        \"visible\": true,\n        \"maximumRequests\": 5,\n        \"timePeriodInMilliseconds\": 1\n      }\n    ],\n    \"name\": \"premium\",\n    \"description\": \"premium description\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{anypoint_host}}/apimanager/api/v1/organizations/:organizationId/environments/:environementId/apis/:apiId/tiers",
+							"host": [
+								"{{anypoint_host}}"
+							],
+							"path": [
+								"apimanager",
+								"api",
+								"v1",
+								"organizations",
+								":organizationId",
+								"environments",
+								":environementId",
+								"apis",
+								":apiId",
+								"tiers"
+							],
+							"variable": [
+								{
+									"key": "organizationId",
+									"value": "{{org_id}}"
+								},
+								{
+									"key": "environementId",
+									"value": "{{env_id}}"
+								},
+								{
+									"key": "apiId",
+									"value": "{{apiId}}"
+								}
+							]
+						},
+						"description": "This request:\n- creates an SLA tier for an API (apiId). Body:\n\t    {\n\t\t\"status\": \"ACTIVE\",\n\t    \"autoApprove\": false,\n\t    \"limits\": [\n\t      {\n\t        \"visible\": true,\n\t        \"maximumRequests\": 5,\n\t        \"timePeriodInMilliseconds\": 1\n\t      }\n\t    ],\n\t    \"name\": \"premium\",\n\t    \"description\": \"premium description\"\n\t\t}"
+					},
+					"response": []
+				},
+				{
+					"name": "4.1 - Add free SLA tiers to an existing api",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"ACTIVE\",\n    \"autoApprove\": true,\n    \"limits\": [\n      {\n        \"visible\": true,\n        \"maximumRequests\": 2,\n        \"timePeriodInMilliseconds\": 1000\n      },\n      {\n        \"visible\": true,\n        \"maximumRequests\": 50,\n        \"timePeriodInMilliseconds\": 60000\n      }\n    ],\n    \"name\": \"Free\",\n    \"description\": \"Free description\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{anypoint_host}}/apimanager/api/v1/organizations/:organizationId/environments/:environementId/apis/:apiId/tiers",
+							"host": [
+								"{{anypoint_host}}"
+							],
+							"path": [
+								"apimanager",
+								"api",
+								"v1",
+								"organizations",
+								":organizationId",
+								"environments",
+								":environementId",
+								"apis",
+								":apiId",
+								"tiers"
+							],
+							"variable": [
+								{
+									"key": "organizationId",
+									"value": "{{org_id}}"
+								},
+								{
+									"key": "environementId",
+									"value": "{{env_id}}"
+								},
+								{
+									"key": "apiId",
+									"value": "{{apiId}}"
+								}
+							]
+						},
+						"description": "This request:\n- creates an SLA tier for an API (apiId)."
+					},
+					"response": []
+				},
+				{
+					"name": "4.2 - SLA tiers from an existing api",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{anypoint_host}}/apimanager/api/v1/organizations/:organizationId/environments/:environementId/apis/:apiId/tiers",
+							"host": [
+								"{{anypoint_host}}"
+							],
+							"path": [
+								"apimanager",
+								"api",
+								"v1",
+								"organizations",
+								":organizationId",
+								"environments",
+								":environementId",
+								"apis",
+								":apiId",
+								"tiers"
+							],
+							"variable": [
+								{
+									"key": "organizationId",
+									"value": "{{org_id}}"
+								},
+								{
+									"key": "environementId",
+									"value": "{{env_id}}"
+								},
+								{
+									"key": "apiId",
+									"value": "{{apiId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5 - Apply Rate limiting SLA Based policy to an existing api",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"configurationData\": {\n        \"clientIdExpression\": \"#[attributes.headers['client_id']]\",\n        \"clientSecretExpression\": \"#[attributes.headers['client_secret']]\",\n        \"clusterizable\": true,\n        \"exposeHeaders\": true\n    },\n    \"id\": null,\n    \"pointcutData\": null,\n    \"policyTemplateId\": 299249,\n    \"apiVersionId\": \"{{apiID}}\",\n    \"groupId\": \"68ef9520-24e9-4cf2-b2f5-620025690913\",\n    \"assetId\": \"rate-limiting-sla-based\",\n    \"assetVersion\": \"1.2.6\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{anypoint_host}}/apimanager/api/v1/organizations/:organizationId/environments/:environementId/apis/:apiid/policies",
+							"host": [
+								"{{anypoint_host}}"
+							],
+							"path": [
+								"apimanager",
+								"api",
+								"v1",
+								"organizations",
+								":organizationId",
+								"environments",
+								":environementId",
+								"apis",
+								":apiid",
+								"policies"
+							],
+							"variable": [
+								{
+									"key": "organizationId",
+									"value": "{{org_id}}"
+								},
+								{
+									"key": "environementId",
+									"value": "{{env_id}}"
+								},
+								{
+									"key": "apiid",
+									"value": "{{apiId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5.1 - Add Tag to an existing api #ratelimitingSLAbased",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"name": "Content-Type",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{anypoint_host}}/apimanager/api/v1/organizations/:organizationId/environments/:environementId/apis/:apiId/tags/ratelimitingSLAbased",
+							"host": [
+								"{{anypoint_host}}"
+							],
+							"path": [
+								"apimanager",
+								"api",
+								"v1",
+								"organizations",
+								":organizationId",
+								"environments",
+								":environementId",
+								"apis",
+								":apiId",
+								"tags",
+								"ratelimitingSLAbased"
+							],
+							"variable": [
+								{
+									"key": "organizationId",
+									"value": "{{org_id}}"
+								},
+								{
+									"key": "environementId",
+									"value": "{{env_id}}"
+								},
+								{
+									"key": "apiId",
+									"value": "{{apiId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5.2 - Apply Jwt validation policy to an existing api",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"configurationData\": {\n        \"jwtOrigin\": \"httpBearerAuthenticationHeader\",\n        \"jwtExpression\": \"#[attributes.headers['jwt']]\",\n        \"signingMethod\": \"rsa\",\n        \"signingKeyLength\": 256,\n        \"jwtKeyOrigin\": \"jwks\",\n        \"textKey\": \"your-(256|384|512)-bit-secret\",\n        \"jwksUrl\": \"http://your-jwks-service.example:80/base/path\",\n        \"jwksServiceTimeToLive\": 60,\n        \"skipClientIdValidation\": true,\n        \"clientIdExpression\": \"#[vars.claimSet.client_id]\",\n        \"validateAudClaim\": true,\n        \"mandatoryAudClaim\": false,\n        \"supportedAudiences\": \"aud.example.com\",\n        \"mandatoryExpClaim\": true,\n        \"mandatoryNbfClaim\": false,\n        \"validateCustomClaim\": true,\n        \"mandatoryCustomClaims\": [\n            {\n                \"key\": \"Mandatory\",\n                \"value\": \"true\"\n            }\n        ],\n        \"nonMandatoryCustomClaims\": [\n            {\n                \"key\": \"NonMandatory\",\n                \"value\": \"false\"\n            }\n        ]\n    },\n    \"id\": null,\n    \"pointcutData\": null,\n    \"policyTemplateId\": 299253,\n    \"apiVersionId\": {{apiId}},\n    \"groupId\": \"68ef9520-24e9-4cf2-b2f5-620025690913\",\n    \"assetId\": \"jwt-validation\",\n    \"assetVersion\": \"1.1.3\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{anypoint_host}}/apimanager/api/v1/organizations/:organizationId/environments/:environementId/apis/:apiid/policies",
+							"host": [
+								"{{anypoint_host}}"
+							],
+							"path": [
+								"apimanager",
+								"api",
+								"v1",
+								"organizations",
+								":organizationId",
+								"environments",
+								":environementId",
+								"apis",
+								":apiid",
+								"policies"
+							],
+							"variable": [
+								{
+									"key": "organizationId",
+									"value": "{{org_id}}"
+								},
+								{
+									"key": "environementId",
+									"value": "{{env_id}}"
+								},
+								{
+									"key": "apiid",
+									"value": "{{apiId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5.3 - Add Tag to an existing api #jwt",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"name": "Content-Type",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{anypoint_host}}/apimanager/api/v1/organizations/:organizationId/environments/:environementId/apis/:apiId/tags/jwt",
+							"host": [
+								"{{anypoint_host}}"
+							],
+							"path": [
+								"apimanager",
+								"api",
+								"v1",
+								"organizations",
+								":organizationId",
+								"environments",
+								":environementId",
+								"apis",
+								":apiId",
+								"tags",
+								"jwt"
+							],
+							"variable": [
+								{
+									"key": "organizationId",
+									"value": "{{org_id}}"
+								},
+								{
+									"key": "environementId",
+									"value": "{{env_id}}"
+								},
+								{
+									"key": "apiId",
+									"value": "{{apiId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5.4 - Get Api(s) By query (tag name)",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{anypoint_host}}/apimanager/api/v1/organizations/:organizationId/environments/:environmentId/apis?query=jwt",
+							"host": [
+								"{{anypoint_host}}"
+							],
+							"path": [
+								"apimanager",
+								"api",
+								"v1",
+								"organizations",
+								":organizationId",
+								"environments",
+								":environmentId",
+								"apis"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": "jwt"
+								}
+							],
+							"variable": [
+								{
+									"key": "organizationId",
+									"value": "{{org_id}}"
+								},
+								{
+									"key": "environmentId",
+									"value": "{{env_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Optional - Enable monitoring/visualiser in Runtime Manager",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"name": "Content-Type",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"monitoringEnabled\": true,\n    \"monitoringAutoRestart\": true,\n    \"persistentQueues\": false,\n    \"persistentQueuesEncrypted\": false,\n    \"workers\": {\n        \"type\": {\n            \"name\": \"Micro\",\n            \"weight\": 0.1,\n            \"cpu\": \"0.1 vCores\",\n            \"memory\": \"500 MB memory\"\n        },\n        \"amount\": 1,\n        \"remainingOrgWorkers\": 3.1,\n        \"totalOrgWorkers\": 4\n    },\n    \"trackingSettings\": {\n        \"trackingLevel\": \"DISABLED\"\n    },\n    \"properties\": {\n        \"anypoint.platform.analytics_base_uri\": \"https://analytics-ingest.anypoint.mulesoft.com\",\n        \"anypoint.platform.client_id\": \"{{environment_app_id}}\",\n        \"anypoint.platform.client_secret\": \"{{environment_app_secret}}\",\n        \"anypoint.platform.base_uri\": \"{{anypoint_host}}\",\n        \"anypoint.platform.config.analytics.agent.enabled\": \"true\"\n    },\n    \"logLevels\": [],\n    \"propertiesOptions\": {\n        \"outbound.truststore.password\": {\n            \"secure\": true\n        },\n        \"anypoint.platform.client_secret\": {\n            \"secure\": true\n        },\n        \"inbound.keystore.password\": {\n            \"secure\": true\n        },\n        \"inbound.truststore.password\": {\n            \"secure\": true\n        },\n        \"outbound.keystore.password\": {\n            \"secure\": true\n        },\n        \"inbound.keystore.keyPassword\": {\n            \"secure\": true\n        },\n        \"outbound.keystore.keyPassword\": {\n            \"secure\": true\n        }\n    },\n    \"secureDataGatewayEnabled\": false,\n    \"staticIPsEnabled\": false,\n    \"ipAddresses\": [],\n    \"loggingNgEnabled\": true,\n    \"loggingCustomLog4JEnabled\": false,\n    \"status\": \"STARTED\",\n    \"region\": \"eu-central-1\",\n    \"objectStoreV1\": false,\n    \"muleVersion\": {\n        \"version\": \"4.3.0\",\n        \"updateId\": \"5eaaf509c695f914bb42e1ea\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{anypoint_host}}/cloudhub/api/v2/applications/{{domainName}}",
+							"host": [
+								"{{anypoint_host}}"
+							],
+							"path": [
+								"cloudhub",
+								"api",
+								"v2",
+								"applications",
+								"{{domainName}}"
+							]
+						},
+						"description": "This request:\n- sets the analytics.agent.enabled = true in properties of the runtime\n \n\t    \"properties\": {\n\t        \"anypoint.platform.analytics_base_uri\": \"https://analytics-ingest.anypoint.mulesoft.com\",\n\t        \"anypoint.platform.client_id\": \"{{environment_app_id}}\",\n\t        \"anypoint.platform.client_secret\": \"{{environment_app_secret}}\",\n\t        \"anypoint.platform.base_uri\": \"{{anypoint_host}}\",\n\t        \"anypoint.platform.config.analytics.agent.enabled\": \"true\"\n\t    }"
+					},
+					"response": []
+				},
+				{
+					"name": "Optional - Get List of available Policies in Anypoint Platform By default",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{anypoint_host}}/apimanager/api/v1/organizations/:organizationId/policy-templates",
+							"host": [
+								"{{anypoint_host}}"
+							],
+							"path": [
+								"apimanager",
+								"api",
+								"v1",
+								"organizations",
+								":organizationId",
+								"policy-templates"
+							],
+							"variable": [
+								{
+									"key": "organizationId",
+									"value": "{{org_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Optional - Add client Id policy to an existing api",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"clientIdPolicyId\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"configurationData\": {\n        \"credentialsOriginHasHttpBasicAuthenticationHeader\": \"customExpression\",\n        \"clientIdExpression\": \"#[attributes.headers['client_id']]\",\n        \"clientSecretExpression\": \"#[attributes.headers['client_secret']]\"\n    },\n    \"id\": null,\n    \"pointcutData\": null,\n    \"policyTemplateId\": 299240,\n    \"apiVersionId\": \"{{apiID}}\",\n    \"groupId\": \"68ef9520-24e9-4cf2-b2f5-620025690913\",\n    \"assetId\": \"client-id-enforcement\",\n    \"assetVersion\": \"1.2.2\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{anypoint_host}}/apimanager/api/v1/organizations/:organizationId/environments/:environementId/apis/:apiid/policies",
+							"host": [
+								"{{anypoint_host}}"
+							],
+							"path": [
+								"apimanager",
+								"api",
+								"v1",
+								"organizations",
+								":organizationId",
+								"environments",
+								":environementId",
+								"apis",
+								":apiid",
+								"policies"
+							],
+							"variable": [
+								{
+									"key": "organizationId",
+									"value": "{{org_id}}"
+								},
+								{
+									"key": "environementId",
+									"value": "{{env_id}}"
+								},
+								{
+									"key": "apiid",
+									"value": "{{apiId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Optional - Delete policy from an existing api",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{anypoint_host}}/apimanager/api/v1/organizations/:organizationId/environments/:environementId/apis/:apiid/policies/{{clientIdPolicyId}}",
+							"host": [
+								"{{anypoint_host}}"
+							],
+							"path": [
+								"apimanager",
+								"api",
+								"v1",
+								"organizations",
+								":organizationId",
+								"environments",
+								":environementId",
+								"apis",
+								":apiid",
+								"policies",
+								"{{clientIdPolicyId}}"
+							],
+							"variable": [
+								{
+									"key": "organizationId",
+									"value": "{{org_id}}"
+								},
+								{
+									"key": "environementId",
+									"value": "{{env_id}}"
+								},
+								{
+									"key": "apiid",
+									"value": "{{apiId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Optional - Proxy of an existing api",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"name": "Content-Type",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{anypoint_host}}/proxies/xapi/v1/organizations/:orgId/environments/:envId/apis/:apiId/deployments/{{proxyId}}",
+							"host": [
+								"{{anypoint_host}}"
+							],
+							"path": [
+								"proxies",
+								"xapi",
+								"v1",
+								"organizations",
+								":orgId",
+								"environments",
+								":envId",
+								"apis",
+								":apiId",
+								"deployments",
+								"{{proxyId}}"
+							],
+							"variable": [
+								{
+									"key": "orgId",
+									"value": "{{org_id}}"
+								},
+								{
+									"key": "envId",
+									"value": "{{env_id}}"
+								},
+								{
+									"key": "apiId",
+									"value": "{{apiId}}"
+								}
+							]
+						},
+						"description": "Retreives the proxy api settings with proxy ip returned from the previous deploy call"
+					},
+					"response": []
+				}
+			],
+			"description": "# Deploy a Proxy API in Anypoint Platform with Postman\n\n## Github Repo: [https://github.com/ozgurkarahan/Mulesoft-Api-Manager-CI-CD-Postman](https://github.com/ozgurkarahan/Mulesoft-Api-Manager-CI-CD-Postman)\n\nIt has been long time that I wanted to write a post on how to automate API proxy deployment by only Platform API calls.\n\nMost of the time I do démo with UI to my prospects on API Manager topics and I have always the same question coming from them: “How are we going to add this to our CI/CD pipeline.”\n\nSo I have decided to show by only using API calls how we can import your swagger to Anypoint Exchange, Create the proxy, deploy it, add SLA tiers, apply policies, tag it then activate monitoring with only one postman collection.\n\nThe steps the collection contains are:\n\n- Import your swagger file to Anypoint Exchange\n- Create an API in API Manager from an API in Exchange\n- Deploy the API proxy to Runtime Manager\n- Add SLA tiers ( Free, Premium) to your API in Anypoint API Manager\n- Apply the following policies to your API in Anypoint API Manager:\n    - Rate Limiting SLA Based policy\n    - JWT Validation Policy\n- Tag your API\n- Activate Monitoring and Visualiser on Anypoint Runtime Manager for your API\n    \n\nFor this postman collection I have only used the APIs available on [Anypoint Platform APIs](https://anypoint.mulesoft.com/exchange/portals/anypoint-platform/).\n\nYou should run by order the API Calls as it is already ordered in postman collection. Because each API call gets the values from the response and sets the postman environment variables that will be used for the following API calls.\n\n## Pre-requisite\n\n1. You should create a connected app (Access Management → Connected Apps) with the following scopes on your choose of Business org and Environment: Runtime Manager, Exchange Contributor, API Manager, CloudHub Org Admin\n2. Your swagger file\n3. Your Business Group Name (the name of the business org to which you want to deploy)\n4. Your Environment Name ( the name of the environment to which your want to deploy)\n5. Your Environment client_id and client_secret (we need it to activate monitoring)\n6. Import the Postman Collection file to your Postman ( \\[GitHub repository\\]([https://github.com/ozgurkarahan/Mulesoft-Api-Manager-CI-CD-Postman/blob/master/CI-CD](https://github.com/ozgurkarahan/Mulesoft-Api-Manager-CI-CD-Postman/blob/master/CI-CD) Create Proxy API - Api Manager.postman_collection.json) )\n7. Import the Postman environment variables to your Postman (\\[GitHub Repository\\]([https://github.com/ozgurkarahan/Mulesoft-Api-Manager-CI-CD-Postman/blob/master/CI-CD](https://github.com/ozgurkarahan/Mulesoft-Api-Manager-CI-CD-Postman/blob/master/CI-CD) Create Proxy API - Api Manager.postman_environment.json))\n    \n\n## Postman Environment variables\n\nThe following postman environment variables must be filled in:\n\n- anypoint_host: [https://anypoint.mulesoft.com](https://anypoint.mulesoft.com/)\n- connected_app_id: The id of the connected app you have created in the pre-requisite step 1\n- connected_app_secret: The id of the connected app you have created in the pre-requisite step 1\n- env_name: The name of the environment to which you want to deploy your API. ex: Sandbox, Design or Production\n- org_name: The name of Anypoint Business Group to which you want to publish your API\n- environment_app_id: your environment client Id that you have get from the pre-requisite step 6\n- environment_app_secret: your environment client secret that you have get from the pre-requisite step 6\n- domainName: The domain name you want to use as part of your API URI. _It will be the identifier of you app in RM_, it must be unique. ( `domainname`\\-[de-c1.cloudhub.io](http://de-c1.cloudhub.io/))\n- exchangeAssetId: The assetId that will be used in Anypoint Exchange\n    \n\n## Steps in Postman Collection\n\n_**The very first two steps are the preparation requests to get access token, env_id and org_id**_\n\n### 0.1 - Get Access Token (POST)\n\nThis steps calls the token endpoint to get an access_token to be used as bearer token for the following steps.\n\n- gets acces_token for the connected app that I have created in Anypoint Platform.\n- sets the acces_token in postman environment variable to use for the following requests\n    \n\n### 0.2 - Get Profile (org Id and Sandbox Env Id) (GET)\n\nFor the most of the following steps you will need environment id and organisation id. This request calls the accounts/api/profile to get information on your platform (business org, env, ...). The env_name and org_name variable let us to query the response result and extract Ids\n\n_**Once we have the variable set for: access_token, org_id and env_id, then we can import the swagger to Exchange, create your api in api manager and depoy the proxy instance to CloudHub via runtime manager**_\n\n### 1 - Upload swagger to Exchange (POST)\n\nThis request will add your swagger to exchange. Check the body of the request to customise the parameters. The important one is the _**asset**_: you should give the full path to your swagger file as value to asset.\n\n### 2 - Create an Api From Exchange (POST)\n\nCreates an API in Api Manager from an existing Exchange API (check body of the request if you want to customise it). It sets apiId postman environment variable from the response.\n\n### 3 - Deploy proxy for an existing api (POST)\n\nCreates a proxy for the given apiId, domainName(must be unique, it is part of your api url), env_id and env_name\n\n_**Now your API is imported to exchange, created in API Manager and deployed to Runtime Manager. The following steps are to customise your APIs: SLA Tiers (Subscription), Policies, Tag and activate monitoring on your API.**_\n\n### 4 - Add premium SLA tiers to an existing api (POST)\n\nThis request creates a SLA tiers for the given apiId. Check body of the request to customise it\n\n### 4.1 - Add free SLA tiers to an existing api (POST)\n\nThis request creates a SLA tiers for the given apiId. Check body of the request to customise it\n\n### 4.2 - SLA tiers from an existing api (GET)\n\nYou can use this request to check the SLA tiers created previsouly\n\n### 5 - Apply Rate limiting SLA Based policy to an existing api\n\nApplies the standard Rate limiting SLA based policy to your API. This policy wil use the SLA tiers defined in the previous steps.\n\n### 5.1 - Add Tag to an existing api #ratelimitingSLAbased\n\nAdd the following tag to your api: ratelimitingSLAbased\n\n### 5.2 - Apply Jwt validation policy to an existing api\n\nApplies the standard JWT validation policy to your API. Check the body of the request to customise your settings.\n\n### 5.3 - Add Tag to an existing api #jwt\n\nAdd the following tag to your api: jwt\n\n### 5.4 - Get Api(s) By query (tag name)\n\nYou can query your API manager by tag name. This lets you to tag your API properly to set a context than query easily all APIs with the specific tags\n\n### Optional - Enable monitoring/visualiser in Runtime Manager\n\nThis steps is optional. It lets you to activate monitoring and visualiser on your proxy app in runtime manager."
+		},
+		{
+			"name": "Catalyst - Test-Data-Generation",
+			"item": [
+				{
+					"name": "Random Data Generator Collection (localhost)",
+					"item": [
+						{
+							"name": "Genreate Random Data in CSV",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var dataSize = 10000; // change this",
+											"var csvLines = 'FirstName, LastName, Country, AccountName\\n'; //header line of CSV",
+											"for (var i = 0; i<dataSize;i++){",
+											"    csvLines += '{{$randomFirstName}}, {{$randomLastName}}, {{$randomCountry}}, {{$randomBankAccountName}}\\n';",
+											"}",
+											"pm.variables.set(\"csvData\", csvLines);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "text/csv",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{{csvData}}",
+									"options": {
+										"raw": {
+											"language": "text"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:8082/data",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "8082",
+									"path": [
+										"data"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Generate Random Data in JSON",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var dataSize = 10; // change this",
+											"var jsonArray = [];",
+											"for (var i = 0; i<dataSize;i++){",
+											"    jsonArray.push ('{ \"firstName\": \"{{$randomFirstName}}\" , \\",
+											"                       \"lastName\" :  \"{{$randomLastName}}\" , \\",
+											"                       \"country\" : \"{{$randomCountry}}\" }');",
+											"}",
+											"jsonString = '[' + jsonArray.toString() + ']';",
+											"pm.variables.set(\"jsonData\", jsonString);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "text/csv",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{{jsonData}}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:8082/data",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "8082",
+									"path": [
+										"data"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Generate Random Data in XML",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var dataSize = 10; // change this",
+											"var xmlArray = [''];",
+											"for (var i = 0; i<dataSize;i++){",
+											"    xmlArray.push ('<customer><firstName>{{$randomFirstName}}</firstName> \\",
+											"                     <lastName>{{$randomLastName}}</lastName> \\",
+											"                     <country>{{$randomCountry}}</country></customer>');",
+											"}",
+											"xmlString = '<?xml version=\"1.0\" encoding=\"UTF-8\"?><customers>' + ",
+											"            xmlArray.join('') + '</customers>';",
+											"pm.variables.set(\"xmlData\", xmlString);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "text/csv",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{{xmlData}}",
+									"options": {
+										"raw": {
+											"language": "xml"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:8082/data",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "8082",
+									"path": [
+										"data"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Random Data Generator Connection (Cloudhub)",
+					"item": [
+						{
+							"name": "Genreate Random Data in CSV",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var dataSize = 10000; // change this",
+											"var csvLines = 'FirstName, LastName, Country, AccountName\\n'; //header line of CSV",
+											"for (var i = 0; i<dataSize;i++){",
+											"    csvLines += '{{$randomFirstName}}, {{$randomLastName}}, {{$randomCountry}}, {{$randomBankAccountName}}\\n';",
+											"}",
+											"pm.variables.set(\"csvData\", csvLines);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "text/csv",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{{csvData}}",
+									"options": {
+										"raw": {
+											"language": "text"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:8082/data",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "8082",
+									"path": [
+										"data"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Generate Random Data in JSON",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var dataSize = 10; // change this",
+											"var jsonArray = [];",
+											"for (var i = 0; i<dataSize;i++){",
+											"    jsonArray.push ('{ \"firstName\": \"{{$randomFirstName}}\" , \\",
+											"                       \"lastName\" :  \"{{$randomLastName}}\" , \\",
+											"                       \"country\" : \"{{$randomCountry}}\" }');",
+											"}",
+											"jsonString = '[' + jsonArray.toString() + ']';",
+											"pm.variables.set(\"jsonData\", jsonString);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "text/csv",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{{jsonData}}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://random-test-data.au-s1.cloudhub.io/data",
+									"protocol": "https",
+									"host": [
+										"random-test-data",
+										"au-s1",
+										"cloudhub",
+										"io"
+									],
+									"path": [
+										"data"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Generate Random Data in XML",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var dataSize = 10; // change this",
+											"var xmlArray = [''];",
+											"for (var i = 0; i<dataSize;i++){",
+											"    xmlArray.push ('<customer><firstName>{{$randomFirstName}}</firstName> \\",
+											"                     <lastName>{{$randomLastName}}</lastName> \\",
+											"                     <country>{{$randomCountry}}</country></customer>');",
+											"}",
+											"xmlString = '<?xml version=\"1.0\" encoding=\"UTF-8\"?><customers>' + ",
+											"            xmlArray.join('') + '</customers>';",
+											"pm.variables.set(\"xmlData\", xmlString);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "text/csv",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{{xmlData}}",
+									"options": {
+										"raw": {
+											"language": "xml"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://random-test-data.au-s1.cloudhub.io/data",
+									"protocol": "https",
+									"host": [
+										"random-test-data",
+										"au-s1",
+										"cloudhub",
+										"io"
+									],
+									"path": [
+										"data"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Random Data Generator Showcase",
+					"item": [
+						{
+							"name": "Generate Random Data Showcase in JSON",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var dataSize = 10; // change this",
+											"var jsonArray = [];",
+											"for (var i = 0; i<dataSize;i++){",
+											"    jsonArray.push ('{ \"firstName\": \"{{$randomFirstName}}\" , \\",
+											"                       \"lastName\" :  \"{{$randomLastName}}\" , \\",
+											"                       \"country\" : \"{{$randomCountry}}\" }');",
+											"}",
+											"jsonString = '[' + jsonArray.toString() + ']';",
+											"pm.variables.set(\"jsonData\", jsonString);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "text/csv",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    {\n        \"title\": \"{{$randomNamePrefix}}\",\n        \"firstname\": \"{{$randomFirstName}}\",\n        \"lastname\": \"{{$randomLastName}}\",\n        \"country\": \"{{$randomCountry}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\",\n        \"accountname\": \"{{$randomBankAccountName}}\",\n        \"balance\": \"{{$randomInt}}\",\n        \"lasttransactiondate\": \"{{$randomDatePast}}\"\n\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://random-test-data.au-s1.cloudhub.io/data",
+									"protocol": "https",
+									"host": [
+										"random-test-data",
+										"au-s1",
+										"cloudhub",
+										"io"
+									],
+									"path": [
+										"data"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"description": "# [Test-Data-Generation](https://github.com/mulesoft-catalyst/Test-Data-Generation)\n\nThis is a pass through API, used for generation of bulk data using Postman. The postman scripts are checked in src/test/resources folder\n\n- showcase-postman-collection.json\n- localhost-random-data-generation-postman-collection.json\n- cloudhub-random-data-generation-postman-collection.json\n    \n\nComplete article: [https://catalyst.mulesoft.com/display/OBD/Test+Data+Generation](https://catalyst.mulesoft.com/display/OBD/Test+Data+Generation)\n\nAs always, feel free to reachout [mukesh.rijhwani@mulesoft.com](mailto:mukesh.rijhwani@mulesoft.com)\n\n# Repo: [https://github.com/mulesoft-catalyst/Test-Data-Generation](https://github.com/mulesoft-catalyst/Test-Data-Generation)"
+		},
+		{
+			"name": "Catalyst - APIM Admin API",
+			"item": [
+				{
+					"name": "POST bulk",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "targetEnvironmentId",
+								"value": "{ChangeMe}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n  {\n    \"sourceApiInstanceId\": \"16094435\",\n    \"groupId\": \"185bdbc4-b359-4d57-9238-16719afe02d4\",\n    \"apiAssetId\": \"alerts-api\",\n    \"assetName\": \"alerts-api\",\n    \"version\": \"1.0.0\",\n    \"versionGroup\": \"v1\",\n    \"contracts\": [\n      {\n        \"name\": \"alerts-api-stage\",\n        \"redirectUri\": [],\n        \"grantTypes\": [],\n        \"apiEndpoints\": false\n      }\n    ]\n  },\n  {\n    \"sourceApiInstanceId\": \"16195063\",\n    \"groupId\": \"185bdbc4-b359-4d57-9238-16719afe02d4\",\n    \"apiAssetId\": \"alerts-api\",\n    \"assetName\": \"alerts-api\",\n    \"version\": \"1.0.1\",\n    \"versionGroup\": \"v1\",\n    \"contracts\": []\n  }\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8091/api/apis/configurations/bulk-promotions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8091",
+							"path": [
+								"api",
+								"apis",
+								"configurations",
+								"bulk-promotions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET apis",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "sourceEnvironmentId",
+								"value": "{ChangeMe}",
+								"type": "text"
+							},
+							{
+								"key": "contractSuffixToBeReplaced",
+								"value": "tst",
+								"type": "text"
+							},
+							{
+								"key": "contractSuffixReplacement",
+								"value": "stage",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "apiNameIncludeIfContains",
+								"value": "alerts",
+								"type": "text"
+							},
+							{
+								"key": "apiNameExcludeIfStartsWith",
+								"value": "alerts",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8091/api/apis",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8091",
+							"path": [
+								"api",
+								"apis"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET apps",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "includeCredentials",
+								"value": "true",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8091/api/applications",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8091",
+							"path": [
+								"api",
+								"applications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE an app",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8091/api/applications/{id}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8091",
+							"path": [
+								"api",
+								"applications",
+								"{id}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "# API Manager Promotions Tool\n\n### Github Repo: [https://github.com/mulesoft-consulting/api-manager-promotions-admin-api](https://github.com/mulesoft-consulting/api-manager-promotions-admin-api)\n\nThis asset is a Mule API that connects with Anypoint Platform APIs (in particular, APIManager, Core Services and Exchange) to perform operations such as:\n\n- Bulk promotion of APIs from a source environment to a target environment given a list of APIs to promote\n- Get APIs and contracts from a source environment (with options to replace contract name suffix to respect a naming convention, for instance)\n- Get Client Apps created\n- Delete Client Apps created\n    \n\nAPI design and definitions are included.\n\nThis is an [UNLICENSED software, please review the considerations](https://github.com/mulesoft-catalyst/api-manager-promotions-admin-api/blob/main/UNLICENSE.md). If you need assistance for extending this, contact MuleSoft Professional Services.\n\nEnjoy and provide feedback / contribute :)\n\n## Authors\n\nJoel Melamed and [Contributors](https://github.com/mulesoft-catalyst/api-manager-promotions-admin-api/graphs/contributors)"
+		},
+		{
+			"name": "Catalyst - Metrics Toolkit",
+			"item": [
+				{
+					"name": "Benefits",
+					"item": [
+						{
+							"name": "Get Benefits",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/api/business-metrics?developAPIHistoricTime=20&developAPICurrentTime=10&maintainAPIHistoricTime=15&maintainAPICurrentTime=7&developerDayRate=200",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"business-metrics"
+									],
+									"query": [
+										{
+											"key": "developAPIHistoricTime",
+											"value": "20"
+										},
+										{
+											"key": "developAPICurrentTime",
+											"value": "10"
+										},
+										{
+											"key": "maintainAPIHistoricTime",
+											"value": "15"
+										},
+										{
+											"key": "maintainAPICurrentTime",
+											"value": "7"
+										},
+										{
+											"key": "developerDayRate",
+											"value": "200"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Benefits Load - Splunk",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"event\": {\n\t\t\t\"date\": \"2020-02-19T00:11:34.341-08:00\",\n\t\t\t\"businessGroup\": \"Any\",\n\t\t\t\"developAPIHistoricTime\": 20,\n\t\t\t\"developAPICurrentTime\": 4,\n\t\t\t\"maintainAPIHistoricTime\": 20,\n\t\t\t\"maintainAPICurrentTime\": 1,\n\t\t\t\"developerDayRate\": 500\t\n\t},\n\t\"loaderDetails\": {\n\t\t\"strategy\": \"splunk\",\n\t\t\"rawData\": \"false\",\n\t\t\"splunk\": {\n\t\t\t\"host\": \"splunk.customer.com\",\n\t\t\t\"port\": \"8088\",\n\t\t\t\"protocol\": \"HTTP\",\n\t\t\t\"token\": \"123456789546654654\",\n\t\t\t\"platformMetricsIndex\": \"metrics\",\n\t\t\t\"platformBenefitsIndex\": \"platform_benefits\",\n\t\t\t\"source\": \"metrics-source\",\n\t\t\t\"sourceType\": \"_json\"\n\t\t}\n\t}\n}"
+								},
+								"url": {
+									"raw": "{{url}}/api/business-metrics/load",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"business-metrics",
+										"load"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Benefits Load - JSON",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"event\": {\n\t\t\t\"date\": \"2020-02-19T00:11:34.341-08:00\",\n\t\t\t\"businessGroup\": \"Any\",\n\t\t\t\"developAPIHistoricTime\": 20,\n\t\t\t\"developAPICurrentTime\": 4,\n\t\t\t\"maintainAPIHistoricTime\": 20,\n\t\t\t\"maintainAPICurrentTime\": 1,\n\t\t\t\"developerDayRate\": 500\t\n\t},\n\t\"loaderDetails\": {\n\t\t\"strategy\": \"json\",\n\t\t\"rawData\": \"false\"\n\t}\n}"
+								},
+								"url": {
+									"raw": "{{url}}/api/business-metrics/load",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"business-metrics",
+										"load"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Benefits Load - SFDC",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"event\": {\n\t\t\t\"date\": \"2020-02-19T00:11:34.341-08:00\",\n\t\t\t\"businessGroup\": \"Any\",\n\t\t\t\"developAPIHistoricTime\": 20,\n\t\t\t\"developAPICurrentTime\": 4,\n\t\t\t\"maintainAPIHistoricTime\": 20,\n\t\t\t\"maintainAPICurrentTime\": 1,\n\t\t\t\"developerDayRate\": 500\t\n\t},\n\t\"loaderDetails\": {\n\t\t\"strategy\": \"sfdc\",\n\t\t\"rawData\": \"false\",\n        \"sfdc\": {\n            \"dataSetName\" : \"IPAAS_Benefits_Metrics_DataSet\",\n            \"appName\": \"IPAAS_Anypoint_Metrics_App\",\n            \"username\": \"my-user@salesforce.com\",\n            \"password\": \"password123\",\n            \"securityToken\": \"securityToken456\",\n            \"sendNotifications\": \"FAILURES\",\n            \"notificationEmail\": \"myemail@email.com\"\n        }\n\t}\n}"
+								},
+								"url": {
+									"raw": "{{url}}/api/business-metrics/load",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"business-metrics",
+										"load"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"/*",
+									"    Set Anypoint Platform headers from GLOBAL variables",
+									"*/",
+									"var credentialType = pm.globals.get(\"credentialType\").toLowerCase();",
+									"var isUserCreds = credentialType == \"user\"; // user or app",
+									"",
+									"if (isUserCreds) {",
+									"    pm.request.headers.upsert( {key: 'x-anypnt-username', value: pm.globals.get(\"anypointUsername\")} );",
+									"    pm.request.headers.upsert( {key: 'x-anypnt-password', value: pm.globals.get(\"anypointPassword\")} );",
+									"} else {",
+									"    pm.request.headers.upsert( {key: 'x-anypnt-client-id', value: pm.globals.get(\"connectedAppId\")} );",
+									"    pm.request.headers.upsert( {key: 'x-anypnt-client-secret', value: pm.globals.get(\"connectedAppSecret\")}  );",
+									"}",
+									"var isPlaintextSecret = (typeof pm.globals.get(\"isPlaintextSecret\") !== 'undefined') ? pm.globals.get(\"isPlaintextSecret\") : \"true\"",
+									"pm.request.headers.upsert( {key: 'x-plaintext-password', value: isPlaintextSecret}  );",
+									"pm.request.headers.upsert( {key: 'x-anypnt-org-id', value: pm.globals.get(\"anypointOrg\")}  );"
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Platform Metrics",
+					"item": [
+						{
+							"name": "Get Platform Metrics",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/api/platform-metrics?raw=false",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"platform-metrics"
+									],
+									"query": [
+										{
+											"key": "raw",
+											"value": "false"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Platform Metrics Load - Splunk",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"collectors\": [\"all\"],\n\t\"loaderDetails\": {\n\t\t\"strategy\": \"splunk\",\n\t\t\"rawData\": \"false\",\n\t\t\"splunk\": {\n\t\t\t\"host\": \"localhost\",\n\t\t\t\"port\": \"8088\",\n\t\t\t\"protocol\": \"HTTP\",\n\t\t\t\"token\": \"10324b27-3735-40d7-9db7-cc76f6fb4c9f\",\n\t\t\t\"platformMetricsIndex\": \"metrics\",\n\t\t\t\"platformBenefitsIndex\": \"platform_benefits\",\n\t\t\t\"source\": \"metrics-source\",\n\t\t\t\"sourceType\": \"_json\"\n\t\t}\n\t}\n}"
+								},
+								"url": {
+									"raw": "{{url}}/api/platform-metrics/load",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"platform-metrics",
+										"load"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Platform Metrics Load - Tableau",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"collectors\": [\"all\"],\n\t\"loaderDetails\": {\n\t\t\"strategy\": \"tableau\",\n\t\t\"rawData\": \"false\",\n        \"tableau\": {\n            \"outputDir\": \"/opt/metrics-toolkit/data\"\n        }\n\t}\n}"
+								},
+								"url": {
+									"raw": "{{url}}/api/platform-metrics/load",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"platform-metrics",
+										"load"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Platform Metrics Load - CSV",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"collectors\": [\"all\"],\n\t\"loaderDetails\": {\n\t\t\"strategy\": \"csv\",\n\t\t\"rawData\": \"false\"\n\t}\n}"
+								},
+								"url": {
+									"raw": "{{url}}/api/platform-metrics/load",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"platform-metrics",
+										"load"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Platform Metrics Load - JSON",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"collectors\": [\"all\"],\n\t\"loaderDetails\": {\n\t\t\"strategy\": \"json\",\n\t\t\"rawData\": \"false\"\n\t}\n}"
+								},
+								"url": {
+									"raw": "{{url}}/api/platform-metrics/load",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"platform-metrics",
+										"load"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Platform Metrics Load - Logger",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"collectors\": [\"all\"],\n\t\"loaderDetails\": {\n\t\t\"strategy\": \"logger\",\n\t\t\"rawData\": \"false\"\n\t}\n}"
+								},
+								"url": {
+									"raw": "{{url}}/api/platform-metrics/load",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"platform-metrics",
+										"load"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Platform Metrics Load - SFDC",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"collectors\": [\"all\"],\n\t\"loaderDetails\": {\n\t\t\"strategy\": \"sfdc\",\n\t\t\"rawData\": \"false\",\n        \"sfdc\": {\n            \"dataSetName\" : \"IPAAS_Benefits_Metrics_DataSet\",\n            \"appName\": \"IPAAS_Anypoint_Metrics_App\",\n            \"username\": \"my-user@salesforce.com\",\n            \"password\": \"password123\",\n            \"securityToken\": \"securityToken456\",\n            \"sendNotifications\": \"FAILURES\",\n            \"notificationEmail\": \"myemail@email.com\"\n        }\n\t}\n}"
+								},
+								"url": {
+									"raw": "{{url}}/api/platform-metrics/load",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"platform-metrics",
+										"load"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"/*",
+									"    Set Anypoint Platform headers from GLOBAL variables",
+									"*/",
+									"var credentialType = pm.globals.get(\"credentialType\").toLowerCase();",
+									"var isUserCreds = credentialType == \"user\"; // user or app",
+									"",
+									"if (isUserCreds) {",
+									"    pm.request.headers.upsert( {key: 'x-anypnt-username', value: pm.globals.get(\"anypointUsername\")} );",
+									"    pm.request.headers.upsert( {key: 'x-anypnt-password', value: pm.globals.get(\"anypointPassword\")} );",
+									"} else {",
+									"    pm.request.headers.upsert( {key: 'x-anypnt-client-id', value: pm.globals.get(\"connectedAppId\")} );",
+									"    pm.request.headers.upsert( {key: 'x-anypnt-client-secret', value: pm.globals.get(\"connectedAppSecret\")}  );",
+									"}",
+									"var isPlaintextSecret = (typeof pm.globals.get(\"isPlaintextSecret\") !== 'undefined') ? pm.globals.get(\"isPlaintextSecret\") : \"true\"",
+									"pm.request.headers.upsert( {key: 'x-plaintext-password', value: isPlaintextSecret}  );",
+									"pm.request.headers.upsert( {key: 'x-anypnt-org-id', value: pm.globals.get(\"anypointOrg\")}  );"
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				}
+			]
+		}
+	]
+}
