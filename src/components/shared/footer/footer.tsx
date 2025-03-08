@@ -7,7 +7,7 @@ export const Footer: React.FC = () => {
     return (
         <S.Container>
             <S.SpanContainer>
-                <S.Brand>Medical App</S.Brand>
+                <S.Brand>CRM Faster</S.Brand>
                 <S.Copyright>
                     Todos os direitos reservados © {currentYear}
                 </S.Copyright>

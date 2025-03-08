@@ -2,14 +2,14 @@
 
 import React from 'react';
 import * as S from './styles';
-import MedicalImage from "@/assets/imagesHome/medicalapp3.svg"; 
+import CrmImage from "@/assets/imagesHome/crm2.svg"; 
 
 const ImageHome: React.FC = () => {
   return (
     <S.Container>
       <S.Image 
-        src={MedicalImage.src}
-        alt="Imagem Medical App" 
+        src={CrmImage.src}
+        alt="Imagem Crm App" 
         className="img" 
       />
     </S.Container>

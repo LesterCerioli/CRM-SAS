@@ -1,0 +1,1255 @@
+{
+	"info": {
+		"_postman_id": "15c710fe-070a-4971-a435-14ab3856cdf9",
+		"name": "Salesforce Commerce B2B/D2C",
+		"description": "# Salesforce Commerce B2B/D2C APIs\n\nThis postman collection contains API endpoints from various Salesforce Commerce B2B/D2C API domains.\n\n## Get started\n\nFollow [this documentation](https://github.com/forcedotcom/postman-salesforce-apis) to get started with Salesforce Postman collections.\n\n**⚠️ Disclaimers:**\n\n- This collection is provided as-is. It's not officially supported by Salesforce or covered by SLAs.\n- API documentation is not provided with the collection. Please refer to the [official documentation](https://developer.salesforce.com/docs).\n- The documentation for the majority of the endpoints in this collection can be found in the [B2B/D2C section of the Connect API documentation](https://developer.salesforce.com/docs/atlas.en-us.chatterapi.meta/chatterapi/connect_resources_commerce.htm).\n    \n\nℹ️ Report issues and ask questions [here](https://github.com/forcedotcom/postman-salesforce-apis/issues).\n\n**Though not strictly required to use the collection, for ease of use some APIs in the collection assume data found in a commerce B2B/D2C trial webstore created through the SFDX commerce plugin. For more information on how to create a trial webstore please see** [How to Create Scratch Orgs and Stores](https://github.com/forcedotcom/commerce-on-lightning/blob/develop/docs/setup-guide.md).\n\n## Variables Reference\n\nThe collection relies on the following variables:\n\n**Note:** Not every folder needs all of the variables. Look at the documentation of each folder for specific details\n\n| Variable | Description | Where to find it? (Some assume trial webstore) |\n| --- | --- | --- |\n| `orgUrl` | The base URL for the Salesforce org. | Through the following SFDX command :  <br>`sfdx force:org:display -u` . The orgUrl is the _Instance Url_ in the response. |\n| `orgId` | Salesforce org Id. | Use the _**Login org admin (SOAP)**_ endpoint under _**Setup Queries**_ folder to return the id. (This uses `orgUsername` and `orgPassword`) |\n| `orgUsername` | Org administrator username | Specified when the org was created. |\n| `orgPassword` | Org administrator password | Specified when the org was created. |\n| `apiVersion` | The Salesforce API version (e.g.: 57.0). | Log into the org -> Go to Setup -> type \"apex classes\" in the Quick Find box >> click New in the \"Apex Classes\" page -> click on the \"Version Setting\" tab to see all the supported versions |\n| `webstoreName` | The name of the webstore. | Specified at webstore creation time. |\n| `webstoreId` | The Id of the webstore. | Use the _**Get webstore id**_ endpoint under _**Setup Queries**_ folder to return the id. (This uses `webstoreName`) |\n| `buyerUsername` | Registered buyer/shopper username. | Specified when creating the trial webstore. |\n| `buyerPassword` | Registered buyer/shopper password. | Specified when creating the trial webstore. |\n| `buyerAccountId` | Account Id associated with the shopper/buyer. | Use the _**Get buyer account id**_ endpoint under _**Setup Queries**_ folder to return the id. (This uses `buyerUsername`) |\n| `productSearchTerm` | Search term used to find the product. | Defaulted to coffee, which will return results in the trial webstore. |",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8857105",
+		"_collection_link": "https://www.postman.com/salesforce-developers/salesforce-developers/collection/j69uf7u/salesforce-commerce-b2b-d2c?action=share&source=collection_link&creator=8857105"
+	},
+	"item": [
+		{
+			"name": "End2End Buyer/Shopper Journey",
+			"item": [
+				{
+					"name": "Login buyer/shopper (SOAP)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const responseJson = xml2Json(responseBody);",
+									"buyerSessionId=responseJson['soapenv:Envelope']['soapenv:Body']['loginResponse']['result']['sessionId']",
+									"const context = pm.environment.name ? pm.environment : pm.collectionVariables;",
+									"context.set('_accessToken', buyerSessionId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/xml; charset=UTF-8"
+							},
+							{
+								"key": "SOAPAction",
+								"value": "login"
+							},
+							{
+								"key": "Accept",
+								"value": "text/xml"
+							},
+							{
+								"key": "Cookie",
+								"value": "BrowserId=POhd6XTZEe2v6_8M7WG26g"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" \nxmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://\nwww.w3.org/2001/XMLSchema\">\n    <soap:Header>\n        <LoginScopeHeader xmlns=\"urn:partner.soap.sforce.com\">\n            <organizationId>{{orgId}}</organizationId>\n        </LoginScopeHeader>\n    </soap:Header>\n    <soap:Body>\n        <login xmlns=\"urn:partner.soap.sforce.com\">\n            <username><![CDATA[{{buyerUsername}}]]></username>\n            <password><![CDATA[{{buyerPassword}}]]></password>\n        </login>\n    </soap:Body>\n</soap:Envelope>"
+						},
+						"url": {
+							"raw": "{{orgUrl}}/services/Soap/u/{{apiVersion}}",
+							"host": [
+								"{{orgUrl}}"
+							],
+							"path": [
+								"services",
+								"Soap",
+								"u",
+								"{{apiVersion}}"
+							]
+						},
+						"description": "Authenticate the shopper through the variables _buyerUsername_ and _buyerPassword_. Generated session ID is saved in _accessToken for use in the other calls in the collection."
+					},
+					"response": []
+				},
+				{
+					"name": "Search products by search term",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"const responseJson = pm.response.json();",
+									"const productInfo = responseJson.productsPage.products[0];",
+									"const context = pm.environment.name ? pm.environment : pm.collectionVariables;",
+									"context.set(\"productId\", productInfo.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"searchTerm\": \"{{productSearchTerm}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{orgUrl}}/services/data/v{{apiVersion}}/commerce/webstores/{{webstoreId}}/search/product-search",
+							"host": [
+								"{{orgUrl}}"
+							],
+							"path": [
+								"services",
+								"data",
+								"v{{apiVersion}}",
+								"commerce",
+								"webstores",
+								"{{webstoreId}}",
+								"search",
+								"product-search"
+							]
+						},
+						"description": "Uses the variable _productSearchTerm_ to search for products in the webstore. Sets the first returned product in the variable _productId_."
+					},
+					"response": []
+				},
+				{
+					"name": "Get product",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{orgUrl}}/services/data/v{{apiVersion}}/commerce/webstores/{{webstoreId}}/products/:productId",
+							"host": [
+								"{{orgUrl}}"
+							],
+							"path": [
+								"services",
+								"data",
+								"v{{apiVersion}}",
+								"commerce",
+								"webstores",
+								"{{webstoreId}}",
+								"products",
+								":productId"
+							],
+							"query": [
+								{
+									"key": "effectiveAccountId",
+									"value": "<string>",
+									"disabled": true
+								},
+								{
+									"key": "excludeAttributeSetInfo",
+									"value": "<boolean>",
+									"disabled": true
+								},
+								{
+									"key": "excludeEntitlementDetails",
+									"value": "<boolean>",
+									"disabled": true
+								},
+								{
+									"key": "excludeFields",
+									"value": "<boolean>",
+									"disabled": true
+								},
+								{
+									"key": "excludeMedia",
+									"value": "<boolean>",
+									"disabled": true
+								},
+								{
+									"key": "excludePrimaryProductCategory",
+									"value": "<boolean>",
+									"disabled": true
+								},
+								{
+									"key": "excludeProductSellingModels",
+									"value": "<boolean>",
+									"disabled": true
+								},
+								{
+									"key": "excludeQuantityRule",
+									"value": "<boolean>",
+									"disabled": true
+								},
+								{
+									"key": "excludeVariationInfo",
+									"value": "<boolean>",
+									"disabled": true
+								},
+								{
+									"key": "fields",
+									"value": "[]",
+									"disabled": true
+								},
+								{
+									"key": "mediaGroups",
+									"value": "[]",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "productId",
+									"value": "{{productId}}"
+								}
+							]
+						},
+						"description": "Fetch standard field data, custom field data, and enrichment data for a single Product, identified by the variable _productId_ that was set by the search products request."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete cart (if needed)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{orgUrl}}/services/data/v{{apiVersion}}/commerce/webstores/{{webstoreId}}/carts/:cartId",
+							"host": [
+								"{{orgUrl}}"
+							],
+							"path": [
+								"services",
+								"data",
+								"v{{apiVersion}}",
+								"commerce",
+								"webstores",
+								"{{webstoreId}}",
+								"carts",
+								":cartId"
+							],
+							"variable": [
+								{
+									"key": "cartId",
+									"value": "{{_cartId}}"
+								}
+							]
+						},
+						"description": "Delete the Cart, as identified by the variable __cartId_. This variable is set in the _Create a cart_ request. (Note: This request is not needed the first time it is executed.)"
+					},
+					"response": []
+				},
+				{
+					"name": "Create a cart",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"const responseJson = pm.response.json();",
+									"let cartId = responseJson.cartId;",
+									"const context = pm.environment.name ? pm.environment : pm.collectionVariables;",
+									"context.set('_cartId', cartId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"name\":\"My Cart\",\n   \"type\":\"Cart\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{orgUrl}}/services/data/v{{apiVersion}}/commerce/webstores/{{webstoreId}}/carts",
+							"host": [
+								"{{orgUrl}}"
+							],
+							"path": [
+								"services",
+								"data",
+								"v{{apiVersion}}",
+								"commerce",
+								"webstores",
+								"{{webstoreId}}",
+								"carts"
+							]
+						},
+						"description": "Creates a Cart and sets the variable __cartId_."
+					},
+					"response": []
+				},
+				{
+					"name": "Add item to the cart",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"productId\": \"{{productId}}\",\n   \"quantity\":\"5\",\n   \"type\":\"Product\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{orgUrl}}/services/data/v{{apiVersion}}/commerce/webstores/{{webstoreId}}/carts/:cartId/cart-items",
+							"host": [
+								"{{orgUrl}}"
+							],
+							"path": [
+								"services",
+								"data",
+								"v{{apiVersion}}",
+								"commerce",
+								"webstores",
+								"{{webstoreId}}",
+								"carts",
+								":cartId",
+								"cart-items"
+							],
+							"query": [
+								{
+									"key": "productFields",
+									"value": "",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "cartId",
+									"value": "{{_cartId}}"
+								}
+							]
+						},
+						"description": "Adds a quantity of 5 items (identified by the variable _productId)_ to the cart (identified by the variable __cartId)._"
+					},
+					"response": []
+				},
+				{
+					"name": "Create/Start checkout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"let checkoutId = pm.response.json().checkoutId;",
+									"const context = pm.environment.name ? pm.environment : pm.collectionVariables;",
+									"context.set('_checkoutId', checkoutId);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"cartId\":\"{{_cartId}}\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{orgUrl}}/services/data/v{{apiVersion}}/commerce/webstores/{{webstoreId}}/checkouts/",
+							"host": [
+								"{{orgUrl}}"
+							],
+							"path": [
+								"services",
+								"data",
+								"v{{apiVersion}}",
+								"commerce",
+								"webstores",
+								"{{webstoreId}}",
+								"checkouts",
+								""
+							]
+						},
+						"description": "Starts a checkout for the cart identified by the variable __cartId_. Sets the checkout identifier in the variable __checkoutId_."
+					},
+					"response": []
+				},
+				{
+					"name": "Get shipping address",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const responseJson = pm.response.json();",
+									"const addressList = responseJson.items;",
+									"const context = pm.environment.name ? pm.environment : pm.collectionVariables;",
+									"context.set('_addressId', addressList[0].addressId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{orgUrl}}/services/data/v{{apiVersion}}/commerce/webstores/{{webstoreId}}/accounts/{{buyerAccountId}}/addresses?addressType=Shipping&sortOrder=CreatedDateDesc&excludeUnsupportedCountries=true",
+							"host": [
+								"{{orgUrl}}"
+							],
+							"path": [
+								"services",
+								"data",
+								"v{{apiVersion}}",
+								"commerce",
+								"webstores",
+								"{{webstoreId}}",
+								"accounts",
+								"{{buyerAccountId}}",
+								"addresses"
+							],
+							"query": [
+								{
+									"key": "addressType",
+									"value": "Shipping"
+								},
+								{
+									"key": "sortOrder",
+									"value": "CreatedDateDesc"
+								},
+								{
+									"key": "excludeUnsupportedCountries",
+									"value": "true"
+								}
+							]
+						},
+						"description": "Returns all of the shipping addresses associated with the buyer account identified through the _buyerAccountId_ variable. Sets the __addressId_ variable to the last created shipping address for that buyer account."
+					},
+					"response": []
+				},
+				{
+					"name": "Update shipping address (if address exists)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"const responseJson = pm.response.json();",
+									"const context = pm.environment.name ? pm.environment : pm.collectionVariables;",
+									"context.set('_addressId', responseJson.addressId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"city\":\"Boston\",\n  \"country\":\"US\",\n  \"isDefault\":false,\n  \"name\":\"Home Address\",\n  \"postalCode\":\"01234\",\n  \"region\":\"MA\",\n  \"street\":\"123 Main Street\",\n  \"addressType\": \"Shipping\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{orgUrl}}/services/data/v{{apiVersion}}/commerce/webstores/{{webstoreId}}/accounts/{{buyerAccountId}}/addresses/:addressId",
+							"host": [
+								"{{orgUrl}}"
+							],
+							"path": [
+								"services",
+								"data",
+								"v{{apiVersion}}",
+								"commerce",
+								"webstores",
+								"{{webstoreId}}",
+								"accounts",
+								"{{buyerAccountId}}",
+								"addresses",
+								":addressId"
+							],
+							"variable": [
+								{
+									"key": "addressId",
+									"value": "{{_addressId}}"
+								}
+							]
+						},
+						"description": "Adds a shipping address associated with the buyer account (variable _buyerAccountId_) and stores the address identifier into the variable __addressId_."
+					},
+					"response": []
+				},
+				{
+					"name": "Add shipping address (if address does not exist)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"const responseJson = pm.response.json();",
+									"const context = pm.environment.name ? pm.environment : pm.collectionVariables;",
+									"context.set('_addressId', responseJson.addressId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"city\":\"Boston\",\n  \"country\":\"US\",\n  \"isDefault\":false,\n  \"name\":\"Home Address\",\n  \"postalCode\":\"01234\",\n  \"region\":\"MA\",\n  \"street\":\"1 Milk Street\",\n  \"addressType\": \"Shipping\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{orgUrl}}/services/data/v{{apiVersion}}/commerce/webstores/{{webstoreId}}/accounts/{{buyerAccountId}}/addresses",
+							"host": [
+								"{{orgUrl}}"
+							],
+							"path": [
+								"services",
+								"data",
+								"v{{apiVersion}}",
+								"commerce",
+								"webstores",
+								"{{webstoreId}}",
+								"accounts",
+								"{{buyerAccountId}}",
+								"addresses"
+							]
+						},
+						"description": "Adds a shipping address associated with the buyer account (variable _buyerAccountId_) and stores the address identifier into the variable __addressId_."
+					},
+					"response": []
+				},
+				{
+					"name": "Update checkout with shipping address",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(202);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"deliveryAddress\": {\n    \"id\": \"{{_addressId}}\"\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{orgUrl}}/services/data/v{{apiVersion}}/commerce/webstores/{{webstoreId}}/checkouts/:checkoutId",
+							"host": [
+								"{{orgUrl}}"
+							],
+							"path": [
+								"services",
+								"data",
+								"v{{apiVersion}}",
+								"commerce",
+								"webstores",
+								"{{webstoreId}}",
+								"checkouts",
+								":checkoutId"
+							],
+							"variable": [
+								{
+									"key": "checkoutId",
+									"value": "{{_checkoutId}}"
+								}
+							]
+						},
+						"description": "Sets the ship-to address associated with the checkout (variable _checkoutId) to the_ address found/created in a previous request (variable __addressId)_."
+					},
+					"response": []
+				},
+				{
+					"name": "Get checkout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{orgUrl}}/services/data/v{{apiVersion}}/commerce/webstores/{{webstoreId}}/checkouts/:checkoutId",
+							"host": [
+								"{{orgUrl}}"
+							],
+							"path": [
+								"services",
+								"data",
+								"v{{apiVersion}}",
+								"commerce",
+								"webstores",
+								"{{webstoreId}}",
+								"checkouts",
+								":checkoutId"
+							],
+							"variable": [
+								{
+									"key": "checkoutId",
+									"value": "{{_checkoutId}}"
+								}
+							]
+						},
+						"description": "Retrieves the checkout (variable __checkoutId_)."
+					},
+					"response": []
+				},
+				{
+					"name": "Create a payment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"const responseJson = pm.response.json();",
+									"let paymentToken = responseJson.token;",
+									"const context = pm.environment.name ? pm.environment : pm.collectionVariables;",
+									"context.set('_paymentToken', paymentToken);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"billingAddress\":{\n      \"name\":\"John Doe\",\n      \"street\":\"123 Acme Drive\",\n      \"city\":\"Los Angeles\",\n      \"country\":\"United States\",\n      \"postalCode\":\"90001\"\n   },\n  \"cardPaymentMethod\": {\n    \"cardHolderName\": \"John Doe Guest\",\n    \"cardNumber\": \"4242424242424242\",\n    \"expiryMonth\": 12,\n    \"expiryYear\": 2029,\n    \"cvv\": 111,\n    \"cardType\": \"Visa\"\n    }\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{orgUrl}}/services/data/v{{apiVersion}}/commerce/webstores/{{webstoreId}}/payments/token",
+							"host": [
+								"{{orgUrl}}"
+							],
+							"path": [
+								"services",
+								"data",
+								"v{{apiVersion}}",
+								"commerce",
+								"webstores",
+								"{{webstoreId}}",
+								"payments",
+								"token"
+							]
+						},
+						"description": "Perform a server-side payment and store the created payment token in the variable __paymentToken_.\n\nNote: The sample payment gateway included in the store creation simply returns a dummy token."
+					},
+					"response": []
+				},
+				{
+					"name": "Update checkout with payment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"paymentToken\":\"{{_paymentToken}}\",\n   \"requestType\":\"Auth\",\n   \"billingAddress\":{\n      \"name\":\"John Doe\",\n      \"street\":\"123 Acme Drive\",\n      \"city\":\"Los Angeles\",\n      \"region\":\"California\",\n      \"country\":\"United States\",\n      \"postalCode\":\"90001\"\n   }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{orgUrl}}/services/data/v{{apiVersion}}/commerce/webstores/{{webstoreId}}/checkouts/:checkoutId/payments",
+							"host": [
+								"{{orgUrl}}"
+							],
+							"path": [
+								"services",
+								"data",
+								"v{{apiVersion}}",
+								"commerce",
+								"webstores",
+								"{{webstoreId}}",
+								"checkouts",
+								":checkoutId",
+								"payments"
+							],
+							"variable": [
+								{
+									"key": "checkoutId",
+									"value": "{{_checkoutId}}"
+								}
+							]
+						},
+						"description": "Applies the payment token (variable __paymentToken_) to the checkout (variable __checkoutId_). Also sets the billing address.\n\nNote: No checking will be done for the validity of the billing address or token. This uses the sample SalesforceAdapter provided in the sample store."
+					},
+					"response": []
+				},
+				{
+					"name": "Create Order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{orgUrl}}/services/data/v{{apiVersion}}/commerce/webstores/{{webstoreId}}/checkouts/:_checkoutId/orders",
+							"host": [
+								"{{orgUrl}}"
+							],
+							"path": [
+								"services",
+								"data",
+								"v{{apiVersion}}",
+								"commerce",
+								"webstores",
+								"{{webstoreId}}",
+								"checkouts",
+								":_checkoutId",
+								"orders"
+							],
+							"variable": [
+								{
+									"key": "_checkoutId",
+									"value": "{{_checkoutId}}"
+								}
+							]
+						},
+						"description": "Checkout Payments Action"
+					},
+					"response": []
+				},
+				{
+					"name": "Get order summaries",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{orgUrl}}/services/data/v{{apiVersion}}/commerce/webstores/{{webstoreId}}/order-summaries",
+							"host": [
+								"{{orgUrl}}"
+							],
+							"path": [
+								"services",
+								"data",
+								"v{{apiVersion}}",
+								"commerce",
+								"webstores",
+								"{{webstoreId}}",
+								"order-summaries"
+							]
+						},
+						"description": "Get all of the order summaries (i.e., placed orders) from the webstore."
+					},
+					"response": []
+				}
+			],
+			"description": "The goal of this sequence is to demonstrate how different endpoints can work together to form a typical buyer/shopper use case. This use case utilizes selected API endpoint calls from different B2B/D2C domains. Variables are set/used by many of the requests; each request is designed to be executed in sequence. (Variables starting with an underscore are set in tests as the collection is executed.)\n\n**For ease of use, this use case assumes data found in a commerce B2B/D2C trial webstore created through the SFDX commerce plugin. For more information on how to create a trial webstore please see** [How to Create Scratch Orgs and Stores](https://github.com/forcedotcom/commerce-on-lightning/blob/develop/docs/setup-guide.md).\n\n## Variables Reference\n\nThe use case relies on the following variables to be set:\n\n- `orgUrl`\n- `orgId`\n- `apiVersion`\n- `webstoreName`\n- `webstoreId`\n- `buyerUsername`\n- `buyerPassword`\n- `buyerAccountId`\n- `productSearchTerm`\n    \n\n**Note:** See the collection documentation for additional details of each variable",
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{_accessToken}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Setup Queries",
+			"item": [
+				{
+					"name": "Login org admin (SOAP)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const responseJson = xml2Json(responseBody);",
+									"buyerSessionId=responseJson['soapenv:Envelope']['soapenv:Body']['loginResponse']['result']['sessionId']",
+									"userInfo=responseJson['soapenv:Envelope']['soapenv:Body']['loginResponse']['result']['userInfo']",
+									"const context = pm.environment.name ? pm.environment : pm.collectionVariables;",
+									"context.set('_orgAdminAccessToken', buyerSessionId);",
+									"context.set('organizationId', userInfo['organizationId']);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/xml; charset=UTF-8"
+							},
+							{
+								"key": "SOAPAction",
+								"value": "login"
+							},
+							{
+								"key": "Accept",
+								"value": "text/xml"
+							},
+							{
+								"key": "Cookie",
+								"value": "BrowserId=POhd6XTZEe2v6_8M7WG26g"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" \nxmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://\nwww.w3.org/2001/XMLSchema\">\n    <soap:Body>\n        <login xmlns=\"urn:partner.soap.sforce.com\">\n            <username><![CDATA[{{orgUsername}}]]></username>\n            <password><![CDATA[{{orgPassword}}]]></password>\n        </login>\n    </soap:Body>\n</soap:Envelope>"
+						},
+						"url": {
+							"raw": "{{orgUrl}}/services/Soap/u/{{apiVersion}}",
+							"host": [
+								"{{orgUrl}}"
+							],
+							"path": [
+								"services",
+								"Soap",
+								"u",
+								"{{apiVersion}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get webstore Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"const responseJson = pm.response.json();",
+									"const context = pm.environment.name ? pm.environment : pm.collectionVariables;",
+									"context.set(\"webstoreId\", responseJson.records[0].Id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{orgUrl}}/services/data/v{{apiVersion}}/query/?q=SELECT+Id,+Name,+Type,+Country+FROM+WebStore+WHERE+Name+=+'{{webstoreName}}'",
+							"host": [
+								"{{orgUrl}}"
+							],
+							"path": [
+								"services",
+								"data",
+								"v{{apiVersion}}",
+								"query",
+								""
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "SELECT+Id,+Name,+Type,+Country+FROM+WebStore+WHERE+Name+=+'{{webstoreName}}'"
+								}
+							]
+						},
+						"description": "Finds and sets the _webstoreId_ variable for the webstore with the name set in the _webStoreName_ variable."
+					},
+					"response": []
+				},
+				{
+					"name": "Get buyer account Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"const responseJson = pm.response.json();",
+									"const context = pm.environment.name ? pm.environment : pm.collectionVariables;",
+									"context.set(\"buyerAccountId\", responseJson.records[0].AccountId);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{orgUrl}}/services/data/v{{apiVersion}}/query/?q=SELECT+Id,+Username,+AccountId+FROM+User+WHERE+UserName+=+'{{buyerUsername}}'",
+							"host": [
+								"{{orgUrl}}"
+							],
+							"path": [
+								"services",
+								"data",
+								"v{{apiVersion}}",
+								"query",
+								""
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "SELECT+Id,+Username,+AccountId+FROM+User+WHERE+UserName+=+'{{buyerUsername}}'"
+								}
+							]
+						},
+						"description": "Finds and sets the _buyerAccountId_ variable for the buyer account with the name set in the _buyerUsername_ variable."
+					},
+					"response": []
+				}
+			],
+			"description": "Uses the REST API to perform SOQL queries that are helpful in setting some of the collection variables.\n\n## Variables Reference\n\nThe use case relies on the following variables:\n\n- `orgUrl`\n- `orgUsername`\n- `orgPassword`\n- `webstoreName`\n- `buyerUsername`\n    \n\n**Note:** See the collection documentation for additional details of each variable",
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{_orgAdminAccessToken}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "orgUrl",
+			"value": ""
+		},
+		{
+			"key": "orgId",
+			"value": ""
+		},
+		{
+			"key": "orgUsername",
+			"value": ""
+		},
+		{
+			"key": "orgPassword",
+			"value": ""
+		},
+		{
+			"key": "apiVersion",
+			"value": "57.0"
+		},
+		{
+			"key": "webstoreName",
+			"value": ""
+		},
+		{
+			"key": "webstoreId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "buyerUsername",
+			"value": ""
+		},
+		{
+			"key": "buyerPassword",
+			"value": ""
+		},
+		{
+			"key": "buyerAccountId",
+			"value": ""
+		},
+		{
+			"key": "productSearchTerm",
+			"value": "coffee"
+		},
+		{
+			"key": "_cartId",
+			"value": "current"
+		},
+		{
+			"key": "_checkoutId",
+			"value": "active"
+		}
+	]
+}
