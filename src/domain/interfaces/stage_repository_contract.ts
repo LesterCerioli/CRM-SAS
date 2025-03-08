@@ -1,11 +1,11 @@
-import { Stage } from "../models/stage";
+import { StageDTO } from "../dtos/stageDTO";
+
 
 export interface StageRepositoryContract {
-    create(stage: Stage): Promise<void>;
-    findByName(name: string): Promise<Stage>;
-    fingByDescription(description: string): Promise<Stage>;
-    update(id: string, stage: Stage): Promise<void>;
-    delete(id: string): Promise<void>;
-    getStateList(): Promise<Stage>;
-
+  create(stage: StageDTO): Promise<StageDTO>;
+  findByName(name: string): Promise<StageDTO>;
+  findByDescription(description: string): Promise<StageDTO>;
+  update(id: string, stage: Partial<StageDTO>): Promise<void>;
+  delete(id: string): Promise<void>;
+  getStageList(): Promise<StageDTO[]>;
 }
